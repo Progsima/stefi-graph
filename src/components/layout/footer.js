@@ -2,10 +2,6 @@ import React, {Component, PropTypes} from "react";
 
 class Footer extends Component {
 
-    static propTypes = {
-        config: React.PropTypes.object.isRequired
-    };
-
     render() {
         return (
             <footer>

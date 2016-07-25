@@ -19,7 +19,6 @@ var paths = {
 
 // Internal flags - Don't edit these!!!!1
 var DEBUG = !argv.release;
-var TEST = !argv.test? false : true;
 var DEV_SERVER_URL = ['http', '//' + host, 8080].join(':');
 
 // Custom Flags - Edit these!!!!!!111

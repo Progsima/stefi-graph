@@ -4,21 +4,21 @@ import MenuItem from "./menuItem";
 class Menu extends Component {
 
     static propTypes = {
-        pages: React.PropTypes.object.isRequired
+        pages: React.PropTypes.array.isRequired,
+        styleClass: React.PropTypes.string
     };
 
     /**
      * Render phase
      */
     render() {
+        var menu = this.props.pages.map((item, index) => {
+            return <MenuItem key={index} page={item}/>
+        });
         return (
-            <nav id="navbar" className="nav navbar-nav navbar-right">
-                <ul className="nav navbar-nav">
-                    { Object.keys(this.props.pages).map(e =>
-                        <MenuItem key={e} name={this.props.pages[e].name} title={this.props.pages[e].title} id={e}/>
-                    )}
-                </ul>
-            </nav>
+            <ul className={this.props.styleClass}>
+                { menu }
+            </ul>
         )
     }
 }

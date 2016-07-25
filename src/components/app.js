@@ -2,8 +2,6 @@ import React, {Component, PropTypes} from "react";
 import Header from "./layout/header";
 import Footer from "./layout/footer";
 import View from "./layout/view";
-import Donut from "./charts/donut/donut";
-
 
 /**
  * Main component that create the application.
@@ -42,17 +40,11 @@ class App extends Component {
      * This method returns the needed component markup.
      */
     render() {
-        var data = [
-            {label: "Movie", value: 10, color: '#24DBFF'},
-            {label: "Person", value: 30, color: '#006FE3'},
-            {label: "Actor", value: 90, color: '#3FCBFF'}
-        ];
         return (
             <div>
-                <Header config={ this.props.config }/>
-                <View config={ this.props.config }/>
-                <Donut size={200} title="Donut" data={data}/>
-                <Footer config={ this.props.config }/>
+                <Header />
+                <View />
+                <Footer />
             </div>
         )
     }

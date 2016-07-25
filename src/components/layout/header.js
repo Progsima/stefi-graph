@@ -2,12 +2,9 @@ import React, {Component, PropTypes} from "react";
 import {branch} from "baobab-react/higher-order";
 import Logo from "./logo";
 import Menu from "./menu";
+import config from "./../../config";
 
 class Header extends Component {
-
-    static propTypes = {
-        config: React.PropTypes.object.isRequired
-    };
 
     render() {
         return (
@@ -19,9 +16,11 @@ class Header extends Component {
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                         </button>
-                        <Logo name={ this.props.config.name } url={ this.props.config.logo }/>
+                        <Logo name={ config.name } url={ config.logo }/>
                     </div>
-                    <Menu pages={ this.props.config.pages }/>
+                    <nav id="navbar" className="nav navbar-nav navbar-right">
+                        <Menu pages={ config.sitemap } styleClass="nav navbar-nav"/>
+                    </nav>
                 </div>
             </header>
         )

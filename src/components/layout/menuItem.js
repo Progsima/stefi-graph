@@ -1,27 +1,28 @@
 import React, {Component, PropTypes} from "react";
 import {branch} from "baobab-react/higher-order";
-import * as actions from "./../../actions/actions";
+import * as sitemap from "./../../actions/sitemap";
 
 class MenuItem extends Component {
 
     static propTypes = {
-        id: React.PropTypes.string.isRequired,
-        title: React.PropTypes.string.isRequired
+        page: React.PropTypes.shape({
+            name: React.PropTypes.string.isRequired,
+            title: React.PropTypes.string.isRequired,
+            path: React.PropTypes.string.isRequired
+        }).isRequired
     };
 
     /**
      * Goto main view when clicking on logo.
      */
     handleClick() {
-        this.props.dispatch(
-            actions.navigateTo,
-            this.props.id
-        );
+        this.props.dispatch( sitemap.navigateTo, this.props.page);
     }
 
     isActive() {
+        console.log("[MENUITEM]: page hash is " + sitemap.getPageHashFromView(this.props.view) + "\n\t Hash is " + window.location.hash);
         var activeClass = "";
-        if (this.props.view === this.props.id) {
+        if ('#' + sitemap.getPageHashFromView(this.props.view) ===  window.location.hash) {
             activeClass = "active";
         }
         return activeClass
@@ -34,8 +35,8 @@ class MenuItem extends Component {
         return (
             <li className={ this.isActive() }>
                 <a onClick={ e => this.handleClick(e) }
-                   title={ this.props.title }>
-                    { this.props.name }
+                   title={ this.props.page.title }>
+                    { this.props.page.name }
                 </a>
             </li>
         )
