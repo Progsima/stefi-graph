@@ -22,9 +22,13 @@ class MenuItem extends Component {
     isActive() {
         console.log("[MENUITEM]: page hash is " + sitemap.getPageHashFromView(this.props.view) + "\n\t Hash is " + window.location.hash);
         var activeClass = "";
-        if ('#' + sitemap.getPageHashFromView(this.props.view) ===  window.location.hash) {
+
+        // if we are in the page or we are in the path of the display page
+        var pageHash = '#' + sitemap.getPageHashFromView(this.props.page.state.view);
+        if (window.location.hash.startsWith(pageHash)) {
             activeClass = "active";
         }
+
         return activeClass
     }
 

@@ -68,6 +68,7 @@ const config = {
             path: '/settings',
             name: "Settings",
             title: "Settings",
+            defaultRoute: '/server',
             component: Settings,
             state: {
                 view: 'settings'

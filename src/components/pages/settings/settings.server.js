@@ -15,7 +15,7 @@ class SettingsServer extends Component {
             <main className="container-fluid">
                 <section className="row">
                     <aside className="col-md-2 sidebar">
-                        <Menu pages={ settingPage.pages }/>
+                        <Menu pages={ settingPage.pages } styleClass="nav navbar-nav" />
                     </aside>
                     <section className="col-md-10 main">
                         <h1 className="page-header">Settings > Server</h1>

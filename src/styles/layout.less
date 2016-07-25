@@ -1,7 +1,23 @@
 header.navbar {
+  height: 50px;
   border-radius: 0;
   box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.20);
   margin-bottom: 10px;
+
+  ul.nav {
+    li {
+      a {
+        line-height: 30px;
+      }
+
+      &.active {
+        a {
+          border-bottom: 4px solid rgba(0,0,0,0.20);
+        }
+
+      }
+    }
+  }
 }
 
 main {
@@ -14,6 +30,21 @@ main {
       padding-bottom: 10px;
       margin: 10px 0 10px;
       border-bottom: 1px solid lighten(@gray-base, 50%);
+    }
+  }
+
+  .sidebar {
+    ul.nav {
+      width: 100%;
+      
+      li {
+        width: 100%;
+        &.active {
+          a {
+            border-left: 4px solid rgba(0,0,0,0.20);
+          }
+        }
+      }
     }
   }
 
