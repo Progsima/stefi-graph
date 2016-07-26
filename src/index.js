@@ -10,7 +10,6 @@ import './styles/main.less';
 import Neo4jService from './services/neo4j';
 
 var ns = new Neo4jService('bolt://localhost', 'neo4j', 'admin');
-console.log(ns.labels());
 
 // Adding baobab to the application
 const RootedApp = root(tree, App);

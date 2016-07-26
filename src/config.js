@@ -13,12 +13,12 @@ const config = {
     name: "Stefi Graph",
     logo: "./assets/logo.png",
 
-
     /**
      * The state that will be pass to baobab for initialisation.
      */
     state: {
         view: 'home',
+        logLevel: 'debug',
         graph: {
             nodes: [],
             edges: []

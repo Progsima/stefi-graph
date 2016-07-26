@@ -1,11 +1,12 @@
 import React, {Component, PropTypes} from "react";
 import {branch} from "baobab-react/higher-order";
 import * as sitemap from "./../../actions/sitemap";
+import log from "./../../services/log";
 
 class View extends Component {
 
     render() {
-        console.log("[VIEW]: props view is " +  this.props.view);
+        log.debug("[VIEW]: props view is " +  this.props.view);
         var page = sitemap.getPageFromView(this.props.view);
         var MyView = page.component;
         return (

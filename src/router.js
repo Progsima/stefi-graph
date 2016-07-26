@@ -1,6 +1,7 @@
 import Router from "baobab-router";
 import tree from "./store";
 import config from "./config";
+import log from './services/log';
 
 /**
  * Function that convert the sitemap object to a router configuration object.
@@ -36,7 +37,7 @@ var routerConfig = {
     routes: sitemapToRoutes(config.sitemap)
 };
 
-console.log("[ROUTER]: Config is " + JSON.stringify(routerConfig));
+log.debug("[ROUTER]: Config is " + JSON.stringify(routerConfig));
 
 // Configure the router
 const router = new Router(tree, routerConfig);

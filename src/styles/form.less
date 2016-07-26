@@ -1,0 +1,39 @@
+form {
+
+  .form-control {
+    color: #000000;
+  }
+
+  &.horizontal {
+    .form-group {
+      float: left;
+      width: 100%;
+
+      .help-block {
+        margin-bottom: 0;
+      }
+
+      label.control-label {
+        width: 20%;
+        float: left;
+      }
+
+      input.form-control {
+        width: 80%;
+        float: left;
+
+        &:after {
+          clear: both;
+        }
+      }
+
+      > div, > p {
+        width: 80%;
+        margin-left: 20%;
+        clear: both;
+      }
+
+    }
+  }
+
+}
