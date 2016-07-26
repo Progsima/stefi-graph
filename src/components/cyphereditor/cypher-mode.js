@@ -1,5 +1,5 @@
 import CodeMirror from "codemirror";
-import cypher from "./cypher-def";
+import cypher from "~/components/cyphereditor/cypher-def";
 
 /**
  * Function that create a regex from an array of words.

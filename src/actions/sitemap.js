@@ -1,5 +1,5 @@
-import config from "./../config";
-import log from './../services/log';
+import config from "~/config";
+import log from '~/services/log';
 
 /**
  * Function that permit to navigate into application pages.

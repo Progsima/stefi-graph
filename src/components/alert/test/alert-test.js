@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
-import Alert from '../alert';
+import Alert from '~/components/alert/alert';
 
 describe('alert', function () {
 

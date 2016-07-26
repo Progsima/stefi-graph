@@ -1,7 +1,7 @@
 import Router from "baobab-router";
-import tree from "./store";
-import config from "./config";
-import log from './services/log';
+import tree from "~/store";
+import config from "~/config";
+import log from '~/services/log';
 
 /**
  * Function that convert the sitemap object to a router configuration object.

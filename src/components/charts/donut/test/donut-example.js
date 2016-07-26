@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Donut from "../donut";
+import Donut from "~/components/charts/donut/donut";
 
 var data = [
     {label: "Movie", value: 10, color: '#24DBFF'},

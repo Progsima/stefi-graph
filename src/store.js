@@ -1,5 +1,5 @@
 import Baobab from "baobab";
-import config from "./config";
+import config from "~/config";
 
 const tree = new Baobab(config.state);
 

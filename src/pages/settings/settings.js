@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from "react";
-import {PageEnhancer} from "./../../../enhancer/page";
-import Menu from "./../../layout/menu";
+import {PageEnhancer} from "~/enhancer/page";
+import Menu from "~/pages/layout/menu";
 
 class Settings extends Component {
 

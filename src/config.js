@@ -1,6 +1,6 @@
-import Home from "./components/pages/home";
-import Settings from "./components/pages/settings/settings";
-import SettingsServer from "./components/pages/settings/settings.server";
+import Home from "~/pages/home";
+import Settings from "~/pages/settings/settings";
+import SettingsServer from "~/pages/settings/settings.server";
 
 /**
  * Configuration object for the application

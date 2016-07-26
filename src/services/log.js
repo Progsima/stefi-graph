@@ -1,4 +1,4 @@
-import tree from "../store";
+import tree from "~/store";
 
 class Log {
 

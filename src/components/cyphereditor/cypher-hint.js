@@ -1,5 +1,5 @@
 import CodeMirror from "codemirror";
-import cypher from "./cypher-def";
+import cypher from "~/components/cyphereditor/cypher-def";
 import "codemirror/mode/cypher/cypher";
 
 var Pos = CodeMirror.Pos, cmpPos = CodeMirror.cmpPos;

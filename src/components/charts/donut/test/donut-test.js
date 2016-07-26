@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
-import Donut from '../donut';
+import Donut from "~/components/charts/donut/donut";
 
 describe('donut', function () {
 

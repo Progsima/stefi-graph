@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import {branch} from "baobab-react/higher-order";
-import * as sitemap from "./../../actions/sitemap";
-import log from "./../../services/log";
+import * as sitemap from "~/actions/sitemap";
+import log from "~/services/log";
 
 class MenuItem extends Component {
 

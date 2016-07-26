@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Alert from "../alert";
+import Alert from "~/components/alert/alert";
 
-import './../../../styles/main.less';
+import '~/styles/main.less';
 
 
 ReactDOM.render( <Alert title="Success:" message="Well done !" type="success" timeout={5} />, document.getElementById('success'));

@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from "react";
-import {PageEnhancer} from "./../../enhancer/page";
-import CypherEditor from "../cyphereditor/cyphereditor";
+import {PageEnhancer} from "~/enhancer/page";
+import CypherEditor from "~/components/cyphereditor/cyphereditor";
 
 class Home extends Component {
 

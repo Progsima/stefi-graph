@@ -1,11 +1,11 @@
 import React, {Component, PropTypes} from "react";
 import {branch} from "baobab-react/higher-order";
 import Form from "react-jsonschema-form";
-import Alert from "./../../alert/alert";
-import {PageEnhancer} from "./../../../enhancer/page";
-import * as sitemap from "./../../../actions/sitemap";
-import * as action from "./../../../actions/action";
-import Menu from "./../../layout/menu";
+import Alert from "~/components/alert/alert";
+import {PageEnhancer} from "~/enhancer/page";
+import * as sitemap from "~/actions/sitemap";
+import * as action from "~/actions/action";
+import Menu from "~/pages/layout/menu";
 
 
 const schema = {

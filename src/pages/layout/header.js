@@ -1,8 +1,8 @@
 import React, {Component, PropTypes} from "react";
 import {branch} from "baobab-react/higher-order";
-import Logo from "./logo";
-import Menu from "./menu";
-import config from "./../../config";
+import Logo from "~/pages/layout/logo";
+import Menu from "~/pages/layout/menu";
+import config from "~/config";
 
 class Header extends Component {
 

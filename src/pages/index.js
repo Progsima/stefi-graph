@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
-import Header from "./layout/header";
-import Footer from "./layout/footer";
-import View from "./layout/view";
+import Header from "~/pages/layout/header";
+import Footer from "~/pages/layout/footer";
+import View from "~/pages/layout/view";
 
 /**
  * Main component that create the application.

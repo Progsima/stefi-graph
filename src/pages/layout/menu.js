@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from "react";
-import MenuItem from "./menuItem";
+import MenuItem from "~/pages/layout/menuItem";
 
 class Menu extends Component {
 

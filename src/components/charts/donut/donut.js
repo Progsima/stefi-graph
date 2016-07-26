@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from "react";
 import _ from "lodash";
-import "./donut.less";
+import "~/components/charts/donut/donut.less";
 
 /**
  * Create a Donut chart

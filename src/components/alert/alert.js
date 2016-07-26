@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from "react";
-import log from './../../services/log';
+import log from '~/services/log';
 import _ from "lodash";
 
 class Alert extends Component {
@@ -61,8 +61,7 @@ class Alert extends Component {
         log.debug("[ALERT]: message is " + this.props.message);
         if (this.props.message && this.state.timeLeft > 0) {
             return (
-                <div id={this.props.id} className={ "alert alert-" + this.props.type + " alert-dismissible"} role="alert">
-                    <button type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div id={this.props.id} className={ "alert alert-" + this.props.type } role="alert">
                     <strong>{this.props.title}</strong> {this.props.message}
                 </div>
             )

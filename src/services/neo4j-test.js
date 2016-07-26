@@ -1,5 +1,5 @@
 import {expect, Assertion} from "chai";
-import Neo4jService from "./neo4j";
+import Neo4jService from "~/services/neo4j";
 
 describe('neo4j', () => {
 
