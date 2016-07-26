@@ -12,12 +12,11 @@ class Menu extends Component {
      * Render phase
      */
     render() {
-        var menu = this.props.pages.map((item, index) => {
-            return <MenuItem key={index} page={item}/>
-        });
         return (
             <ul className={this.props.styleClass}>
-                { menu }
+                { this.props.pages.map((item, index) => {
+                    return <MenuItem key={index} page={item}/>
+                }) }
             </ul>
         )
     }

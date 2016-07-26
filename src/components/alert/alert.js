@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from "react";
-import log from '~/services/log';
+import log from "~/services/log";
 import _ from "lodash";
 
 class Alert extends Component {
@@ -28,10 +28,10 @@ class Alert extends Component {
     _tick() {
         var self = this;
         this.timer = setTimeout(() => {
-            if(this.state.timeLeft > 0) {
+            if (this.state.timeLeft > 0) {
                 this.setState({timeLeft: (this.state.timeLeft - 1)});
                 this._tick();
-            }else {
+            } else {
                 this._stop();
             }
         }, 1000);
@@ -45,23 +45,25 @@ class Alert extends Component {
         this._tick();
     }
 
-    componentWillUnmount() {
-        this._stop();
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this._stop();
-        this.setState({
-            timeLeft: nextProps.timeout
-        });
-        this._tick();
+    _hideAlert() {
+        this.setState({timeLeft: -1});
     }
 
     render() {
         log.debug("[ALERT]: message is " + this.props.message);
         if (this.props.message && this.state.timeLeft > 0) {
             return (
-                <div id={this.props.id} className={ "alert alert-" + this.props.type } role="alert">
+                <div id={this.props.id}
+                     className={ "alert-dismissible alert alert-" + this.props.type }
+                     role="alert">
+                    <button type="button"
+                            className="close"
+                            data-dismiss="alert"
+                            aria-label="Close"
+                            onClick={e => this._hideAlert()}>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
                     <strong>{this.props.title}</strong> {this.props.message}
                 </div>
             )
@@ -72,6 +74,4 @@ class Alert extends Component {
     }
 }
 
-export
-default
-Alert;
+export default Alert;
