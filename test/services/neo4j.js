@@ -8,7 +8,7 @@ chai.use(chaiAsPromised);
 describe('neo4j', () => {
 
     it('return db labels', done => {
-        graphDb.labels()
+        neo4j.labels()
             .then(result => {
                 chai.expect(result.length).to.equal(2);
                 done();
@@ -19,7 +19,7 @@ describe('neo4j', () => {
     });
 
     it('return db relationship type', done => {
-        graphDb.relationshipTypes()
+        neo4j.relationshipTypes()
             .then(result => {
                 chai.expect(result.length).to.equal(6);
                 done();
@@ -30,7 +30,7 @@ describe('neo4j', () => {
     });
 
     it('return db properties', done => {
-        graphDb.propertyKeys()
+        neo4j.propertyKeys()
             .then(result => {
                 chai.expect(result.length).to.equal(14);
                 done();
@@ -48,6 +48,6 @@ describe('neo4j', () => {
         });
         tree.commit();
 
-        return chai.assert.isRejected(graphDb.labels());
+        return chai.assert.isRejected(neo4j.labels());
     });
 });
