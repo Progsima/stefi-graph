@@ -5,7 +5,7 @@ import tree from "~/store";
 import config from "~/config";
 import App from "~/pages/index";
 import "~/styles/main.less";
-import Neo4jService from "~/services/neo4j";
+import {Neo4jService }from "~/services/neo4j";
 import router from "~/router";
 
 var ns = new Neo4jService('bolt://localhost', 'neo4j', 'admin');

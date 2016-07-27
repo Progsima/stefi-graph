@@ -4,15 +4,6 @@ var wConfig = require('./webpack.config');
 
 process.env.UNIT_TEST = true;
 
-// instrument only testing sources with Istanbul
-wConfig.module['postLoaders'] = [
-    {
-        test: /\.js$/,
-        exclude: /(test|node_modules|bower_components)/,
-        include: path.resolve('src/'),
-        loader: 'istanbul-instrumenter'
-    }
-];
 wConfig.devtool= 'inline-source-map';
 
 // https://github.com/airbnb/enzyme/blob/master/docs/guides/webpack.md
@@ -36,15 +27,17 @@ module.exports = function (config) {
             'karma-spec-reporter',
             'karma-mocha',
             'karma-mocha-reporter',
-            'karma-chai'
+            'karma-chai',
+            'karma-chai-as-promised'
         ],
         frameworks: [ 'mocha' ], //use the mocha test framework
         browsers: [ 'PhantomJS' ],
         files: [
-            { pattern: 'src/**/*-test\.js' }
+            { pattern: 'test/**/*\.js' }
         ],
         preprocessors: {
-            'src/**/*\.js': [ 'webpack', 'sourcemap']
+            'src/**/*\.js': [ 'webpack', 'sourcemap'],
+            'test/**/*\.js': [ 'webpack', 'sourcemap']
         },
         webpack: wConfig,
         webpackServer: {

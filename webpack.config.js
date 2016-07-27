@@ -19,17 +19,10 @@ var paths = {
 
 // Internal flags - Don't edit these!!!!1
 var DEBUG = !argv.release;
-var DEV_SERVER_URL = ['http', '//' + host, 8080].join(':');
+var DEV_SERVER_URL = ['http', '//' + host, port].join(':');
 
 // Custom Flags - Edit these!!!!!!111
 var IMAGE_INLINE_LIMIT = 10000; // Maximum imagefilesize (in bytes) to inline
-
-// Global variables that will be available to all scripts without needing
-// to be `require`d
-var GLOBALS = {
-    'process.env.NODE_ENV': DEBUG ? '"development"' : '"production"',
-    '__DEBUG__': DEBUG
-};
 
 var wConfig = {
     module: {
@@ -104,13 +97,6 @@ if (DEBUG) {
     var defaultEntries = ['webpack-dev-server/client?' + DEV_SERVER_URL,'webpack/hot/only-dev-server'];
     // Adding default entries
     entries['main'] = defaultEntries.concat(wConfig.entry.main);
-
-    // Adding all examples as entry
-    var files = glob.sync("./src/**/*-example.js");
-    for (var i = 0; i < files.length; i++) {
-        var entry = defaultEntries.concat(files[i]);
-        entries[path.basename(entry, path.extname(entry))] = entry;
-    }
     wConfig.entry = entries;
 }
 
@@ -125,7 +111,6 @@ wConfig.output = {
 // Plugins
 wConfig.plugins = [
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.DefinePlugin(GLOBALS),
     new webpack.NoErrorsPlugin()
 ];
 

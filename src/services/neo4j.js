@@ -1,5 +1,5 @@
-import neo4j from "neo4j-driver/lib/browser/neo4j-web";
-
+import neo4j  from "neo4j-driver/lib/browser/neo4j-web";
+import tree from '~/store';
 /**
  * Service that communicate with Neo4j server.
  */
@@ -30,9 +30,11 @@ class Neo4jService {
                     result.records.forEach(record => {
                         labels.push(record.get("label"));
                     });
+                    console.log(JSON.stringify(labels));
                     resolve(labels);
                 })
                 .catch(error => {
+                    console.log(JSON.stringify(error));
                     reject(error);
                 });
         });
@@ -81,5 +83,21 @@ class Neo4jService {
     }
 
 }
+var graphDb = new Neo4jService(
+    tree.select('neo4j', 'url').get(),
+    tree.select('neo4j', 'login').get(),
+    tree.select('neo4j', 'password').get()
+);
 
-export default Neo4jService;
+tree.select('neo4j').on('update', (e) => {
+    console.log("Baobab event is" + e);
+    graphDb = new Neo4jService(
+        tree.select('neo4j', 'url').get(),
+        tree.select('neo4j', 'login').get(),
+        tree.select('neo4j', 'password').get()
+    );
+});
+
+
+export {Neo4jService};
+export default graphDb;

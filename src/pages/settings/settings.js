@@ -17,7 +17,6 @@ class Settings extends Component {
                     </aside>
                     <section className="col-md-10 main">
                         <h1 className="page-header">Settings</h1>
-
                     </section>
                 </section>
             </main>

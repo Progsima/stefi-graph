@@ -12,7 +12,7 @@
   ],
   "env": {
 	"test": {
-	  "plugins": [ [ "__coverage__", { "ignore": "**/*(-test).js" } ] ]
+	  "plugins": [ [ "__coverage__", { "ignore": "test/*.js" } ] ]
 	}
   }
 }
