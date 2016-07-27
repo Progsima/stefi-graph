@@ -1,18 +1,29 @@
 import neo4j  from "neo4j-driver/lib/browser/neo4j-web";
-import tree from '~/store';
 /**
  * Service that communicate with Neo4j server.
  */
 class Neo4jService {
 
     /**
-     * Default constructor.
+     * Constructor.
      *
      * @param url Connection url to the database (ex: bolt://localhost)
      * @param user User login of the database
      * @param password User password of the database
      */
     constructor(url, user, password) {
+        this.initialize(url, user, password);
+    }
+
+    /**
+     * Initialize the connection to the database.
+     * @param url Connection url to the database (ex: bolt://localhost)
+     * @param user User login of the database
+     * @param password User password of the database
+     */
+    initialize(url, user, password) {
+        if(this.session)
+            this.session.close();
         this.driver = neo4j.v1.driver(url, neo4j.v1.auth.basic(user, password));
         this.session = this.driver.session();
     }
@@ -83,21 +94,5 @@ class Neo4jService {
     }
 
 }
-var graphDb = new Neo4jService(
-    tree.select('neo4j', 'url').get(),
-    tree.select('neo4j', 'login').get(),
-    tree.select('neo4j', 'password').get()
-);
 
-tree.select('neo4j').on('update', (e) => {
-    console.log("Baobab event is" + e);
-    graphDb = new Neo4jService(
-        tree.select('neo4j', 'url').get(),
-        tree.select('neo4j', 'login').get(),
-        tree.select('neo4j', 'password').get()
-    );
-});
-
-
-export {Neo4jService};
-export default graphDb;
+export default Neo4jService;

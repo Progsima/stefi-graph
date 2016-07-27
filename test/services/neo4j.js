@@ -1,6 +1,7 @@
 import * as chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import graphDb from "~/services/neo4j";
+import neo4j from "~/services/neo4j/neo4j-baobab";
+import tree from "~/store";
 
 chai.use(chaiAsPromised);
 
@@ -40,7 +41,12 @@ describe('neo4j', () => {
     });
 
     it('Integration with baobab', () => {
-
+        tree.set('neo4j', {
+            login: "neo4j",
+            password: "bla",
+            url: "bolt://localhost"
+        });
+        tree.commit();
 
         return chai.assert.isRejected(graphDb.labels());
     });
