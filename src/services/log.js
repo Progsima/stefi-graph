@@ -22,6 +22,7 @@ class Log {
             console.log(msg);
         }
     }
+
 }
 
 var log = new Log();

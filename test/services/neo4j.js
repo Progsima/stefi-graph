@@ -7,45 +7,38 @@ chai.use(chaiAsPromised);
 
 describe('neo4j', () => {
 
-    it('return db labels', done => {
-        neo4j.labels()
-            .then(result => {
-                chai.expect(result.length).to.equal(2);
-                done();
-            })
-            .catch(error => {
-                done(error);
-            });
+    it('return db labels', () => {
+        return chai.assert.eventually.lengthOf(Promise.resolve(neo4j.labels()), 2);
     });
 
-    it('return db relationship type', done => {
-        neo4j.relationshipTypes()
-            .then(result => {
-                chai.expect(result.length).to.equal(6);
-                done();
-            })
-            .catch(error => {
-                done(error);
-            });
+    it('return db relationship type', () => {
+        return chai.assert.eventually.lengthOf(Promise.resolve(neo4j.relationshipTypes()), 6);
     });
 
-    it('return db properties', done => {
-        neo4j.propertyKeys()
-            .then(result => {
-                chai.expect(result.length).to.equal(14);
-                done();
-            })
-            .catch(error => {
-                done(error);
-            });
+    it('return db properties', () => {
+        return chai.assert.eventually.lengthOf(Promise.resolve(neo4j.propertyKeys()), 11);
     });
 
-    it('Integration with baobab', () => {
+    it('return db indexes', () => {
+        return chai.assert.eventually.lengthOf(Promise.resolve(neo4j.indexes()), 2);
+    });
+
+    it('return db constraints', () => {
+        return chai.assert.eventually.lengthOf(Promise.resolve(neo4j.constraints()), 3);
+    });
+
+    it('return cypher result', () => {
+        return chai.assert.eventually.deepEqual(Promise.resolve(neo4j.cypher("RETURN 'Benoit' AS name, 33 AS age, 12.3 AS float")), [{ name:"Benoit", age:33, float: 12.3}]);
+    });
+
+    it('baobab change are taken', () => {
+        // change the state
         tree.set('neo4j', {
             login: "neo4j",
             password: "bla",
             url: "bolt://localhost"
         });
+        // commit it for sync
         tree.commit();
 
         return chai.assert.isRejected(neo4j.labels());

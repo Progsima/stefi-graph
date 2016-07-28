@@ -37,7 +37,7 @@ var routerConfig = {
     routes: sitemapToRoutes(config.sitemap)
 };
 
-log.debug("[ROUTER]: Config is " + JSON.stringify(routerConfig));
+log.info("[ROUTER]: Config is " + JSON.stringify(routerConfig));
 
 // Configure the router
 const router = new Router(tree, routerConfig);
