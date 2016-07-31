@@ -13,10 +13,10 @@ class Settings extends Component {
             <main className="container-fluid">
                 <section className="row">
                     <aside className="col-md-2 sidebar">
-                        <Menu pages={ this.props.page.pages}/>
+
                     </aside>
                     <section className="col-md-10 main">
-                        <h1 className="page-header">Settings</h1>
+                        <h1 className="page-header">{this.props.page.title}</h1>
                     </section>
                 </section>
             </main>

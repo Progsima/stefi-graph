@@ -1,3 +1,4 @@
+@import "../../styles/variables";
 @import (inline) "../../../node_modules/codemirror/lib/codemirror.css";
 
 /* neo theme for codemirror */
@@ -5,9 +6,9 @@
 /* Color scheme */
 
 .cm-s-neo.CodeMirror {
-  background-color:#ffffff;
   color:#2e383c;
   line-height:1.4375;
+  height: auto;
 
   .cm-comment { color:#75787b; }
   .cm-keyword, .cm-property { color:#1d75b3; }
@@ -15,6 +16,7 @@
   .cm-node, .cm-tag { color:#9c3328; }
   .cm-string { color:#b35e14; }
   .cm-variable, .cm-qualifier { color:#047d65; }
+
 
 
   /* Editor styling */
@@ -29,11 +31,11 @@
 
   .CodeMirror-linenumber {
     padding:0;
-    color:#e0e2e5;
+    color:@black-base;
   }
 
-  .CodeMirror-guttermarker { color: #1d75b3; }
-  .CodeMirror-guttermarker-subtle { color: #e0e2e5; }
+  .CodeMirror-guttermarker { color: @gray-base; }
+  .CodeMirror-guttermarker-subtle { color: @gray-base; }
 
   .CodeMirror-cursor {
     width: auto;

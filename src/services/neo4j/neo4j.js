@@ -179,6 +179,13 @@ class Neo4jService {
         });
     }
 
+    /**
+     * Execute a cypher query and return an array of object.
+     * /!\ for large integer ...
+     *
+     * @param query
+     * @returns {Promise}
+     */
     cypher(query) {
         return new Promise((resolve, reject) => {
             this.session.run(query)
@@ -188,9 +195,24 @@ class Neo4jService {
                         var item = {};
                         record.forEach( (value,key) => {
                             item[key] = value;
-                            if(typeof value.toNumber === 'function') {
+
+
+                            if(value.constructor.name === 'Integer' ) {
                                 item[key] = value.toNumber();
                             }
+
+                            // TODO: Change the node wrapper
+                            if(value.constructor.name === 'Node' ) {
+                            }
+
+                            // TODO: Change the node wrapper
+                            if(value.constructor.name === 'Relationship' ) {
+                            }
+
+                            // TODO: Change the path wrapper
+                            if(value.constructor.name === 'Path' ) {
+                            }
+
                         });
                         rs.push(item);
                     });
@@ -202,8 +224,112 @@ class Neo4jService {
         })
     }
 
+    /**
+     * Execute a cypher query and return a graph representation.
+     *
+     * @param query
+     */
     graph(query) {
+        return new Promise((resolve, reject) => {
+            this.session.run(query)
+                .then(result => {
+                    // store all nodes ID from the query result
+                    var nodeIds = [];
 
+                    // for each rows
+                    result.records.forEach(record => {
+
+                        // for each coloumn
+                        record.forEach( (value,key) => {
+
+                            // if it's a node
+                            if(value.constructor.name === 'Node') {
+                                if(nodeIds.indexOf(value.identity.toNumber()) === -1)
+                                    nodeIds.push(value.identity.toNumber())
+                            }
+
+                            // if it's a path
+                            if(value.constructor.name === 'Path') {
+                                if(nodeIds.indexOf(value.start.identity.toNumber()) === -1)
+                                    nodeIds.push(value.start.identity.toNumber());
+
+                                if(nodeIds.indexOf(value.end.identity.toNumber()) === -1)
+                                    nodeIds.push(value.end.identity.toNumber());
+
+                                value.segments.forEach((seg) => {
+                                    if(nodeIds.indexOf(seg.start.toNumber()) === -1)
+                                        nodeIds.push(seg.start.toNumber());
+                                    if(nodeIds.indexOf(seg.end.toNumber()) === -1)
+                                        nodeIds.push(seg.end.toNumber());
+                                })
+                            }
+                        });
+                    });
+
+                    var graph = { nodes:[], edges:[]};
+                    this.session
+                        .run("MATCH (from)-[r]->(to) WHERE id(from) IN " +JSON.stringify(nodeIds) + " AND id(to) IN " + JSON.stringify(nodeIds) + " RETURN from,r,to")
+                        .then(result => {
+                            var nodesIndex = [];
+
+                            // for each rows
+                            result.records.forEach(record => {
+
+                                var from = record.get('from');
+                                if(nodesIndex.indexOf(from.identity.toNumber()) === -1) {
+                                    nodesIndex.push(from.identity.toNumber());
+                                    graph.nodes.push(
+                                        {
+                                            id: from.identity.toNumber(),
+                                            labels: from.labels,
+                                            properties: from.properties,
+                                            x: Math.random(),
+                                            y: Math.random(),
+                                        }
+                                    );
+                                }
+
+                                var to = record.get('to');
+                                if(nodesIndex.indexOf(to.identity.toNumber()) === -1) {
+                                    nodesIndex.push(to.identity.toNumber());
+
+                                    //wrap node
+                                    graph.nodes.push(
+                                        {
+                                            id: to.identity.toNumber(),
+                                            labels: to.labels,
+                                            properties: to.properties,
+                                            x: Math.random(),
+                                            y: Math.random(),
+                                        }
+                                    );
+                                }
+
+                                var r = record.get('r');
+                                //wrap node
+                                graph.edges.push(
+                                    {
+                                        id: r.identity.toNumber(),
+                                        source: r.start.toNumber(),
+                                        target: r.end.toNumber(),
+                                        type: r.start.type,
+                                        properties: r.properties
+                                    }
+                                );
+
+                            });
+
+                            resolve(graph);
+                        })
+                        .catch(error => {
+                            reject(error);
+                        });
+
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        })
     }
 
 }

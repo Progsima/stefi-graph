@@ -1,0 +1,29 @@
+.query-container {
+  z-index: 999;
+  background: lighten(@gray-base, 50%);
+  opacity: 0.7;
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+  //box-shadow: 0px 0px 10px @secondary;
+
+  ul.action {
+    position: absolute;
+    right: 0;
+    top: -10px;
+    margin-bottom: 0;
+    z-index: 999;
+
+    a {
+      color: @black-base;
+      font-size: 200%;
+
+      &:hover {
+        transition: color 1s;
+        color: @color-first;
+      }
+    }
+
+  }
+}

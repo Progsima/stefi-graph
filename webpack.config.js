@@ -76,6 +76,11 @@ var wConfig = {
                     return loaders;
                 }())
             },
+            {
+                test: /sigma\/.*\.js?$/,
+                exclude: [paths.app],
+                loaders: ['script']
+            },
             // JSON support, too
             {
                 test: /\.json/,

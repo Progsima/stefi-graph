@@ -7,47 +7,47 @@ import * as action from "~/actions/settings";
 import Menu from "~/pages/layout/menu";
 import Alert from "~/components/alert/alert";
 
-
 const schema = {
-    "type": "object",
-    "required": [
-        "url",
-        "login",
-        "password"
+    type: "object",
+    required: [
+        "logLevel",
+        "queryHistorySize",
+        "baobabHistorySize"
     ],
-    "properties": {
-
-        "login": {
-            "type": "string",
-            "title": "Login"
+    properties: {
+        "logLevel": {
+            type: "string",
+            title: "Logging level",
+            enum: ["error", "info", "warning", "debug"],
+            enumNames: ["Error", "Info", "Warning", "Debug"]
         },
-        "password": {
-            "type": "string",
-            "title": "Password"
+        "queryHistorySize": {
+            type: "number",
+            title: "Query history size",
+            minimum: 0,
+            maximum: 100
         },
-        "url": {
-            "type": "string",
-            "format": "uri",
-            "title": "URL",
-            "pattern": "bolt://.*"
+        "baobabHistorySize": {
+            type: "number",
+            title: "Action history size",
+            minimum: 0,
+            maximum: 100
         }
     }
 };
 
 const uiSchema = {
-    "url": {
-        "ui:placeholder": "bolt://localhost",
-        "ui:help": "Example: bolt://localhost"
+    "logLevel": {
     },
-    "login": {
-        "ui:placeholder": "neo4j"
+    "queryHistorySize": {
+        "ui:widget": "updown"
     },
-    "password": {
-        "ui:widget": "password"
+    "baobabHistorySize": {
+        "ui:widget": "updown"
     }
 };
 
-class SettingsServer extends Component {
+class SettingsAdvanced extends Component {
 
     constructor(props) {
         super(props);
@@ -55,12 +55,12 @@ class SettingsServer extends Component {
     }
 
     saveToStore(data){
-        this.props.dispatch( action.saveSettingsServer, data);
+        this.props.dispatch( action.saveSettingsAdvanced, data);
 
         this.setState({
             alerts: this.state.alerts.concat([{
                 title: "Success: ",
-                message: "Server configuration has been successfully updated",
+                message: "Advanced configuration has been successfully updated",
                 type : "success"
             }])
         });
@@ -97,4 +97,4 @@ class SettingsServer extends Component {
         )
     }
 }
-export default PageEnhancer(branch({settings: ['settings', 'server']}, SettingsServer));
+export default PageEnhancer(branch({settings: ['settings', 'advanced']}, SettingsAdvanced));

@@ -8,27 +8,55 @@ chai.use(chaiAsPromised);
 describe('neo4j', () => {
 
     it('return db labels', () => {
-        return chai.assert.eventually.lengthOf(Promise.resolve(neo4j.labels()), 2);
+        return chai.assert.eventually
+            .lengthOf(
+                Promise.resolve(neo4j.labels()),
+                2)
+            ;
     });
 
     it('return db relationship type', () => {
-        return chai.assert.eventually.lengthOf(Promise.resolve(neo4j.relationshipTypes()), 6);
+        return chai.assert.eventually
+            .lengthOf(
+                Promise.resolve(neo4j.relationshipTypes()),
+                6
+            );
     });
 
     it('return db properties', () => {
-        return chai.assert.eventually.lengthOf(Promise.resolve(neo4j.propertyKeys()), 11);
+        return chai.assert.eventually
+            .lengthOf(
+                Promise.resolve(neo4j.propertyKeys()),
+                11
+            );
     });
 
     it('return db indexes', () => {
-        return chai.assert.eventually.lengthOf(Promise.resolve(neo4j.indexes()), 2);
+        return chai.assert.eventually
+            .lengthOf(
+                Promise.resolve(neo4j.indexes()),
+                2
+            );
     });
 
     it('return db constraints', () => {
-        return chai.assert.eventually.lengthOf(Promise.resolve(neo4j.constraints()), 3);
+        return chai.assert.eventually
+            .lengthOf(
+                Promise.resolve(neo4j.constraints()),
+                3
+            );
     });
 
     it('return cypher result', () => {
-        return chai.assert.eventually.deepEqual(Promise.resolve(neo4j.cypher("RETURN 'Benoit' AS name, 33 AS age, 12.3 AS float")), [{ name:"Benoit", age:33, float: 12.3}]);
+        return chai.assert.eventually
+            .deepEqual(
+                Promise.resolve(neo4j.cypher("RETURN 'Benoit' AS name, 33 AS age, 12.3 AS float")),
+                [{ name:"Benoit", age:33, float: 12.3}]
+            );
+    });
+
+    it('return graph result', () => {
+        return chai.assert.isFulfilled(Promise.resolve(neo4j.graph("MATCH (n) RETURN n LIMIT 25")));
     });
 
     it('baobab change are taken', () => {

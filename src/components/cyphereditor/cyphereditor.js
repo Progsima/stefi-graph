@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from "react";
 import ReactCodemirror from "react-codemirror";
-import {branch} from 'baobab-react/higher-order';
 import "codemirror/addon/edit/closebrackets";
 import "codemirror/addon/hint/show-hint";
 import "codemirror/addon/hint/show-hint.css";
@@ -16,10 +15,9 @@ import "~/components/cyphereditor/cyphereditor.less";
 class CypherEditor extends Component {
 
     static propTypes = {
-        query: React.PropTypes.string
+        query: React.PropTypes.string,
+        onChange: React.PropTypes.func
     };
-
-    static defaultProps = {};
 
     /**
      * Constructor.
@@ -43,10 +41,10 @@ class CypherEditor extends Component {
             indentUnit: 4
         };
         return (
-            <ReactCodemirror value={this.props.query} options={options}/>
+            <ReactCodemirror value={this.props.query} onChange={this.props.onChange} options={options} />
         )
     }
 }
 
-export default branch( { query: ['query', 'current'] }, CypherEditor);
+export default CypherEditor;
 
