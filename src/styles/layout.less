@@ -39,8 +39,11 @@ html {
         main {
           height:  ~"calc(100% - 60px)";
 
+          // For all sub-item of main
           & > section, & > aside {
             height: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
           }
 
           // Page title if needed

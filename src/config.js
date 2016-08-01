@@ -2,6 +2,7 @@ import Home from "~/pages/home";
 import Settings from "~/pages/settings/settings";
 import SettingsServer from "~/pages/settings/settings.server";
 import SettingsAdvanced from "~/pages/settings/settings.advanced";
+import SettingsSigma from "~/pages/settings/settings.sigma";
 
 /**
  * Configuration object for the application
@@ -26,10 +27,6 @@ const config = {
                     url: "bolt://localhost"
                 },
                 sigma: {
-                    // {string}
-                    defaultNodeType: 'def',
-                    // {string}
-                    defaultEdgeType: 'def',
                     // {string}
                     defaultLabelColor: '#000',
                     // {string}
@@ -117,8 +114,6 @@ const config = {
                     //           several frames.
                     canvasEdgesBatchSize: 500,
                     webglEdgesBatchSize: 1000,
-
-
                     /**
                      * RESCALE SETTINGS:
                      * *****************
@@ -139,8 +134,6 @@ const config = {
                     maxEdgeSize: 1,
                     minNodeSize: 1,
                     maxNodeSize: 8,
-
-
                     /**
                      * CAPTORS SETTINGS:
                      * *****************
@@ -184,8 +177,6 @@ const config = {
                     doubleTapTimeout: 300,
                     // {number} The maximum time of dragging to trigger intertia.
                     dragTimeout: 200,
-
-
                     /**
                      * GLOBAL SETTINGS:
                      * ****************
@@ -230,7 +221,7 @@ const config = {
                     animationsTime: 200
                 },
                 advanced: {
-                    logLevel: 'debug',
+                    logLevel: 'Debug',
                     queryHistorySize: 10,
                     baobabHistorySize: 10
                 }
@@ -312,6 +303,15 @@ const config = {
                         component: SettingsAdvanced,
                         state: {
                             view: 'settings.advanced'
+                        }
+                    },
+                    {
+                        path: '/sigma',
+                        name: "Sigma",
+                        title: "Sigma configuration",
+                        component: SettingsSigma,
+                        state: {
+                            view: 'settings.sigma'
                         }
                     }
                 ]

@@ -77,20 +77,18 @@ class SettingsAdvanced extends Component {
                         return <Alert key={index} title={alert.title} message={alert.message} type={alert.type} />
                     })}
                 </div>
-                <section className="row">
-                    <aside className="col-md-2 sidebar">
-                        <Menu pages={ settingPage.pages } styleClass="nav navbar-nav"/>
-                    </aside>
-                    <section className="col-md-10 main">
-                        <h1 className="page-header">Server configuration</h1>
+                <aside className="col-md-2 sidebar">
+                    <Menu pages={ settingPage.pages } styleClass="nav navbar-nav"/>
+                </aside>
+                <section className="col-md-10 main">
+                    <h1 className="page-header">Server configuration</h1>
 
-                        <Form schema={schema}
-                              uiSchema={uiSchema}
-                              liveValidate={true}
-                              onSubmit={ data => this.saveToStore(data.formData) }
-                              formData={this.props.settings}
-                              className={"horizontal" }/>
-                    </section>
+                    <Form schema={schema}
+                          uiSchema={uiSchema}
+                          liveValidate={true}
+                          onSubmit={ data => this.saveToStore(data.formData) }
+                          formData={this.props.settings}
+                          className={"horizontal" }/>
                 </section>
             </main>
         )
