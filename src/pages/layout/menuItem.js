@@ -1,7 +1,9 @@
 import React, {Component, PropTypes} from "react";
 import {branch} from "baobab-react/higher-order";
 import * as sitemap from "~/actions/sitemap";
-import log from "~/services/log";
+import Log from "~/services/log";
+
+const log = new Log("Component.menuItem");
 
 class MenuItem extends Component {
 
@@ -21,7 +23,7 @@ class MenuItem extends Component {
     }
 
     isActive() {
-        log.debug("[MENUITEM]: page hash is " + sitemap.getPageHashFromView(this.props.view) + "\n\t Hash is " + window.location.hash);
+        log.debug("Page hash is " + sitemap.getPageHashFromView(this.props.view) + "\n\t window Hash is " + window.location.hash);
         var activeClass = "";
 
         // if we are in the page or we are in the path of the display page

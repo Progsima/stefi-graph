@@ -29,7 +29,7 @@ const config = {
                     // {string}
                     defaultNodeType: 'def',
                     // {string}
-                    defaultEdgeType: 'arrow',
+                    defaultEdgeType: 'def',
                     // {string}
                     defaultLabelColor: '#000',
                     // {string}

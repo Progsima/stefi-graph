@@ -1,30 +1,46 @@
 import tree from "~/store";
 
+
 class Log {
 
-    info(msg) {
-        var currentLevel = tree.get().logLevel;
-        if (['info', 'error', 'debug'].indexOf(currentLevel) > -1) {
-            console.info(msg);
-        }
+    constructor(name) {
+        this.name = name;
+    }
+
+    _getCurrentLevel() {
+        return tree.select('settings', 'advanced', 'logLevel').get();
+    }
+
+    _wrapMsg(msg) {
+        var newMsg = "[" + this.name + "]: ";
+        newMsg += msg;
+        return newMsg;
     }
 
     error(msg) {
-        var currentLevel = tree.get().logLevel;
-        if (['error', 'debug'].indexOf(currentLevel) > -1) {
-            console.error(msg)
+        if (["Error", "Warning", "Info", "Debug"].indexOf(this._getCurrentLevel()) > -1) {
+            console.log("%c" + this._wrapMsg(msg), "color:Red");
+        }
+    }
+
+    warn(msg) {
+        if (["Warning", "Info", "Debug"].indexOf(this._getCurrentLevel()) > -1) {
+            console.log("%c" + this._wrapMsg(msg), "color:Tomato");
+        }
+    }
+
+    info(msg) {
+        if (["Info", "Debug"].indexOf(this._getCurrentLevel()) > -1) {
+            console.log("%c" + this._wrapMsg(msg), "color:DodgerBlue");
         }
     }
 
     debug(msg) {
-        var currentLevel = tree.get().logLevel;
-        if (['debug'].indexOf(currentLevel) > -1) {
-            console.log(msg);
+        if (["Debug"].indexOf(this._getCurrentLevel()) > -1) {
+            console.log("%c" + this._wrapMsg(msg), "color:Orchid");
         }
     }
 
 }
 
-var log = new Log();
-
-export default log;
+export default Log;

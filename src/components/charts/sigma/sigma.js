@@ -83,7 +83,7 @@ class ReactSigma extends Component {
                 graph: this.props.graph,
                 renderer: {
                     container: container,
-                    type:'canvas'
+                    type:'webgl'
                 }
             }
         )

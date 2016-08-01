@@ -1,6 +1,8 @@
 import React, {Component, PropTypes} from "react";
-import log from "~/services/log";
 import _ from "lodash";
+import Log from "~/services/log";
+
+const log = new Log("Component.Alert");
 
 class Alert extends Component {
 
@@ -50,7 +52,7 @@ class Alert extends Component {
     }
 
     render() {
-        log.debug("[ALERT]: message is " + this.props.message);
+        log.debug("Message is " + this.props.message);
         if (this.props.message && this.state.timeLeft > 0) {
             return (
                 <div id={this.props.id}

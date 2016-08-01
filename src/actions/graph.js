@@ -1,5 +1,7 @@
 import Neo4jService from "~/services/neo4j/neo4j";
+import Log from "~/services/log";
 
+const log = new Log("Actions.graph");
 /**
  *  Save the query to the state.
  * @param query A cypher query.
@@ -21,7 +23,7 @@ export function queryRun(tree) {
 
     // on success we replace the graph state
     neo4j.graph(query).then( result => {
-        console.log("Result is : " + JSON.stringify(result));
+        log.debug("Result is : " + JSON.stringify(result));
         tree.select('graph').set(result);
     });
 }

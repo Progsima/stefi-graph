@@ -18,8 +18,7 @@ const schema = {
         "logLevel": {
             type: "string",
             title: "Logging level",
-            enum: ["error", "info", "warning", "debug"],
-            enumNames: ["Error", "Info", "Warning", "Debug"]
+            enum: ["Off", "Error", "Warning", "Info", "Debug"]
         },
         "queryHistorySize": {
             type: "number",

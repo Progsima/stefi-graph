@@ -1,5 +1,7 @@
 import config from "~/config";
-import log from '~/services/log';
+import Log from "~/services/log";
+
+const log = new Log("Actions.sitemap");
 
 /**
  * Function that permit to navigate into application pages.
@@ -8,7 +10,7 @@ import log from '~/services/log';
  * @param tree The baobab tree
  */
 export function navigateTo(tree, page) {
-    log.debug("[SITEMAP]: Navigate to page " + JSON.stringify(page));
+    log.debug("Navigate to page " + JSON.stringify(page));
 
     // Setting key view into baobab tree
     tree.set('view', page.state.view);
@@ -25,7 +27,7 @@ export function navigateTo(tree, page) {
  * @returns String that represent the hash
  */
 export function getPageHashFromView(view, sitemapBranch = config.sitemap) {
-    log.debug("[SITEMAP]: view is : " + view + " \n branch is :" + JSON.stringify(sitemapBranch));
+    log.debug("View is : " + view + " \n branch is :" + JSON.stringify(sitemapBranch));
 
     var hash;
     sitemapBranch.forEach((item) => {
@@ -59,7 +61,7 @@ export function getPageFromView(view, sitemapBranch = config.sitemap) {
             page = getPageFromView(view, item.pages)
         }
     });
-    log.debug("[SITEMAP]: Find page " + JSON.stringify(page) + " for view " + view);
+    log.debug("Find page " + JSON.stringify(page) + " for view " + view);
     return page;
 }
 
