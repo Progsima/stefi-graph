@@ -11,6 +11,7 @@ const schema = {
     type: "object",
     required: [
         "logLevel",
+        "logPattern",
         "queryHistorySize",
         "baobabHistorySize"
     ],
@@ -19,6 +20,11 @@ const schema = {
             type: "string",
             title: "Logging level",
             enum: ["Off", "Error", "Warning", "Info", "Debug"]
+        },
+        "logPattern": {
+            type: "string",
+            title: "Regex that allow service logging",
+            default: '.*'
         },
         "queryHistorySize": {
             type: "number",
@@ -37,6 +43,8 @@ const schema = {
 
 const uiSchema = {
     "logLevel": {
+    },
+    "logPattern": {
     },
     "queryHistorySize": {
         "ui:widget": "updown"

@@ -222,6 +222,7 @@ const config = {
                 },
                 advanced: {
                     logLevel: 'Debug',
+                    logPattern : '.*',
                     queryHistorySize: 10,
                     baobabHistorySize: 10
                 }
