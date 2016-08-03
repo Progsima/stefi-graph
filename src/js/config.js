@@ -1,8 +1,7 @@
-import Home from "~/pages/home";
-import Settings from "~/pages/settings/settings";
-import SettingsServer from "~/pages/settings/settings.server";
-import SettingsAdvanced from "~/pages/settings/settings.advanced";
-import SettingsSigma from "~/pages/settings/settings.sigma";
+import Home from '~/pages/home';
+import SettingsServer from '~/pages/settings/settings.server';
+import SettingsAdvanced from '~/pages/settings/settings.advanced';
+import SettingsSigma from '~/pages/settings/settings.sigma';
 
 /**
  * Configuration object for the application
@@ -12,8 +11,8 @@ const config = {
         /**
          * General configuration
          */
-        name: "Stefi Graph",
-        logo: "./assets/logo.png",
+        name: 'Stefi Graph',
+        logo: './assets/logo.png',
 
         /**
          * The state that will be pass to baobab for initialisation.
@@ -22,9 +21,9 @@ const config = {
             view: 'home',
             settings: {
                 server: {
-                    login: "neo4j",
-                    password: "admin",
-                    url: "bolt://localhost"
+                    login: 'neo4j',
+                    password: 'admin',
+                    url: 'bolt://localhost'
                 },
                 sigma: {
                     // {string}
@@ -36,7 +35,7 @@ const config = {
                     // {string}
                     defaultLabelSize: 14,
                     // {string} Indicates how to choose the edges color. Available values:
-                    //          "source", "target", "default"
+                    //          'source', 'target', 'default'
                     edgeColor: 'source',
                     // {number} Defines the minimal edge's arrow display size.
                     minArrowSize: 0,
@@ -45,10 +44,10 @@ const config = {
                     // {string} Example: 'bold'
                     fontStyle: '',
                     // {string} Indicates how to choose the labels color. Available values:
-                    //          "node", "default"
+                    //          'node', 'default'
                     labelColor: 'default',
                     // {string} Indicates how to choose the labels size. Available values:
-                    //          "fixed", "proportional"
+                    //          'fixed', 'proportional'
                     labelSize: 'fixed',
                     // {string} The ratio between the font size of the label and the node size.
                     labelSizeRatio: 1,
@@ -61,34 +60,34 @@ const config = {
                     // {number} The default hovered node border's color.
                     defaultNodeBorderColor: '#000',
                     // {number} The hovered node's label font. If not specified, will heritate
-                    //          the "font" value.
+                    //          the 'font' value.
                     hoverFont: '',
                     // {boolean} If true, then only one node can be hovered at a time.
                     singleHover: true,
                     // {string} Example: 'bold'
                     hoverFontStyle: '',
                     // {string} Indicates how to choose the hovered nodes shadow color.
-                    //          Available values: "node", "default"
+                    //          Available values: 'node', 'default'
                     labelHoverShadow: 'default',
                     // {string}
                     labelHoverShadowColor: '#000',
                     // {string} Indicates how to choose the hovered nodes color.
-                    //          Available values: "node", "default"
+                    //          Available values: 'node', 'default'
                     nodeHoverColor: 'node',
                     // {string}
                     defaultNodeHoverColor: '#000',
                     // {string} Indicates how to choose the hovered nodes background color.
-                    //          Available values: "node", "default"
+                    //          Available values: 'node', 'default'
                     labelHoverBGColor: 'default',
                     // {string}
                     defaultHoverLabelBGColor: '#fff',
                     // {string} Indicates how to choose the hovered labels color.
-                    //          Available values: "node", "default"
+                    //          Available values: 'node', 'default'
                     labelHoverColor: 'default',
                     // {string}
                     defaultLabelHoverColor: '#000',
                     // {string} Indicates how to choose the edges hover color. Available values:
-                    //          "edge", "default"
+                    //          'edge', 'default'
                     edgeHoverColor: 'edge',
                     // {number} The size multiplicator of hovered edges.
                     edgeHoverSizeRatio: 1,
@@ -119,7 +118,7 @@ const config = {
                      * *****************
                      */
                     // {string} Indicates of to scale the graph relatively to its container.
-                    //          Available values: "inside", "outside"
+                    //          Available values: 'inside', 'outside'
                     scalingMode: 'inside',
                     // {number} The margin to keep around the graph.
                     sideMargin: 0,
@@ -146,7 +145,7 @@ const config = {
                     mouseWheelEnabled: true,
                     // {boolean}
                     doubleClickEnabled: true,
-                    // {boolean} Defines whether the custom events such as "clickNode" can be
+                    // {boolean} Defines whether the custom events such as 'clickNode' can be
                     //           used.
                     eventsEnabled: true,
                     // {number} Defines by how much multiplicating the zooming level when the
@@ -182,13 +181,13 @@ const config = {
                      * ****************
                      */
                     // {boolean} Determines whether the instance has to refresh itself
-                    //           automatically when a "resize" event is dispatched from the
+                    //           automatically when a 'resize' event is dispatched from the
                     //           window object.
                     autoResize: true,
-                    // {boolean} Determines whether the "rescale" middleware has to be called
+                    // {boolean} Determines whether the 'rescale' middleware has to be called
                     //           automatically for each camera on refresh.
                     autoRescale: true,
-                    // {boolean} If set to false, the camera method "goTo" will basically do
+                    // {boolean} If set to false, the camera method 'goTo' will basically do
                     //           nothing.
                     enableCamera: true,
                     // {boolean} If set to false, the nodes cannot be hovered.
@@ -267,7 +266,7 @@ const config = {
             }
             ,
             queries: {
-                current: "MATCH (n) RETURN n LIMIT 25",
+                current: 'MATCH (n) RETURN n LIMIT 25',
                 history: [],
                 favory: []
             }
@@ -285,12 +284,12 @@ const config = {
          *     - must have a view, and it must be unique across all page. Moreover
          *  - an array of sub-pages if needed
          */
-        defaultRoute: "/home",
+        defaultRoute: '/home',
         sitemap: [
             {
-                path: "/home",
-                name: "Home",
-                title: "Welcome to Stefi Graph",
+                path: '/home',
+                name: 'Home',
+                title: 'Welcome to Stefi Graph',
                 component: Home,
                 state: {
                     view: 'home'
@@ -298,18 +297,17 @@ const config = {
             },
             {
                 path: '/settings',
-                name: "Settings",
-                title: "Settings",
+                name: 'Settings',
+                title: 'Settings',
                 defaultRoute: '/server',
-                component: Settings,
                 state: {
                     view: 'settings'
                 },
                 pages: [
                     {
                         path: '/server',
-                        name: "Server",
-                        title: "Server configuration",
+                        name: 'Server',
+                        title: 'Server configuration',
                         component: SettingsServer,
                         state: {
                             view: 'settings.server'
@@ -317,8 +315,8 @@ const config = {
                     },
                     {
                         path: '/advanced',
-                        name: "Advanced",
-                        title: "Advanced configuration",
+                        name: 'Advanced',
+                        title: 'Advanced configuration',
                         component: SettingsAdvanced,
                         state: {
                             view: 'settings.advanced'
@@ -326,8 +324,8 @@ const config = {
                     },
                     {
                         path: '/chart-sigma',
-                        name: "Sigma",
-                        title: "Sigma configuration",
+                        name: 'Sigma',
+                        title: 'Sigma configuration',
                         component: SettingsSigma,
                         state: {
                             view: 'settings.sigma'
