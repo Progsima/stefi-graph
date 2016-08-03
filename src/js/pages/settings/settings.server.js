@@ -52,7 +52,7 @@ class SettingsServer extends Component {
     };
 
     saveToStore(data){
-        this.props.dispatch( action.saveSettingsAdvanced, data);
+        this.props.dispatch( action.saveSettingsServer, data);
     }
 
     render() {

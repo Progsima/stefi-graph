@@ -34,21 +34,25 @@ const schema = {
             title: 'Action history size',
             minimum: 0,
             maximum: 100
+        },
+        'persistance': {
+            type: 'string',
+            title: 'Persistance of application state',
+            enum: ['Off', 'LocalStorage', 'Url']
         }
     }
 };
 
 const ui = {
-    'logLevel': {
-    },
-    'logPattern': {
-    },
+    'logLevel': {},
+    'logPattern': {},
     'queryHistorySize': {
         'ui:widget': 'updown'
     },
     'baobabHistorySize': {
         'ui:widget': 'updown'
-    }
+    },
+    'persistance': {}
 };
 
 class SettingsAdvanced extends Component {

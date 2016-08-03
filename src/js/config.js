@@ -224,7 +224,8 @@ const config = {
                     logLevel: 'Debug',
                     logPattern: '.*',
                     queryHistorySize: 10,
-                    baobabHistorySize: 10
+                    baobabHistorySize: 10,
+                    persistance: 'LocalStorage'
                 }
             },
 
@@ -324,7 +325,7 @@ const config = {
                         }
                     },
                     {
-                        path: '/chart-sigma',
+                        path: '/sigma',
                         name: 'Sigma',
                         title: 'Sigma configuration',
                         component: SettingsSigma,

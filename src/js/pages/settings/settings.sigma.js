@@ -334,7 +334,7 @@ class SettingsSigma extends Component {
     };
 
     saveToStore(data){
-        this.props.dispatch( action.saveSettingsAdvanced, data);
+        this.props.dispatch( action.saveSettingsSigma, data);
     }
 
     render() {
