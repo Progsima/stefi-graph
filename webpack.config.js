@@ -94,7 +94,7 @@ var wConfig = {
 // However in DEBUG, we'll enable Webpacks "Hot Module Replacement"
 // functionality for fast development!
 wConfig.entry = {
-    main: path.join(paths.app, 'index')
+    main: path.join(paths.app, 'js/index')
 };
 
 if (DEBUG) {

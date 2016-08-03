@@ -7,7 +7,7 @@
   "plugins": [
 	["babel-root-import", [{
 	  "rootPathPrefix": "~",
-	  "rootPathSuffix": "src"
+	  "rootPathSuffix": "src/js"
 	}]]
   ],
   "env": {

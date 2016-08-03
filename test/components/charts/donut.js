@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
-import Donut from "~/components/charts/donut/donut";
+import Donut from "~/components/charts/chart-donut/chart-donut";
 
-describe('donut', function () {
+describe('chart-donut', function () {
 
     it('renders without problems', function () {
         var data = [
