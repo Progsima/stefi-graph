@@ -64,9 +64,16 @@ class SettingsAdvanced extends Component {
 
     render() {
         return (
-            <Settings page={this.props.page} schema={schema}  ui={ui} data={this.props.data} save={this.saveToStore} />
+            <Settings page={this.props.page} schema={schema}  ui={ui} data={this.props.data} save={(data) => this.saveToStore(data)} />
         )
     }
 }
 
-export default PageEnhancer(branch({data: ['settings', 'advanced']}, SettingsAdvanced));
+export default PageEnhancer(
+    branch(
+        {
+            data: ['settings', 'advanced']
+        },
+        SettingsAdvanced
+    )
+);

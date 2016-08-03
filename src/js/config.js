@@ -19,6 +19,7 @@ const config = {
          */
         state: {
             view: 'home',
+            notifications: [],
             settings: {
                 server: {
                     login: 'neo4j',

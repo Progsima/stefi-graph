@@ -339,7 +339,7 @@ class SettingsSigma extends Component {
 
     render() {
         return (
-            <Settings page={this.props.page} schema={schema}  ui={ui} data={this.props.data} save={this.saveToStore} />
+            <Settings page={this.props.page} schema={schema}  ui={ui} data={this.props.data} save={(data) => this.saveToStore(data)} />
         )
     }
 }
