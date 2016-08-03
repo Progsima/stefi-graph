@@ -1,9 +1,8 @@
 import CodeMirror from "codemirror";
-import cypher from "./cypher-def";
+import cypher from "./grammar";
 import "codemirror/mode/cypher/cypher";
 
 var Pos = CodeMirror.Pos, cmpPos = CodeMirror.cmpPos;
-
 
 CodeMirror.registerHelper("hint", "cypher", function (editor, options) {
     // All language keywords

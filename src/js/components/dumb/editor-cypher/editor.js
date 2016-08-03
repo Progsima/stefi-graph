@@ -5,10 +5,13 @@ import {mergeDeep} from "~/services/utils";
 import "codemirror/addon/edit/closebrackets";
 import "codemirror/addon/hint/show-hint";
 import "codemirror/addon/hint/show-hint.css";
-import "./cypher-hint";
+import "./autocomplete";
 import "./cypher-mode";
-import "./cyphereditor.less";
+import "./style.less";
 
+/**
+ * Module logger.
+ */
 const log = new Log("Component.CypherEditor");
 
 /**

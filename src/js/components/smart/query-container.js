@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import {branch} from "baobab-react/higher-order";
 import Log from "~/services/log";
-import CypherEditor from "~/components/dumb/editor-cypher/cyphereditor";
+import CypherEditor from "~/components/dumb/editor-cypher/editor";
 import * as action from "~/actions/graph";
 
 const log = new Log("Component.QueryContainer");

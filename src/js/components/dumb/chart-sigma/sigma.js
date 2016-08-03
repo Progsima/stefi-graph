@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import {branch} from 'baobab-react/higher-order';
 import _ from "lodash";
-import "./sigma.less";
+import "./style.less";
 
 import "sigma/src/sigma.core.js"
 import "sigma/src/conrad.js"
