@@ -1,11 +1,15 @@
 = Stefi Graph
 
-Search, Transform, Explore, Form and Interact with your graphe database
+Search, Transform, Explore, Fetch and Interact your graph database
 
 == TODO
 
-* Make an enhancer to have a unique ID ?
-* Adding an onclick on donuts
+* Adding style on nodes & edges
+* Adding graph layout
+* Adding right click on node
+* Adding discover the graph (metagraph, jsonschema, composition or aggregation links)
+* Adding row result
+* Modify node / edge value
 
 == React reminder
 

@@ -20,7 +20,7 @@ class Home extends Component {
                 <Donut title="Relationships" strokeWidth={10} data={this.props.edges}  animation="1s" size={100}/>
             </aside>
             <section className="col-md-10 main">
-                <ReactSigma options={this.props.sigmaOptions} />
+                <ReactSigma options={this.props.sigmaOptions} graph={this.props.graph}/>
                 <QueryContainer />
             </section>
         </main>
@@ -33,6 +33,7 @@ export default PageEnhancer(
         {
             sigmaOptions: ['settings', 'sigma'],
             labels: ['data', 'facets', 'labels'],
+            graph: ['data', 'graph'],
             properties: ['data', 'facets', 'properties'],
             edges: ['data', 'facets', 'edges']
         },
