@@ -223,9 +223,9 @@ const config = {
                 advanced: {
                     logLevel: 'Debug',
                     logPattern: '.*',
-                    queryHistorySize: 10,
-                    baobabHistorySize: 10,
-                    persistance: 'LocalStorage'
+                    queryHistorySize: 20,
+                    baobabHistorySize: 0,
+                    persistance: 'Off'
                 }
             },
 
