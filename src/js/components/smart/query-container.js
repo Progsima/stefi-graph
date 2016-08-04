@@ -3,6 +3,7 @@ import {branch} from "baobab-react/higher-order";
 import Log from "~/services/log";
 import CypherEditor from "~/components/dumb/editor-cypher/editor";
 import * as action from "~/actions/graph";
+import * as notification from "~/actions/notifications";
 
 const log = new Log("Component.QueryContainer");
 
@@ -21,44 +22,58 @@ class QueryContainer extends Component {
         this.historyPosition = 0;
     }
 
-    queryOnChange() {
-        return newCode => {
-            this.historyPosition = 0;
-            this.props.dispatch(action.querySave, newCode)
-        };
+    _queryOnChange(newCode) {
+        this.historyPosition = 0;
+        this.props.dispatch(action.querySave, newCode);
     }
 
-    queryRun() {
+    _queryRun() {
         this.historyPosition = 0;
         this.props.dispatch(action.queryRun);
     }
 
-    queryRunAndAppend() {
+    _queryRunAndAppend() {
         this.historyPosition = 0;
         this.props.dispatch(action.queryRunAndAppend);
     }
 
-    queryAddToFavory() {
+    _queryAddToFavory() {
         this.historyPosition = 0;
         this.props.dispatch(action.queryAddToFavory);
     }
 
-    historyUp() {
-        return cm => {
-            log.info("CM keymap Cmd-Up");
+    _historyUp(cm) {
+        log.info("CM keymap Cmd-Up");
+        if (this.historyPosition < (this.props.queries.history.length - 1)) {
             this.historyPosition += 1;
             cm.setValue(this.props.queries.history[this.historyPosition]);
-        };
+        }
+        else {
+            this.props.dispatch(
+                notification.pushNotification,
+                {
+                    title: "Info: ",
+                    message: "You reach the end of history",
+                    type: "info"
+                });
+        }
     }
 
-    historyDown() {
-        return cm => {
-            log.info("CM keymap Cmd-Down");
-            if (this.historyPosition > 0) {
-                this.historyPosition -= 1;
-                cm.setValue(this.props.queries.history[this.historyPosition]);
-            }
-        };
+    _historyDown(cm) {
+        log.info("CM keymap Cmd-Down");
+        if (this.historyPosition > 0) {
+            this.historyPosition -= 1;
+            cm.setValue(this.props.queries.history[this.historyPosition]);
+        }
+        else {
+            this.props.dispatch(
+                notification.pushNotification,
+                {
+                    title: "Info: ",
+                    message: "You reach the start of history",
+                    type: "info"
+                });
+        }
     }
 
     /**
@@ -68,28 +83,38 @@ class QueryContainer extends Component {
 
         var options = {
             extraKeys: {
-                'Shift-A': this.historyUp(),
-                'Shift-b': this.historyDown()
+                'Ctrl-Up': (cm) => {
+                    this._historyUp(cm)
+                },
+                'Ctrl-Down': (cm) => {
+                    this._historyDown(cm)
+                },
+                'Ctrl-Enter': (e) => {
+                    this._queryRun()
+                },
+                'Shift-Ctrl-Enter': (e) => {
+                    this._queryRunAndAppend()
+                }
             }
         };
 
         return (
             <div className={"query-container"}>
                 <div>
-                    <CypherEditor query={this.props.queries.current} onChange={this.queryOnChange()} options={options}/>
+                    <CypherEditor query={this.props.queries.current} onChange={(e) => this._queryOnChange(e)} options={options}/>
                     <ul className="list-inline action">
                         <li>
-                            <a className="query-run" onClick={ e => this.queryRun(e) } title="Run the query">
+                            <a className="query-run" onClick={ e => this._queryRun(e) } title="Run the query">
                                 <i className="fa fa-play fa-3"></i>
                             </a>
                         </li>
                         <li>
-                            <a className="query-append" onClick={ e => this.queryRunAndAppend(e) } title="Append the query">
+                            <a className="query-append" onClick={ e => this._queryRunAndAppend(e) } title="Append the query">
                                 <i className="fa fa-plus fa-3"></i>
                             </a>
                         </li>
                         <li>
-                            <a className="query-favory" onClick={ e => this.queryAddToFavory(e) } title="Add the query to favories">
+                            <a className="query-favory" onClick={ e => this._queryAddToFavory(e) } title="Add the query to favories">
                                 <i className="fa fa-star fa-3"></i>
                             </a>
                         </li>
