@@ -10,6 +10,7 @@ Search, Transform, Explore, Fetch and Interact your graph database
 * Adding discover the graph (metagraph, jsonschema, composition or aggregation links)
 * Adding row result
 * Modify node / edge value
+* Modify style
 
 == React reminder
 

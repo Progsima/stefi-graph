@@ -24,7 +24,13 @@ const schema = {
             },
             defaultLabelSize: {
                 type: 'number',
-                title: 'Default text size',
+                title: 'Default node text size',
+                minimum: 6,
+                maximum: 50
+            },
+            defaultEdgeLabelSize: {
+                type: 'number',
+                title: 'Default edge text size',
                 minimum: 6,
                 maximum: 50
             },
@@ -39,6 +45,12 @@ const schema = {
                 enum: ['fixed', 'proportional'],
                 default: 'fixed'
             },
+            edgeLabelSize: {
+                type: 'string',
+                title: 'Indicates how to choose the labels size',
+                enum: ['fixed', 'proportional'],
+                default: 'fixed'
+            },
             labelSizeRatio: {
                 type: 'number',
                 title: 'The ratio between the font size of the label and the node size',
@@ -47,6 +59,11 @@ const schema = {
             labelThreshold: {
                 type: 'number',
                 title: 'The minimum size a node must have to see its label displayed',
+                minimum: 0
+            },
+            edgeLabelThreshold: {
+                type: 'number',
+                title: 'The minimum size an edge must have to see its label displayed',
                 minimum: 0
             },
             webglOversamplingRatio: {

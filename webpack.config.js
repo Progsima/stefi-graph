@@ -77,7 +77,7 @@ var wConfig = {
                 }())
             },
             {
-                test: /sigma\/.*\.js?$/,
+                test: /.*\/sigma.*\.js?$/,
                 exclude: [paths.app],
                 loaders: ['script']
             },

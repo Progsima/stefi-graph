@@ -34,7 +34,8 @@ const config = {
                     // {string}
                     defaultNodeColor: '#000',
                     // {string}
-                    defaultLabelSize: 14,
+                    defaultLabelSize: 16,
+                    defaultEdgeLabelSize: 8,
                     // {string} Indicates how to choose the edges color. Available values:
                     //          'source', 'target', 'default'
                     edgeColor: 'source',
@@ -50,10 +51,12 @@ const config = {
                     // {string} Indicates how to choose the labels size. Available values:
                     //          'fixed', 'proportional'
                     labelSize: 'fixed',
+                    edgeLabelSize: 'fixed',
                     // {string} The ratio between the font size of the label and the node size.
                     labelSizeRatio: 1,
                     // {number} The minimum size a node must have to see its label displayed.
                     labelThreshold: 8,
+                    edgeLabelThreshold: 0.5,
                     // {number} The oversampling factor used in WebGL renderer.
                     webglOversamplingRatio: 2,
                     // {number} The size of the border of hovered nodes.
@@ -194,7 +197,7 @@ const config = {
                     // {boolean} If set to false, the nodes cannot be hovered.
                     enableHovering: true,
                     // {boolean} If set to true, the edges can be hovered.
-                    enableEdgeHovering: false,
+                    enableEdgeHovering: true,
                     // {number} The size of the area around the edges to activate hovering.
                     edgeHoverPrecision: 5,
                     // {boolean} If set to true, the rescale middleware will ignore node sizes

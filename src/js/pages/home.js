@@ -11,6 +11,35 @@ class Home extends Component {
         page: React.PropTypes.object.isRequired
     };
 
+    constructor(props) {
+        super(props);
+        this.style = {
+            labels: {
+                'Person': {
+                    color: '#00d9ff',
+                    size: '5',
+                    label: 'name'
+                },
+                'Movie': {
+                    color: '#1583e3',
+                    size: '10',
+                    label: 'title'
+                }
+            },
+            edges: {
+                'ACTED_IN': {
+                    color: '#000000',
+                    size: '0.5',
+                    label: 'roles'
+                },
+                'DIRECTED': {
+                    color: '#000000',
+                    size: '0.5'
+                }
+            }
+        }
+    }
+
     render() {
         return (
         <main className="container-fluid">
@@ -20,7 +49,7 @@ class Home extends Component {
                 <Donut title="Relationships" strokeWidth={10} data={this.props.edges}  animation="1s" size={100}/>
             </aside>
             <section className="col-md-10 main">
-                <ReactSigma options={this.props.sigmaOptions} graph={this.props.graph}/>
+                <ReactSigma options={this.props.sigmaOptions} graph={this.props.graph} style={this.style}/>
                 <QueryContainer />
             </section>
         </main>
