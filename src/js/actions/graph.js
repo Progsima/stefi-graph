@@ -1,10 +1,11 @@
 import Neo4jService from "~/services/neo4j/neo4j";
 import Log from "~/services/log";
+import {pushNotification} from "./notifications";
 
 /**
  * Module logger.
  */
-const log = new Log("Actions.graph");
+const log = new Log('Actions.graph');
 
 /**
  *  Save the query to the state.
@@ -21,25 +22,29 @@ export function queryRun(tree) {
     queryAddToHistory(tree);
     // get the current query
     var query = tree.select('queries').get('current');
+    log.info('Will running query :' + query);
+    pushNotification(tree, {
+        title: "Info: ",
+        message: "Processing query \"" + query + "\"",
+        type: "info"
+    });
 
     const config = tree.select('settings', 'server').get();
     const neo4j = new Neo4jService(config.url, config.login, config.password);
 
     // on success we replace the graph state
-    neo4j.graph(query).then( result => {
-        var labelsDefinition = tree.select('meta', 'labels').get();
-        var edgessDefinition = tree.select('meta', 'edges').get();
-
-        result.nodes.forEach( (node) => {
-
-        });
-
-        result.edges.forEach( (node) => {
-
-        });
-
-        tree.select('data', 'graph').set(result);
-    });
+    neo4j.graph(query).then(
+        result => {
+            tree.select('data', 'graph').set(result);
+        },
+        reason => {
+            pushNotification(tree, {
+                title: "Error: ",
+                message: JSON.stringify(reason),
+                type : "danger"
+            });
+        }
+    );
 }
 
 /**
@@ -49,12 +54,13 @@ export function queryRunAndAppend(tree) {
     queryAddToHistory(tree);
     // get the current query
     var query = tree.select('queries').get('current');
+    log.info('Will append query :' + query);
 
     const config = tree.select('settings', 'server').get();
     const neo4j = new Neo4jService(config.url, config.login, config.password);
 
     // on success we merge the result with graph state
-    neo4j.graph(query).then( result => {
+    neo4j.graph(query).then(result => {
         tree.select('data', 'graph').deepMerge(result);
     });
 }
@@ -67,10 +73,19 @@ export function queryAddToHistory(tree) {
     const query = tree.select('queries').get('current');
     // get history limit size
     const historySize = tree.select('settings', 'advanced', 'queryHistorySize').get();
+
+    // remove from history the same query
+    var history = tree.select('queries', 'history').get();
+    var newHistory = history.filter((item) => {
+        return item !== query
+    });
+
     // save the query at begin history
-    var currentHistorySize = tree.select('queries', 'history').unshift(query);
+    newHistory.unshift(query);
+    tree.select('queries', 'history').set(newHistory);
+
     // check and clean history size
-    while(currentHistorySize >= historySize) {
+    while (newHistory.length >= historySize) {
         tree.select('queries', 'history').pop();
     }
 }
