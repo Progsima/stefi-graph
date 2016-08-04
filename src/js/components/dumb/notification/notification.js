@@ -45,6 +45,12 @@ class Alert extends Component {
     }
 
     componentDidMount() {
+        if (this.props.type === 'danger') {
+            log.error(this.props.message);
+        }
+        else {
+            log.debug("Message is " + this.props.message);
+        }
         this._tick();
     }
 
@@ -64,12 +70,6 @@ class Alert extends Component {
     }
 
     render() {
-        if (this.props.type === 'danger') {
-            log.error(this.props.message);
-        }
-        else {
-            log.debug("Message is " + this.props.message);
-        }
         if (this.props.message && this.state.timeLeft > 0) {
             return (
                 <div id={this.props.id}
