@@ -43,13 +43,17 @@ class Neo4jService {
     labels() {
         return new Promise((resolve, reject) => {
             this.session.run("CALL db.labels")
-                .then(result => {
-                    var labels = [];
-                    result.records.forEach(record => {
-                        labels.push(record.get("label"));
-                    });
-                    resolve(labels);
-                })
+                .then(
+                    result => {
+                        var labels = [];
+                        result.records.forEach(record => {
+                            labels.push(record.get("label"));
+                        });
+                        resolve(labels);
+                    },
+                    reason => {
+                        reject(reason);
+                    })
                 .catch(error => {
                     reject(error);
                 });
@@ -64,13 +68,17 @@ class Neo4jService {
     relationshipTypes() {
         return new Promise((resolve, reject) => {
             this.session.run("CALL db.relationshipTypes")
-                .then(result => {
-                    var rels = [];
-                    result.records.forEach(record => {
-                        rels.push(record.get("relationshipType"));
-                    });
-                    resolve(rels);
-                })
+                .then(
+                    result => {
+                        var rels = [];
+                        result.records.forEach(record => {
+                            rels.push(record.get("relationshipType"));
+                        });
+                        resolve(rels);
+                    },
+                    reason => {
+                        reject(reason);
+                    })
                 .catch(error => {
                     reject(error);
                 });
@@ -85,13 +93,17 @@ class Neo4jService {
     propertyKeys() {
         return new Promise((resolve, reject) => {
             this.session.run("CALL db.propertyKeys")
-                .then(result => {
-                    var labels = [];
-                    result.records.forEach(record => {
-                        labels.push(record.get("propertyKey"));
-                    });
-                    resolve(labels);
-                })
+                .then(
+                    result => {
+                        var labels = [];
+                        result.records.forEach(record => {
+                            labels.push(record.get("propertyKey"));
+                        });
+                        resolve(labels);
+                    },
+                    reason => {
+                        reject(reason);
+                    })
                 .catch(error => {
                     reject(error);
                 });
@@ -111,18 +123,22 @@ class Neo4jService {
         };
         return new Promise((resolve, reject) => {
             this.session.run("CALL db.indexes()")
-                .then(result => {
-                    var indexes = [];
-                    result.records.forEach(record => {
-                        indexes.push({
-                            name: record.get('description').match(indexeRegex)[1],
-                            property: record.get('description').match(indexeRegex)[2],
-                            state: record.get('state'),
-                            type: types[record.get('type')]
+                .then(
+                    result => {
+                        var indexes = [];
+                        result.records.forEach(record => {
+                            indexes.push({
+                                name: record.get('description').match(indexeRegex)[1],
+                                property: record.get('description').match(indexeRegex)[2],
+                                state: record.get('state'),
+                                type: types[record.get('type')]
+                            });
                         });
-                    });
-                    resolve(indexes);
-                })
+                        resolve(indexes);
+                    },
+                    reason => {
+                        reject(reason);
+                    })
                 .catch(error => {
                     reject(error);
                 });
@@ -141,44 +157,48 @@ class Neo4jService {
 
         return new Promise((resolve, reject) => {
             this.session.run("CALL db.constraints()")
-                .then(result => {
-                    var constraints = [];
-                    result.records.forEach(record => {
-                        var item = {};
-                        var values = record.get('description').match(constraintNodeExistRegex);
-                        if (values && values.length > 1) {
-                            item = {
-                                on: 'Node',
-                                name: values[2],
-                                property: values[2],
-                                type: 'exist'
+                .then(
+                    result => {
+                        var constraints = [];
+                        result.records.forEach(record => {
+                            var item = {};
+                            var values = record.get('description').match(constraintNodeExistRegex);
+                            if (values && values.length > 1) {
+                                item = {
+                                    on: 'Node',
+                                    name: values[2],
+                                    property: values[2],
+                                    type: 'exist'
+                                }
                             }
-                        }
 
-                        values = record.get('description').match(constraintNodeUniqueRegex);
-                        if (values && values.length > 1) {
-                            item = {
-                                on: 'Node',
-                                name: values[2],
-                                property: values[2],
-                                type: 'unique'
+                            values = record.get('description').match(constraintNodeUniqueRegex);
+                            if (values && values.length > 1) {
+                                item = {
+                                    on: 'Node',
+                                    name: values[2],
+                                    property: values[2],
+                                    type: 'unique'
+                                }
                             }
-                        }
 
-                        values = record.get('description').match(constraintRelExistRegex);
-                        if (values && values.length > 1) {
-                            item = {
-                                on: 'Relationship',
-                                name: values[2],
-                                property: values[2],
-                                type: 'exist'
+                            values = record.get('description').match(constraintRelExistRegex);
+                            if (values && values.length > 1) {
+                                item = {
+                                    on: 'Relationship',
+                                    name: values[2],
+                                    property: values[2],
+                                    type: 'exist'
+                                }
                             }
-                        }
 
-                        constraints.push(item);
-                    });
-                    resolve(constraints);
-                })
+                            constraints.push(item);
+                        });
+                        resolve(constraints);
+                    },
+                    reason => {
+                        reject(reason);
+                    })
                 .catch(error => {
                     reject(error);
                 });
@@ -195,35 +215,39 @@ class Neo4jService {
     cypher(query) {
         return new Promise((resolve, reject) => {
             this.session.run(query)
-                .then(result => {
-                    var rs = [];
-                    result.records.forEach(record => {
-                        var item = {};
-                        record.forEach( (value,key) => {
-                            item[key] = value;
+                .then(
+                    result => {
+                        var rs = [];
+                        result.records.forEach(record => {
+                            var item = {};
+                            record.forEach((value, key) => {
+                                item[key] = value;
 
 
-                            if(value.constructor.name === 'Integer' ) {
-                                item[key] = value.toNumber();
-                            }
+                                if (value.constructor.name === 'Integer') {
+                                    item[key] = value.toNumber();
+                                }
 
-                            // TODO: Change the node wrapper
-                            if(value.constructor.name === 'Node' ) {
-                            }
+                                // TODO: Change the node wrapper
+                                if (value.constructor.name === 'Node') {
+                                }
 
-                            // TODO: Change the node wrapper
-                            if(value.constructor.name === 'Relationship' ) {
-                            }
+                                // TODO: Change the node wrapper
+                                if (value.constructor.name === 'Relationship') {
+                                }
 
-                            // TODO: Change the path wrapper
-                            if(value.constructor.name === 'Path' ) {
-                            }
+                                // TODO: Change the path wrapper
+                                if (value.constructor.name === 'Path') {
+                                }
 
+                            });
+                            rs.push(item);
                         });
-                        rs.push(item);
-                    });
-                    resolve(rs);
-                })
+                        resolve(rs);
+                    },
+                    reason => {
+                        reject(reason);
+                    })
                 .catch(error => {
                     reject(error);
                 });
@@ -238,96 +262,102 @@ class Neo4jService {
     graph(query) {
         return new Promise((resolve, reject) => {
             this.session.run(query)
-                .then(result => {
-                    // store all nodes ID from the query result
-                    var nodeIds = [];
+                .then(
+                    result => {
+                        // store all nodes ID from the query result
+                        var nodeIds = [];
 
-                    // for each rows
-                    result.records.forEach(record => {
+                        // for each rows
+                        result.records.forEach(record => {
 
-                        // for each coloumn
-                        record.forEach( (value,key) => {
+                            // for each coloumn
+                            record.forEach((value, key) => {
 
-                            // if it's a node
-                            if(value.constructor.name === 'Node') {
-                                if(nodeIds.indexOf(value.identity.toNumber()) === -1)
-                                    nodeIds.push(value.identity.toNumber())
-                            }
+                                // if it's a node
+                                if (value.constructor.name === 'Node') {
+                                    if (nodeIds.indexOf(value.identity.toNumber()) === -1)
+                                        nodeIds.push(value.identity.toNumber())
+                                }
 
-                            // if it's a path
-                            if(value.constructor.name === 'Path') {
-                                if(nodeIds.indexOf(value.start.identity.toNumber()) === -1)
-                                    nodeIds.push(value.start.identity.toNumber());
+                                // if it's a path
+                                if (value.constructor.name === 'Path') {
+                                    if (nodeIds.indexOf(value.start.identity.toNumber()) === -1)
+                                        nodeIds.push(value.start.identity.toNumber());
 
-                                if(nodeIds.indexOf(value.end.identity.toNumber()) === -1)
-                                    nodeIds.push(value.end.identity.toNumber());
+                                    if (nodeIds.indexOf(value.end.identity.toNumber()) === -1)
+                                        nodeIds.push(value.end.identity.toNumber());
 
-                                value.segments.forEach((seg) => {
-                                    if(nodeIds.indexOf(seg.start.toNumber()) === -1)
-                                        nodeIds.push(seg.start.toNumber());
-                                    if(nodeIds.indexOf(seg.end.toNumber()) === -1)
-                                        nodeIds.push(seg.end.toNumber());
-                                })
-                            }
+                                    value.segments.forEach((seg) => {
+                                        if (nodeIds.indexOf(seg.start.toNumber()) === -1)
+                                            nodeIds.push(seg.start.toNumber());
+                                        if (nodeIds.indexOf(seg.end.toNumber()) === -1)
+                                            nodeIds.push(seg.end.toNumber());
+                                    })
+                                }
+                            });
                         });
-                    });
 
-                    var graph = { nodes:[], edges:[]};
-                    this.session
-                        .run("MATCH (from)-[r]->(to) WHERE id(from) IN " +JSON.stringify(nodeIds) + " AND id(to) IN " + JSON.stringify(nodeIds) + " RETURN from,r,to")
-                        .then(result => {
-                            var nodesIndex = [];
+                        var graph = {nodes: [], edges: []};
+                        this.session
+                            .run("MATCH (from)-[r]->(to) WHERE id(from) IN " + JSON.stringify(nodeIds) + " AND id(to) IN " + JSON.stringify(nodeIds) + " RETURN from,r,to")
+                            .then(result => {
+                                    var nodesIndex = [];
 
-                            // for each rows
-                            result.records.forEach(record => {
+                                    // for each rows
+                                    result.records.forEach(record => {
 
-                                var from = record.get('from');
-                                if(nodesIndex.indexOf(from.identity.toNumber()) === -1) {
-                                    nodesIndex.push(from.identity.toNumber());
-                                    graph.nodes.push(
-                                        {
-                                            id: from.identity.toNumber(),
-                                            labels: from.labels,
-                                            properties: from.properties,
+                                        var from = record.get('from');
+                                        if (nodesIndex.indexOf(from.identity.toNumber()) === -1) {
+                                            nodesIndex.push(from.identity.toNumber());
+                                            graph.nodes.push(
+                                                {
+                                                    id: from.identity.toNumber(),
+                                                    labels: from.labels,
+                                                    properties: from.properties
+                                                }
+                                            );
                                         }
-                                    );
-                                }
 
-                                var to = record.get('to');
-                                if(nodesIndex.indexOf(to.identity.toNumber()) === -1) {
-                                    nodesIndex.push(to.identity.toNumber());
+                                        var to = record.get('to');
+                                        if (nodesIndex.indexOf(to.identity.toNumber()) === -1) {
+                                            nodesIndex.push(to.identity.toNumber());
 
-                                    //wrap node
-                                    graph.nodes.push(
-                                        {
-                                            id: to.identity.toNumber(),
-                                            labels: to.labels,
-                                            properties: to.properties,
+                                            //wrap node
+                                            graph.nodes.push(
+                                                {
+                                                    id: to.identity.toNumber(),
+                                                    labels: to.labels,
+                                                    properties: to.properties
+                                                }
+                                            );
                                         }
-                                    );
-                                }
 
-                                var r = record.get('r');
-                                //wrap node
-                                graph.edges.push(
-                                    {
-                                        id: r.identity.toNumber(),
-                                        source: r.start.toNumber(),
-                                        target: r.end.toNumber(),
-                                        type: r.type,
-                                        properties: r.properties
-                                    }
-                                );
+                                        var r = record.get('r');
+                                        //wrap node
+                                        graph.edges.push(
+                                            {
+                                                id: r.identity.toNumber(),
+                                                source: r.start.toNumber(),
+                                                target: r.end.toNumber(),
+                                                type: r.type
+                                            }
+                                        );
 
+                                    });
+
+                                    resolve(graph);
+                                },
+                                reason => {
+                                    reject(reason);
+                                })
+                            .catch(error => {
+                                reject(error);
                             });
 
-                            resolve(graph);
-                        })
-                        .catch(error => {
-                            reject(error);
-                        });
-
-                })
+                    },
+                    reason => {
+                        reject(reason);
+                    })
                 .catch(error => {
                     reject(error);
                 });
