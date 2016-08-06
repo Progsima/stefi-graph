@@ -37,22 +37,22 @@ class Home extends Component {
                     size: '0.5'
                 }
             }
-        }
+        };
     }
 
     render() {
         return (
-        <main className="container-fluid">
-            <aside className="col-md-2 sidebar">
-                //some stats here
-                <Donut title="Labels" strokeWidth={10} data={this.props.labels}  animation="10s" size={100}/>
-                <Donut title="Relationships" strokeWidth={10} data={this.props.edges}  animation="1s" size={100}/>
-            </aside>
-            <section className="col-md-10 main">
-                <ReactSigma options={this.props.sigmaOptions} graph={this.props.graph} style={this.style}/>
-                <QueryContainer />
-            </section>
-        </main>
+            <main className="container-fluid">
+                <aside className="col-md-2 sidebar">
+                    //some stats here
+                    <Donut title="Labels" strokeWidth={10} data={this.props.labels} animation="10s" size={100}/>
+                    <Donut title="Relationships" strokeWidth={10} data={this.props.edges} animation="1s" size={100}/>
+                </aside>
+                <section className="col-md-10 main">
+                    <ReactSigma options={this.props.sigmaOptions} graph={this.props.graph} style={this.style} />
+                    <QueryContainer />
+                </section>
+            </main>
         )
     }
 }

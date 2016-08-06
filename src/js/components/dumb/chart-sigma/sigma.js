@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import {branch} from "baobab-react/higher-order";
 import Immutable from "immutable";
 import _ from "lodash";
-import "./style.less";
+import {mergeDeep} from '~/services/utils';
 import "sigma/src/sigma.core.js";
 import "sigma/src/conrad.js";
 import "sigma/src/utils/sigma.utils.js";
@@ -16,10 +16,10 @@ import "sigma/src/classes/sigma.classes.quad.js";
 import "sigma/src/classes/sigma.classes.edgequad.js";
 import "sigma/src/captors/sigma.captors.mouse.js";
 import "sigma/src/captors/sigma.captors.touch.js";
+import "sigma/src/renderers/sigma.renderers.def.js";
+import "sigma/src/renderers/sigma.renderers.svg.js";
 import "sigma/src/renderers/sigma.renderers.canvas.js";
 import "sigma/src/renderers/sigma.renderers.webgl.js";
-import "sigma/src/renderers/sigma.renderers.svg.js";
-import "sigma/src/renderers/sigma.renderers.def.js";
 import "sigma/src/renderers/webgl/sigma.webgl.nodes.def.js";
 import "sigma/src/renderers/webgl/sigma.webgl.nodes.fast.js";
 import "sigma/src/renderers/webgl/sigma.webgl.edges.def.js";
@@ -51,9 +51,11 @@ import "sigma/src/misc/sigma.misc.bindDOMEvents.js";
 import "sigma/src/misc/sigma.misc.drawHovers.js";
 import "sigma/plugins/sigma.renderers.edgeLabels/sigma.canvas.edges.labels.def.js";
 import "sigma/plugins/sigma.plugins.animate/sigma.plugins.animate.js";
+import "sigma/plugins/sigma.plugins.dragNodes/sigma.plugins.dragNodes.js"
 import "linkurious/plugins/sigma.layouts.forceLink/worker.js"
 import "linkurious/plugins/sigma.layouts.forceLink/supervisor.js"
 import "linkurious/plugins/sigma.layouts.noverlap/sigma.layouts.noverlap.js"
+import "./style.less";
 
 /**
  * Create a Sigma graph.
@@ -69,6 +71,7 @@ class ReactSigma extends Component {
         defaultNodeStyle : React.PropTypes.object,
         defaultEdgeStyle : React.PropTypes.object,
         options: React.PropTypes.object,
+        events: React.PropTypes.object
     };
 
     // Declare default properties
@@ -82,7 +85,8 @@ class ReactSigma extends Component {
             color: '#000000',
             size: '0.5',
         },
-        options: {}
+        options: {},
+        events: {}
     };
 
     /**
@@ -93,22 +97,47 @@ class ReactSigma extends Component {
     constructor(props) {
         super(props);
         this.state = {id: _.uniqueId('sigma')};
-
-        this.layoutAlgo = {
-            'forceAtlas2': {
-                start: 'startForceAtlas2',
-                stop: 'stopForceAtlas2',
-                kill: 'killForceAtlas2'
+        this.defaultEvent = {
+            clickStage: (func) => {
+                return (e) => {return func() };
             },
-            'forceLink': {
-                start: 'startForceLink',
-                stop: 'stopForceLink',
-                kill: 'killForceLink'
+            doubleClickStage: (func) => {
+                return (e) => {return func() };
             },
-            'noverlap': {
-
-            }
-        }
+            rightClickStage: (func) => {
+                return (e) => {return func() };
+            },
+            clickNode: (func) => {
+                return (e) => {return func(e.data.node) };
+            },
+            doubleClickNode: (func) => {
+                return (e) => {return func(e.data.node) };
+            },
+            rightClickNode: (func) => {
+                return (e) => {return func(e.data.node) };
+            },
+            overNode: (func) => {
+                return (e) => {return func(e.data.node) };
+            },
+            outNode: (func) => {
+                return (e) => {return func(e.data.node) };
+            },
+            clickEdge:(func) => {
+                return (e) => {return func(e.data.edge) };
+            },
+            doubleClickEdge: (func) => {
+                return (e) => {return func(e.data.edge) };
+            },
+            rightClickEdge: (func) => {
+                return (e) => {return func(e.data.edge) };
+            },
+            overEdge: (func) => {
+                return (e) => {return func(e.data.edge) };
+            },
+            outEdge: (func) => {
+                return (e) => {return func(e.data.edge) };
+            },
+        };
     }
 
     /**
@@ -117,10 +146,14 @@ class ReactSigma extends Component {
     componentDidMount() {
         // init sigmaJS
         this._initSigmaJS();
+        // register events
+        this._registerSigmaEvent();
         // update graph
         this._updateSigmaGraph(this.props.graph, this.props.style);
         // start layout algo
-        sigma.layouts.startForceLink(this.sigma, {autoStop:true, alignNodeSiblings:true, avgDistanceThreshold:0.05});
+        this.layoutAlgo = sigma.layouts.startForceLink(this.sigma, {autoStop:true, alignNodeSiblings:true, avgDistanceThreshold:0.1});
+        // allow drg node
+        this.dragListener = new sigma.plugins.dragNodes(this.sigma, this.sigma.renderers[0]);
     }
 
     /**
@@ -129,10 +162,14 @@ class ReactSigma extends Component {
     componentDidUpdate(prevProps, prevState) {
         // update settings
         this.sigma.settings(this.props.options);
+        // register events
+        this._registerSigmaEvent();
         // update graph
         this._updateSigmaGraph(this.props.graph, this.props.style);
         // start layout algo
-        sigma.layouts.startForceLink(this.sigma, {autoStop:true, alignNodeSiblings:true, avgDistanceThreshold:0.1});
+        this.layoutAlgo = sigma.layouts.startForceLink(this.sigma, {autoStop:true, alignNodeSiblings:true, avgDistanceThreshold:0.1});
+        // allow drg node
+        this.dragListener = new sigma.plugins.dragNodes(this.sigma, this.sigma.renderers[0]);
     }
 
     /**
@@ -195,6 +232,18 @@ class ReactSigma extends Component {
         this.sigma.graph.clear();
         this.sigma.graph.read(newSigmaGraph);
         this.sigma.refresh();
+    }
+
+    _registerSigmaEvent() {
+        for(var key in this.defaultEvent) {
+            this.sigma.unbind(key);
+            if(this.props.events[key]) {
+                this.sigma.bind(key, this.defaultEvent[key](this.props.events[key]));
+            }
+            else {
+                this.sigma.bind(key, this.defaultEvent[key]((data)=>{}));
+            }
+        }
     }
 
     /**

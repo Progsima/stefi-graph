@@ -21,47 +21,9 @@ var paths = {
 var DEBUG = !argv.release;
 var DEV_SERVER_URL = ['http', '//' + host, port].join(':');
 
-// Custom Flags - Edit these!!!!!!111
-var IMAGE_INLINE_LIMIT = 10000; // Maximum imagefilesize (in bytes) to inline
-
 var wConfig = {
     module: {
         loaders: [
-            // CSS and LESS support here :)
-            {
-                test: /\.css$/,
-                loaders: [
-                    'style',
-                    'css'
-                ]
-            },
-            {
-                test: /\.less$/,
-                loaders: [
-                    'style',
-                    'css',
-                    'less'
-                ]
-            },
-
-            // Images will be inline if they're less than a certain filesize (see IMAGE_INLINE_LIMIT)
-            {
-                test: /\.gif/,
-                loader: 'url?limit=' + IMAGE_INLINE_LIMIT + '&mimetype=image/gif'
-            },
-            {
-                test: /\.jpg/,
-                loader: 'url?limit=' + IMAGE_INLINE_LIMIT + '&mimetype=image/jpg'
-            },
-            {
-                test: /\.png/,
-                loader: 'url?limit=' + IMAGE_INLINE_LIMIT + '&mimetype=image/png'
-            },
-            {
-                test: /\.svg/,
-                loader: 'url?limit=' + IMAGE_INLINE_LIMIT + '&mimetype=image/svg+xml'
-            },
-
             // These enable JSX and ES6 support
             {
                 test: /\.js?$/,
@@ -81,10 +43,21 @@ var wConfig = {
                 exclude: [paths.app],
                 loaders: ['script']
             },
-            // JSON support, too
+            // CSS and LESS support here :)
             {
-                test: /\.json/,
-                loader: 'json'
+                test: /\.css$/,
+                loaders: [
+                    'style',
+                    'css'
+                ]
+            },
+            {
+                test: /\.less$/,
+                loaders: [
+                    'style',
+                    'css',
+                    'less'
+                ]
             }
         ]
     }

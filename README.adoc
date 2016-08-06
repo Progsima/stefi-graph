@@ -4,8 +4,6 @@ Search, Transform, Explore, Fetch and Interact your graph database
 
 == TODO
 
-* Adding style on nodes & edges
-* Adding graph layout
 * Adding right click on node
 * Adding discover the graph (metagraph, jsonschema, composition or aggregation links)
 * Adding row result
