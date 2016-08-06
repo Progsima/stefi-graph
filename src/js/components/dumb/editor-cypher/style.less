@@ -10,8 +10,28 @@
   line-height:1.4375;
   height: auto;
   min-height: 40px;
+  max-height: 40px;
   background-color: lighten(@gray-base, 40);
-  border-radius: 10px 10px 0 0;
+  border-radius: 10px;
+  transition: max-height 1s;
+  overflow: hidden;
+
+  .CodeMirror-vscrollbar {
+    overflow: hidden;
+  }
+
+  &.CodeMirror-focused {
+    max-height: 500px;
+
+    .CodeMirror-vscrollbar {
+      overflow: scroll;
+    }
+  }
+
+  .CodeMirror-scroll {
+    max-height: 500px !important;
+  }
+
 
   .cm-comment { color:#75787b; }
   .cm-keyword, .cm-property { color:#1d75b3; }
@@ -19,8 +39,6 @@
   .cm-node, .cm-tag { color:#9c3328; }
   .cm-string { color:#b35e14; }
   .cm-variable, .cm-qualifier { color:#047d65; }
-
-
 
   /* Editor styling */
 

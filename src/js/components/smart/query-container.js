@@ -80,7 +80,6 @@ class QueryContainer extends Component {
      * Render phase
      */
     render() {
-
         var options = {
             extraKeys: {
                 'Ctrl-Up': (cm) => {
