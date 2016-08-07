@@ -151,7 +151,7 @@ class ReactSigma extends Component {
         // update graph
         this._updateSigmaGraph(this.props.graph, this.props.style);
         // start layout algo
-        this.layoutAlgo = sigma.layouts.startForceLink(this.sigma, {autoStop:true, alignNodeSiblings:true, avgDistanceThreshold:0.1});
+        this.layoutAlgo = sigma.layouts.startForceLink(this.sigma, {autoStop:true, alignNodeSiblings:true, avgDistanceThreshold:0.01});
         // allow drg node
         this.dragListener = new sigma.plugins.dragNodes(this.sigma, this.sigma.renderers[0]);
     }
@@ -167,7 +167,7 @@ class ReactSigma extends Component {
         // update graph
         this._updateSigmaGraph(this.props.graph, this.props.style);
         // start layout algo
-        this.layoutAlgo = sigma.layouts.startForceLink(this.sigma, {autoStop:true, alignNodeSiblings:true, avgDistanceThreshold:0.1});
+        this.layoutAlgo = sigma.layouts.startForceLink(this.sigma, {autoStop:true, alignNodeSiblings:true, avgDistanceThreshold:0.01});
         // allow drg node
         this.dragListener = new sigma.plugins.dragNodes(this.sigma, this.sigma.renderers[0]);
     }

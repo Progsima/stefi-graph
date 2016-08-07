@@ -77,7 +77,7 @@ export function queryAddToHistory(tree) {
     // remove from history the same query
     var history = tree.select('queries', 'history').get();
     var newHistory = history.filter((item) => {
-        return item !== query
+        return item !== query;
     });
 
     // save the query at begin history
@@ -96,11 +96,35 @@ export function queryAddToHistory(tree) {
 export function queryAddToFavory(tree) {
     const query = tree.select('queries').get('current');
     log.debug("Adding this query into favorite : " + query);
-    var favory = {name:query, query: query};
 
+    // construct the favory item
+    var favory = {name:query, query: query};
     var match = query.match(/\/\/(.*)\n([^]*)/m)
     if(match) {
         favory.name = match[1];
     }
-    tree.select('queries', 'favory').push(favory);
+
+    // search if it already exist
+    var favList = tree.select('queries', 'favory').get();
+    var newFavList = favList.filter((item) => {
+        return item.name !== favory.name;
+    });
+
+    // save the query
+    newFavList.push(favory);
+    tree.select('queries', 'favory').set(newFavList);
+
+    if(newFavList.length > favList.length) {
+        pushNotification(tree, {
+            title: "Save: ",
+            message: "Query '" + favory.name + "' has been saved into favory",
+            type: "info"
+        });
+    }else {
+        pushNotification(tree, {
+            title: "Upate: ",
+            message: "Query '" + favory.name + "' has been updated into favory",
+            type: "warning"
+        });
+    }
 }
