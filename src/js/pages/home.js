@@ -13,6 +13,7 @@ class Home extends Component {
 
     constructor(props) {
         super(props);
+        this.displayData = {};
         this.style = {
             labels: {
                 'Person': {
@@ -41,15 +42,27 @@ class Home extends Component {
     }
 
     render() {
+        var events = {
+            overNode: (node) => { console.log("coucou1"); this.displayData= node; },
+            outNode: (node) => { console.log("coucou2"); this.displayData= {}; },
+            overEdge: (edge) => { console.log("coucou3"); this.displayData= edge; },
+            outEdge: (edge) => { console.log("coucou4"); this.displayData= {} ; }
+        };
+
         return (
             <main className="container-fluid">
                 <aside className="col-md-2 sidebar">
                     //some stats here
                     <Donut title="Labels" strokeWidth={10} data={this.props.labels} animation="10s" size={100}/>
                     <Donut title="Relationships" strokeWidth={10} data={this.props.edges} animation="1s" size={100}/>
+                    {JSON.stringify(this.displayData)}
                 </aside>
                 <section className="col-md-10 main">
-                    <ReactSigma options={this.props.sigmaOptions} graph={this.props.graph} style={this.style} />
+                    <ReactSigma options={this.props.sigmaOptions}
+                                graph={this.props.graph}
+                                style={this.style}
+                                events={events}
+                                layout={this.props.layout}/>
                     <QueryContainer />
                 </section>
             </main>

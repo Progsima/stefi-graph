@@ -35,7 +35,7 @@ export function getPageHashFromView(view, sitemapBranch = config.sitemap) {
 
     var hash;
     sitemapBranch.forEach((item) => {
-        if (item.state.view === view) {
+        if (item.state && item.state.view === view) {
             hash = item.path;
         }
         if (!hash && item.hasOwnProperty('pages')) {
@@ -58,7 +58,7 @@ export function getPageFromView(view, sitemapBranch = config.sitemap) {
     var page;
 
     sitemapBranch.forEach((item) => {
-        if (item.state.view === view) {
+        if (item.state && item.state.view === view) {
             page = item;
         }
         if (!page && item.hasOwnProperty('pages')) {

@@ -2,6 +2,7 @@ import Home from '~/pages/home';
 import SettingsServer from '~/pages/settings/settings.server';
 import SettingsAdvanced from '~/pages/settings/settings.advanced';
 import SettingsSigma from '~/pages/settings/settings.sigma';
+import QueryFavory from '~/components/smart/query-favory';
 
 /**
  * Configuration object for the application
@@ -87,7 +88,6 @@ const config = {
                     defaultHoverLabelBGColor: '#fff',
                     // {string} Indicates how to choose the hovered labels color.
                     //          Available values: 'node', 'default'
-                    labelHoverColor: 'default',
                     // {string}
                     defaultLabelHoverColor: '#000',
                     // {string} Indicates how to choose the edges hover color. Available values:
@@ -288,6 +288,8 @@ const config = {
          *  - state : the constraint on state for the router (it's bi-directional with the hash)
          *     - must have a view, and it must be unique across all page. Moreover
          *  - an array of sub-pages if needed
+         *
+         *  If a path has no path & no state, it's not a route, but an item to add to the menu
          */
         defaultRoute: '/home',
         sitemap: [
@@ -299,6 +301,9 @@ const config = {
                 state: {
                     view: 'home'
                 }
+            },
+            {
+                component: QueryFavory
             },
             {
                 path: '/settings',

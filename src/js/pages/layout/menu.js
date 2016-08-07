@@ -15,7 +15,7 @@ class Menu extends Component {
         return (
             <ul className={this.props.styleClass}>
                 { this.props.pages.map((item, index) => {
-                    return <MenuItem key={index} page={item}/>
+                    return <MenuItem key={index} item={item}/>
                 }) }
             </ul>
         )

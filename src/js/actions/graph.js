@@ -95,5 +95,12 @@ export function queryAddToHistory(tree) {
  */
 export function queryAddToFavory(tree) {
     const query = tree.select('queries').get('current');
-    tree.select('queries', 'favory').push(query);
+    log.debug("Adding this query into favorite : " + query);
+    var favory = {name:query, query: query};
+
+    var match = query.match(/\/\/(.*)\n([^]*)/m)
+    if(match) {
+        favory.name = match[1];
+    }
+    tree.select('queries', 'favory').push(favory);
 }

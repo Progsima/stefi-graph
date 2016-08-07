@@ -19,18 +19,19 @@ function sitemapToRoutes(sitemap) {
 
         if (page.hasOwnProperty('path')) {
             routerItem['path'] = page['path'];
-        }
-        if (page.hasOwnProperty('state')) {
-            routerItem['state'] = page['state'];
-        }
-        if (page.hasOwnProperty('defaultRoute')) {
-            routerItem['defaultRoute'] = page['defaultRoute'];
-        }
-        if (page.hasOwnProperty('pages')) {
-            routerItem['routes'] = sitemapToRoutes(page.pages);
-        }
 
-        result.push(routerItem);
+            if (page.hasOwnProperty('state')) {
+                routerItem['state'] = page['state'];
+            }
+            if (page.hasOwnProperty('defaultRoute')) {
+                routerItem['defaultRoute'] = page['defaultRoute'];
+            }
+            if (page.hasOwnProperty('pages')) {
+                routerItem['routes'] = sitemapToRoutes(page.pages);
+            }
+
+            result.push(routerItem);
+        }
     });
 
     return result;
