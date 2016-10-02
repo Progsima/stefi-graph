@@ -22,9 +22,11 @@
     "baobab-react": "2.1.1",
     "baobab-router": "2.2.3",
     "bootstrap": "^3.3.6",
-    "neo4j-driver": "^1.1.0-M01",
+    "deep-equal": "^1.0.1",
+    "neo4j-driver": "^1.0.4",
     "react": "^15.2.1",
     "react-codemirror": "^0.2.6",
+    "react-contextmenu": "^1.6.3",
     "react-dom": "^15.2.1",
     "react-jsonschema-form": "^0.38.0",
     "sigma": "^1.1.0"

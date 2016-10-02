@@ -58,8 +58,20 @@ var wConfig = {
                     'css',
                     'less'
                 ]
+            },
+            {
+                test: /\.json$/,
+                loader: 'json-loader'
             }
         ]
+    },
+    // see https://github.com/request/request/issues/1529
+    node: {
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty',
+        readline: 'empty',
+        vertx: 'empty'
     }
 };
 
@@ -72,7 +84,7 @@ wConfig.entry = {
 
 if (DEBUG) {
     var entries = {};
-    var defaultEntries = ['webpack-dev-server/client?' + DEV_SERVER_URL,'webpack/hot/only-dev-server'];
+    var defaultEntries = ['webpack-dev-server/client?' + DEV_SERVER_URL, 'webpack/hot/only-dev-server'];
     // Adding default entries
     entries['main'] = defaultEntries.concat(wConfig.entry.main);
     wConfig.entry = entries;

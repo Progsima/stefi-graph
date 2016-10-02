@@ -4,6 +4,7 @@ import Log from "~/services/log";
 import CypherEditor from "~/components/dumb/editor-cypher/editor";
 import * as action from "~/actions/graph";
 import * as notification from "~/actions/notifications";
+import deepEqual from 'deep-equal';
 
 const log = new Log("Component.QueryContainer");
 
@@ -20,6 +21,13 @@ class QueryContainer extends Component {
     constructor(props) {
         super(props);
         this.historyPosition = 0;
+    }
+
+    /**
+     * If no props have changed, then no new render...
+     */
+    shouldComponentUpdate(nextProps, nextState) {
+        return !deepEqual(this.props, nextProps);
     }
 
     _queryOnChange(newCode) {
@@ -40,6 +48,10 @@ class QueryContainer extends Component {
     _queryAddToFavory() {
         this.historyPosition = 0;
         this.props.dispatch(action.queryAddToFavory);
+    }
+
+    _clear() {
+        this.props.dispatch(action.clear);
     }
 
     _historyUp(cm) {
@@ -115,6 +127,11 @@ class QueryContainer extends Component {
                         <li>
                             <a className="query-favory" onClick={ e => this._queryAddToFavory(e) } title="Add the query to favories">
                                 <i className="fa fa-star fa-3"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a className="graph-query-clear" onClick={ e => this._clear(e) } title="Clear all">
+                                <i className="fa fa-refresh fa-3"></i>
                             </a>
                         </li>
                     </ul>

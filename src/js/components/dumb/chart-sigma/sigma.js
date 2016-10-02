@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import {branch} from "baobab-react/higher-order";
 import Immutable from "immutable";
 import _ from "lodash";
-import {mergeDeep} from '~/services/utils';
+import {mergeDeep} from "~/services/utils";
 import "sigma/src/sigma.core.js";
 import "sigma/src/conrad.js";
 import "sigma/src/utils/sigma.utils.js";
@@ -51,10 +51,9 @@ import "sigma/src/misc/sigma.misc.bindDOMEvents.js";
 import "sigma/src/misc/sigma.misc.drawHovers.js";
 import "sigma/plugins/sigma.renderers.edgeLabels/sigma.canvas.edges.labels.def.js";
 import "sigma/plugins/sigma.plugins.animate/sigma.plugins.animate.js";
-import "sigma/plugins/sigma.plugins.dragNodes/sigma.plugins.dragNodes.js"
-import "linkurious/plugins/sigma.layouts.forceLink/worker.js"
-import "linkurious/plugins/sigma.layouts.forceLink/supervisor.js"
-import "linkurious/plugins/sigma.layouts.noverlap/sigma.layouts.noverlap.js"
+import "sigma/plugins/sigma.plugins.dragNodes/sigma.plugins.dragNodes.js";
+import "linkurious/plugins/sigma.layouts.forceLink/worker.js";
+import "linkurious/plugins/sigma.layouts.forceLink/supervisor.js";
 import "./style.less";
 
 /**
@@ -68,15 +67,15 @@ class ReactSigma extends Component {
     static propTypes = {
         graph: React.PropTypes.object.isRequired,
         style: React.PropTypes.object,
-        defaultNodeStyle : React.PropTypes.object,
-        defaultEdgeStyle : React.PropTypes.object,
+        defaultNodeStyle: React.PropTypes.object,
+        defaultEdgeStyle: React.PropTypes.object,
         options: React.PropTypes.object,
         events: React.PropTypes.object
     };
 
     // Declare default properties
     static defaultProps = {
-        style: { labels: {}, edges: {}},
+        style: {labels: {}, edges: {}},
         defaultNodeStyle: {
             color: '#000000',
             size: '5',
@@ -86,7 +85,8 @@ class ReactSigma extends Component {
             size: '0.5',
         },
         options: {},
-        events: {}
+        events: {},
+        refresh: true
     };
 
     /**
@@ -96,48 +96,23 @@ class ReactSigma extends Component {
      */
     constructor(props) {
         super(props);
+        this.props.selectedNode;
         this.state = {id: _.uniqueId('sigma')};
-        this.defaultEvent = {
-            clickStage: (func) => {
-                return (e) => {return func() };
-            },
-            doubleClickStage: (func) => {
-                return (e) => {return func() };
-            },
-            rightClickStage: (func) => {
-                return (e) => {return func() };
-            },
-            clickNode: (func) => {
-                return (e) => {return func(e.data.node) };
-            },
-            doubleClickNode: (func) => {
-                return (e) => {return func(e.data.node) };
-            },
-            rightClickNode: (func) => {
-                return (e) => {return func(e.data.node) };
-            },
-            overNode: (func) => {
-                return (e) => {return func(e.data.node) };
-            },
-            outNode: (func) => {
-                return (e) => {return func(e.data.node) };
-            },
-            clickEdge:(func) => {
-                return (e) => {return func(e.data.edge) };
-            },
-            doubleClickEdge: (func) => {
-                return (e) => {return func(e.data.edge) };
-            },
-            rightClickEdge: (func) => {
-                return (e) => {return func(e.data.edge) };
-            },
-            overEdge: (func) => {
-                return (e) => {return func(e.data.edge) };
-            },
-            outEdge: (func) => {
-                return (e) => {return func(e.data.edge) };
-            },
-        };
+        this.supportedEvents = [
+            "clickStage",
+            "doubleClickStage",
+            "rightClickStage",
+            "clickNode",
+            "doubleClickNode",
+            "rightClickNode",
+            "overNode",
+            "outNode",
+            "clickEdge",
+            "doubleClickEdge",
+            "rightClickEdge",
+            "overEdge",
+            "outEdge"
+        ];
     }
 
     /**
@@ -151,15 +126,24 @@ class ReactSigma extends Component {
         // update graph
         this._updateSigmaGraph(this.props.graph, this.props.style);
         // start layout algo
-        this.layoutAlgo = sigma.layouts.startForceLink(this.sigma, {autoStop:true, alignNodeSiblings:true, avgDistanceThreshold:0.01});
-        // allow drg node
+        this._eventLayoutStart();
+        // allow drag node
         this.dragListener = new sigma.plugins.dragNodes(this.sigma, this.sigma.renderers[0]);
+    }
+
+    /**
+     * If no config or data is changed, then no new render...
+     */
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.props.refresh;
     }
 
     /**
      * After mounting on props change, we just populate/update sigmaJS graph model.
      */
     componentDidUpdate(prevProps, prevState) {
+        // kill layout
+        sigma.layouts.killForceLink();
         // update settings
         this.sigma.settings(this.props.options);
         // register events
@@ -167,7 +151,7 @@ class ReactSigma extends Component {
         // update graph
         this._updateSigmaGraph(this.props.graph, this.props.style);
         // start layout algo
-        this.layoutAlgo = sigma.layouts.startForceLink(this.sigma, {autoStop:true, alignNodeSiblings:true, avgDistanceThreshold:0.01});
+        this._eventLayoutStart();
         // allow drg node
         this.dragListener = new sigma.plugins.dragNodes(this.sigma, this.sigma.renderers[0]);
     }
@@ -188,7 +172,7 @@ class ReactSigma extends Component {
         var container = document.getElementById(this.state.id);
         this.sigma = new sigma({
             id: this.state.id,
-            graph: { nodes: [], edges: []},
+            graph: {nodes: [], edges: []},
             renderer: {
                 container: container,
                 type: 'canvas'
@@ -225,7 +209,6 @@ class ReactSigma extends Component {
         // Transform all edged to sigma edges
         newSigmaGraph.edges = this.props.graph.edges.map((edge) => {
             var tEdge = Immutable.Map(edge);
-
             return this._applyEdgeStyle(tEdge).toObject();
         });
 
@@ -235,15 +218,12 @@ class ReactSigma extends Component {
     }
 
     _registerSigmaEvent() {
-        for(var key in this.defaultEvent) {
+        this.supportedEvents.forEach( (key) => {
             this.sigma.unbind(key);
-            if(this.props.events[key]) {
-                this.sigma.bind(key, this.defaultEvent[key](this.props.events[key]));
+            if (this.props.events[key]) {
+                this.sigma.bind(key, this.props.events[key]);
             }
-            else {
-                this.sigma.bind(key, this.defaultEvent[key]((data)=>{}));
-            }
-        }
+        });
     }
 
     /**
@@ -264,13 +244,13 @@ class ReactSigma extends Component {
         tNode.get('labels').forEach(label => {
             let style = this.props.style.labels[label];
 
-            if(style && style.size)
+            if (style && style.size)
                 tNode = tNode.set('size', style.size)
 
-            if(style && style.color)
+            if (style && style.color)
                 tNode = tNode.set('color', style.color);
 
-            if(style && style.label && tNode.get('properties'))
+            if (style && style.label && tNode.get('properties'))
                 tNode = tNode.set('label', tNode.get('properties')[style.label]);
 
         });
@@ -295,16 +275,66 @@ class ReactSigma extends Component {
         // Apply style per labels
         let style = this.props.style.edges[edge.type];
 
-        if(style && style.size)
+        if (style && style.size)
             tEdge = tEdge.set('size', style.size)
 
-        if(style && style.color)
+        if (style && style.color)
             tEdge = tEdge.set('color', style.color);
 
-        if(style && style.label && tEdge.get('properties'))
+        if (style && style.label && tEdge.get('properties'))
             tEdge = tEdge.set('label', tEdge.get('properties')[style.label]);
 
         return tEdge;
+    }
+
+    _eventZoomIn() {
+        sigma.misc.animation.camera(
+            this.sigma.cameras[0],
+            {ratio: this.sigma.cameras[0].ratio / 1.5},
+            {duration: 150}
+        );
+    }
+
+    _eventZoomOut() {
+        sigma.misc.animation.camera(
+            this.sigma.cameras[0],
+            {ratio: this.sigma.cameras[0].ratio * 1.5},
+            {duration: 150}
+        );
+    }
+
+    _eventCenter() {
+        sigma.misc.animation.camera(
+            this.sigma.cameras[0],
+            {x: 0, y: 0, angle: this.sigma.cameras[0].angle, ratio: 1.2},
+            {duration: 150}
+        );
+    }
+
+    _eventLayoutStart(){
+        this.layoutAlgo = sigma.layouts.startForceLink(this.sigma, {
+            linLogMode: true,  // alternative energy model with linear repulsion force and logarithmic attraction force.
+            outboundAttractionDistribution: false,
+            adjustSizes: true,
+            edgeWeightInfluence: 0,
+            scalingRatio: 1,
+            strongGravityMode: false,
+            gravity: 3,
+            barnesHutOptimize: true, // should we use the algorithm's Barnes-Hut to improve repulsion's scalability (`O(n²)` to `O(nlog(n))`)? This is useful for large graph but harmful to small ones.
+            barnesHutTheta: 0.8,
+            slowDown: 1,
+            startingIterations: 1, // number of iterations to be run before the first render.
+            iterationsPerRender: 1, // number of iterations to be run before each render.
+            maxIterations: 1000, // set a limit if `autoStop: true`.
+            avgDistanceThreshold: 0.01, // this is the normal stopping condition of `autoStop: true`. When the average displacements of nodes is below this threshold, the layout stops.
+            autoStop: true,
+            alignNodeSiblings: true, // align nodes that are linked to the same two nodes only. It enhances readability. This operation is performed once the main layout is finished.
+            nodeSiblingsScale: 5, // Distance multiplicator between the aligned nodes.
+            nodeSiblingsAngleMin: 0.1 // force a minimal angle between aligned nodes (from 0 to PI / 2). Node labels may indeed overlap on horizontally aligned nodes.
+        });
+    }
+    _eventLayoutStop(){
+        sigma.layouts.stopForceLink();
     }
 
     /**
@@ -313,6 +343,30 @@ class ReactSigma extends Component {
     render() {
         return (
             <div id={this.state.id} className={'sigma-container'}>
+                <div className="graph-tools">
+
+                    <button title="Resize graph to see all"
+                            onClick={e => this._eventCenter()} >
+                        <i className="fa fa-bullseye"></i>
+                    </button>
+
+                    <button title="Zoom in"
+                            onClick={e => this._eventZoomIn()}>
+                        <i className="fa fa-plus"></i>
+                    </button>
+                    <button title="Zoom out"
+                            onClick={e => this._eventZoomOut()}>
+                        <i className="fa fa-minus"></i>
+                    </button>
+                    <button title="Start layout algo"
+                            onClick={e => this._eventLayoutStart()}>
+                        <i className="fa fa-play"></i>
+                    </button>
+                    <button title="Stop layout algo"
+                            onClick={e => this._eventLayoutStop()}>
+                        <i className="fa fa-stop"></i>
+                    </button>
+                </div>
             </div>
         )
     }

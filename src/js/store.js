@@ -32,6 +32,7 @@ if(window.location.search.indexOf('state') > -1) {
 // Init the state
 const tree = new Baobab(initState, {shiftReferences: true});
 
+
 /**
  * ~~~~~~~~~~~~~~
  * Baobab history
@@ -48,6 +49,7 @@ historyCursor.on('update', (e) => {
     var data = e.data.currentData;
     tree.root.startRecording(data);
 });
+
 
 /**
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -85,6 +87,17 @@ tree.select('settings', 'advanced', 'persistance').on('update', (mode) => {
         var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + window.location.hash;
         window.history.pushState({path:newurl},'',newurl);
     }
+});
+
+
+/**
+ * ~~~~~~~~~~~~~~~~~~~~~
+ * Baobab graph listener
+ * ~~~~~~~~~~~~~~~~~~~~~
+ */
+// when graph data change, we update the refresh graph status
+tree.select('data', 'graph').on('update', (e) => {
+    tree.select('data', 'refresh').set(true);
 });
 
 export default tree;

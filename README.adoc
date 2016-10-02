@@ -9,6 +9,9 @@ Search, Transform, Explore, Fetch and Interact your graph database
 * Adding row result
 * Modify node / edge value
 * Modify style
+* parameter query (don't forget widget on this !)
+*
+
 
 == React reminder
 

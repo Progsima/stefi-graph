@@ -225,20 +225,19 @@ class Neo4jService {
                             record.forEach((value, key) => {
                                 item[key] = value;
 
-
                                 if (value.constructor.name === 'Integer') {
                                     item[key] = value.toNumber();
                                 }
 
-                                // TODO: Change the node wrapper
+                                // TODO: Change Driver node to custom node
                                 if (value.constructor.name === 'Node') {
                                 }
 
-                                // TODO: Change the node wrapper
+                                // TODO: Change Driver edge to custom node
                                 if (value.constructor.name === 'Relationship') {
                                 }
 
-                                // TODO: Change the path wrapper
+                                // TODO: Change Driver Path to custom node
                                 if (value.constructor.name === 'Path') {
                                 }
 

@@ -237,11 +237,9 @@ const config = {
                     nodes: [],
                     edges: []
                 },
-                facets: {
-                    labels: [],
-                    edges: [],
-                    properties: []
-                }
+                row:{},
+                selected:{},
+                refresh: true // do we need to refresh all sigma instance ?
             },
             meta: {
                 labels: {

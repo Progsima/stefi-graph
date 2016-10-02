@@ -1,6 +1,7 @@
 import Neo4jService from "~/services/neo4j/neo4j";
 import Log from "~/services/log";
-import {pushNotification} from "./notifications";
+import {pushNotification} from "~/actions/notifications";
+import config from "~/config";
 
 /**
  * Module logger.
@@ -127,4 +128,17 @@ export function queryAddToFavory(tree) {
             type: "warning"
         });
     }
+}
+
+export function setSelectedData(tree, data) {
+    tree.select('data', 'selected').set(data);
+}
+
+export function disabledRefresh(tree){
+    tree.select('data', 'refresh').set(false);
+}
+
+export function clear(tree){
+    tree.select('data').set(config.state.data);
+    tree.select('queries', 'current').set('');
 }
