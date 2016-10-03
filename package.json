@@ -25,6 +25,7 @@
     "deep-equal": "^1.0.1",
     "neo4j-driver": "^1.0.4",
     "react": "^15.2.1",
+    "react-charts-plus": "^0.4.5",
     "react-codemirror": "^0.2.6",
     "react-contextmenu": "^1.6.3",
     "react-dom": "^15.2.1",

@@ -58,7 +58,7 @@ class QueryContainer extends Component {
         log.info("CM keymap Cmd-Up");
         if (this.historyPosition < (this.props.queries.history.length - 1)) {
             this.historyPosition += 1;
-            cm.setValue(this.props.queries.history[this.historyPosition]);
+            this.props.dispatch(action.querySave, this.props.queries.history[this.historyPosition]);
         }
         else {
             this.props.dispatch(
@@ -75,7 +75,7 @@ class QueryContainer extends Component {
         log.info("CM keymap Cmd-Down");
         if (this.historyPosition > 0) {
             this.historyPosition -= 1;
-            cm.setValue(this.props.queries.history[this.historyPosition]);
+            this.props.dispatch(action.querySave, this.props.queries.history[this.historyPosition]);
         }
         else {
             this.props.dispatch(

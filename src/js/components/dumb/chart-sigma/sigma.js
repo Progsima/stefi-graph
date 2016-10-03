@@ -315,13 +315,13 @@ class ReactSigma extends Component {
         this.layoutAlgo = sigma.layouts.startForceLink(this.sigma, {
             linLogMode: true,  // alternative energy model with linear repulsion force and logarithmic attraction force.
             outboundAttractionDistribution: false,
-            adjustSizes: true,
+            adjustSizes: false,
             edgeWeightInfluence: 0,
-            scalingRatio: 1,
-            strongGravityMode: false,
-            gravity: 3,
-            barnesHutOptimize: true, // should we use the algorithm's Barnes-Hut to improve repulsion's scalability (`O(n²)` to `O(nlog(n))`)? This is useful for large graph but harmful to small ones.
-            barnesHutTheta: 0.8,
+            scalingRatio: 5,
+            strongGravityMode: true,
+            gravity: 0.8,
+            barnesHutOptimize: false, // should we use the algorithm's Barnes-Hut to improve repulsion's scalability (`O(n²)` to `O(nlog(n))`)? This is useful for large graph but harmful to small ones.
+            barnesHutTheta: 0.5,
             slowDown: 1,
             startingIterations: 1, // number of iterations to be run before the first render.
             iterationsPerRender: 1, // number of iterations to be run before each render.
