@@ -71,17 +71,19 @@ class Home extends Component {
         return (
             <main className="container-fluid">
                 <aside className="col-md-2 sidebar">
-                    //some stats here
+
                     <DisplayObject object={this.state.data} />
-                    <Chart.Doughnut data={this.props.facetLabel} />
-                    <Chart.Doughnut data={this.props.facetEdge} />
+                    <h3>Labels</h3>
+                    <Chart.Doughnut data={this.props.facetLabel} width="200" height="200"/>
+                    <h3>Edges</h3>
+                    <Chart.Doughnut data={this.props.facetEdge} width="200" height="200"/>
                 </aside>
                 <section className="col-md-10 main">
                     <ReactSigma options={this.props.sigmaOptions}
                                 graph={this.props.graph}
                                 style={this.style}
                                 events={events}
-                                layout={this.props.layout}
+                                layout={this.props.layoutOptions}
                                 refresh={this.props.refreshGraph}>
                     </ReactSigma>
                     <QueryContainer />
@@ -95,6 +97,7 @@ export default PageEnhancer(
     branch(
         {
             sigmaOptions: ['settings', 'sigma'],
+            layoutOptions: ['settings', 'layout'],
             graph: ['data', 'graph'],
             refreshGraph: ['data', 'refresh'],
             facetLabel: ['data', 'facets', 'labels'],

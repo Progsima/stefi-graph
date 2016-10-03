@@ -70,6 +70,7 @@ class ReactSigma extends Component {
         defaultNodeStyle: React.PropTypes.object,
         defaultEdgeStyle: React.PropTypes.object,
         options: React.PropTypes.object,
+        layout: React.PropTypes.object,
         events: React.PropTypes.object
     };
 
@@ -312,26 +313,7 @@ class ReactSigma extends Component {
     }
 
     _eventLayoutStart(){
-        this.layoutAlgo = sigma.layouts.startForceLink(this.sigma, {
-            linLogMode: true,  // alternative energy model with linear repulsion force and logarithmic attraction force.
-            outboundAttractionDistribution: false,
-            adjustSizes: false,
-            edgeWeightInfluence: 0,
-            scalingRatio: 5,
-            strongGravityMode: true,
-            gravity: 0.8,
-            barnesHutOptimize: false, // should we use the algorithm's Barnes-Hut to improve repulsion's scalability (`O(n²)` to `O(nlog(n))`)? This is useful for large graph but harmful to small ones.
-            barnesHutTheta: 0.5,
-            slowDown: 1,
-            startingIterations: 1, // number of iterations to be run before the first render.
-            iterationsPerRender: 1, // number of iterations to be run before each render.
-            maxIterations: 1000, // set a limit if `autoStop: true`.
-            avgDistanceThreshold: 0.01, // this is the normal stopping condition of `autoStop: true`. When the average displacements of nodes is below this threshold, the layout stops.
-            autoStop: true,
-            alignNodeSiblings: true, // align nodes that are linked to the same two nodes only. It enhances readability. This operation is performed once the main layout is finished.
-            nodeSiblingsScale: 5, // Distance multiplicator between the aligned nodes.
-            nodeSiblingsAngleMin: 0.1 // force a minimal angle between aligned nodes (from 0 to PI / 2). Node labels may indeed overlap on horizontally aligned nodes.
-        });
+        this.layoutAlgo = sigma.layouts.startForceLink(this.sigma, this.props.layout);
     }
     _eventLayoutStop(){
         sigma.layouts.stopForceLink();

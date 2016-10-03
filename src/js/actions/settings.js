@@ -41,3 +41,15 @@ export function saveSettingsSigma(tree, conf) {
     });
 }
 
+
+/**
+ * Saving chart-sigma settings in state.
+ */
+export function saveSettingsLayout(tree, conf) {
+    tree.select('settings', 'layout').deepMerge(conf);
+    pushNotification(tree, {
+        title: "Success: ",
+        message: "Layout configuration has been successfully updated",
+        type : "success"
+    });
+}
