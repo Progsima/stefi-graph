@@ -256,7 +256,7 @@ class Neo4jService {
     }
 
     /**
-     * Execute a cypher query and return a graph representation.
+     * Execute a cypher query and return a graph/table representation.
      *
      * @param query
      */
@@ -273,7 +273,7 @@ class Neo4jService {
                         // for each rows
                         result.records.forEach(record => {
 
-                            // for each coloumn
+                            // for each column
                             record.forEach((value, key) => {
 
                                 // if it's a node

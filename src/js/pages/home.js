@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import {PageEnhancer} from "~/enhancer/page";
 import {branch} from "baobab-react/higher-order";
+import Chart from "react-chartjs";
 import QueryContainer from "~/components/smart/query-container";
 import ReactSigma from "~/components/dumb/chart-sigma/sigma";
 import DisplayObject from "~/components/smart/displayObject";
@@ -72,6 +73,8 @@ class Home extends Component {
                 <aside className="col-md-2 sidebar">
                     //some stats here
                     <DisplayObject object={this.state.data} />
+                    <Chart.Doughnut data={this.props.facetLabel} />
+                    <Chart.Doughnut data={this.props.facetEdge} />
                 </aside>
                 <section className="col-md-10 main">
                     <ReactSigma options={this.props.sigmaOptions}
@@ -93,7 +96,9 @@ export default PageEnhancer(
         {
             sigmaOptions: ['settings', 'sigma'],
             graph: ['data', 'graph'],
-            refreshGraph: ['data', 'refresh']
+            refreshGraph: ['data', 'refresh'],
+            facetLabel: ['data', 'facets', 'labels'],
+            facetEdge: ['data', 'facets', 'edges'],
         },
         Home
     )
