@@ -35,11 +35,13 @@ class GraphFacetEdge extends Component {
     }
 
     _renderEdge(edge, index, count) {
-        var style = {};
+      var style = { borderBottom: '1px solid #000' };
+      var styleStat = { width:(edge.count/count)*100 +'%', backgroundColor:'#000' , padding: '2px', marginBottom:'-1px'};
         var hideIcon = "fa-eye";
         if(this.props.style[edge.name]) {
             if(this.props.style[edge.name].color)
-              style = { borderBottom: '1px solid ' + this.props.style[edge.name].color };
+              style.borderColor = this.props.style[edge.name].color;
+              styleStat.backgroundColor = this.props.style[edge.name].color;
             if(this.props.style[edge.name].hidden)
               hideIcon = "fa-eye-slash";
         }
@@ -55,7 +57,7 @@ class GraphFacetEdge extends Component {
                     </ul>
                 </div>
                 <div style={style}>
-                  <div style={{ width:(edge.count/count)*100 +'%', backgroundColor:this.props.style[edge.name].color , padding: '2px', marginBottom:'-1px'}}></div>
+                  <div style={styleStat}></div>
                 </div>
                 <div className={edge.name != this.state.displayEdgeStyleFor ? 'hidden edge-style' : 'edge-style'}>
                   <EdgeStyle edge={edge.name} style={this.props.style[edge.name]} />

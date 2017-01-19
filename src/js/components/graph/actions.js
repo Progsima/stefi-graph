@@ -60,10 +60,10 @@ export function saveLabelStyle(tree, label, style) {
   runLayout(tree, false);
   var cleanStyle = style;
   if(!style.image.url){
-    cleanStyle.image = null;
+    cleanStyle.image = {};
   }
   if(!style.icon.name){
-    cleanStyle.icon = null;
+    cleanStyle.icon = {};
   }
   tree.select('settings','style', 'labels', label).set(style);
 }

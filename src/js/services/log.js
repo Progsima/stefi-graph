@@ -22,7 +22,7 @@ class Log {
      * @private
      */
     _getCurrentLevel() {
-        return tree.select('settings', 'advanced', 'logLevel').get();
+        return tree.select('settings', 'application', 'logLevel').get();
     }
 
     /**
@@ -32,7 +32,7 @@ class Log {
      * @private
      */
     _getPattern() {
-        return new RegExp(tree.select('settings', 'advanced', 'logPattern').get());
+        return new RegExp(tree.select('settings', 'application', 'logPattern').get());
     }
 
     /**

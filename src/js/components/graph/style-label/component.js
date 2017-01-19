@@ -42,6 +42,7 @@ const schema = {
         name: {
           type: "string",
           title: "Name",
+          default:''
         },
         color: {
           type: 'string',
@@ -125,7 +126,7 @@ class LabelStyle extends Component {
   // Declare props types
   static propTypes = {
     label: React.PropTypes.string.isRequired,
-    style: React.PropTypes.object.isRequired
+    style: React.PropTypes.object
   };
 
   /**

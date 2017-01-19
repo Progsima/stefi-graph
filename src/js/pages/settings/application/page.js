@@ -75,7 +75,7 @@ class SettingsApplication extends Component {
   };
 
   saveToStore(data){
-    this.props.dispatch( action.saveSettingsAdvanced, data);
+    this.props.dispatch( action.saveSettingsApplication, data);
   }
 
   render() {

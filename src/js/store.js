@@ -39,7 +39,7 @@ const tree = new Baobab(initState, {shiftReferences: true});
  * ~~~~~~~~~~~~~~
  */
 // let's record all last changes
-var historyCursor = tree.select('settings', 'advanced', 'baobabHistorySize');
+var historyCursor = tree.select('settings', 'application', 'baobabHistorySize');
 
 // setting the history length
 tree.root.startRecording(historyCursor.get());
@@ -60,13 +60,13 @@ historyCursor.on('update', (e) => {
 tree.root.on('update', (e) => {
     var state = mergeDeep({}, e.data.currentData);
 
-    if(tree.select('settings', 'advanced', 'persistance').get() === 'LocalStorage') {
+    if(tree.select('settings', 'application', 'persistance').get() === 'LocalStorage') {
         log.info('Saving baobab tree into localstorage');
         // saving it into localstorage
         window.localStorage.setItem('state', JSON.stringify(state));
     }
 
-    if(tree.select('settings', 'advanced', 'persistance').get() === 'Url') {
+    if(tree.select('settings', 'application', 'persistance').get() === 'Url') {
         log.info('Saving baobab tree into URL');
         var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?state=' + encodeURIComponent(JSON.stringify(state)) + window.location.hash;
         window.history.pushState({path:newurl},'',newurl);
@@ -74,7 +74,7 @@ tree.root.on('update', (e) => {
 });
 
 // when the persistance mode change, we reset localstorage
-tree.select('settings', 'advanced', 'persistance').on('update', (mode) => {
+tree.select('settings', 'application', 'persistance').on('update', (mode) => {
     // reset localstorage
     if(mode !== 'LocalStorage') {
         window.localStorage.setItem('state', '{}');

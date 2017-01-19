@@ -35,12 +35,12 @@ class GraphFacetLabel extends Component {
     }
 
     _renderLabel(label, index, labelCount) {
-        var style = {};
+        var style = { borderBottom: '1px solid #000'};
         var styleStat = { width:(label.count/labelCount)*100 +'%', backgroundColor:'#000' , padding: '2px', marginBottom:'-1px'};
         var hideIcon = "fa-eye";
         if(this.props.style[label.name]) {
             if(this.props.style[label.name].color) {
-              style = { borderBottom: '1px solid ' + this.props.style[label.name].color };
+              style.borderColor = this.props.style[label.name].color;
               styleStat.backgroundColor = this.props.style[label.name].color;
             }
             if(this.props.style[label.name].hidden)

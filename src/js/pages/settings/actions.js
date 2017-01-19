@@ -18,13 +18,13 @@ export function saveSettingsServer(tree, conf) {
 }
 
 /**
- * Saving advanced settings in state.
+ * Saving application settings in state.
  */
-export function saveSettingsAdvanced(tree, conf) {
-    tree.select('settings', 'advanced').set(conf);
+export function saveSettingsApplication(tree, conf) {
+    tree.select('settings', 'application').set(conf);
     pushNotification(tree, {
         title: "Success: ",
-        message: "Advanced configuration has been successfully updated",
+        message: "Application configuration has been successfully updated",
         type : "success"
     });
 }

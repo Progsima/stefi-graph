@@ -27,8 +27,8 @@ const schema = {
       type: 'number',
       title: 'Size',
       minimum: 1,
-      maximum: 30,
-      default: 15
+      maximum: 15,
+      default: 1
     },
     color: {
       type: 'string',
@@ -65,7 +65,7 @@ class EdgeStyle extends Component {
   // Declare props types
   static propTypes = {
     edge: React.PropTypes.string.isRequired,
-    style: React.PropTypes.object.isRequired
+    style: React.PropTypes.object
   };
 
   /**
