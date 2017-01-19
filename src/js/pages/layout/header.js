@@ -2,7 +2,8 @@ import React, {Component, PropTypes} from "react";
 import {branch} from "baobab-react/higher-order";
 import Logo from "~/pages/layout/logo";
 import Menu from "~/pages/layout/menu";
-import config from "~/config";
+import configApplication from "~/config/application";
+import configSitemap from "~/config/sitemap";
 
 class Header extends Component {
 
@@ -16,10 +17,10 @@ class Header extends Component {
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                         </button>
-                        <Logo name={ config.name } url={ config.logo }/>
+                        <Logo name={ configApplication.name } url={ configApplication.logo }/>
                     </div>
                     <nav id="navbar" className="nav navbar-nav navbar-right">
-                        <Menu pages={ config.sitemap } styleClass="nav navbar-nav"/>
+                        <Menu pages={ configSitemap.pages } styleClass="nav navbar-nav"/>
                     </nav>
                 </div>
             </header>

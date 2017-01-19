@@ -35,6 +35,19 @@ class Neo4jService {
         this.session = this.driver.session();
     }
 
+    // Convert Cypher paramaters for the driver (ie cast interger)
+    _convertParams(params) {
+        var cast = {};
+        Object.keys(params).map((key) => {
+            var value = params[key];
+            if (params[key] != null && (params[key].constructor.name === 'Integer' || params[key].constructor.name === 'Number')) {
+                value = neo4j.v1.int(params[key]);
+            }
+            cast[key] = value
+        })
+        return cast;
+    }
+
     /**
      * Get all labels available.
      *
@@ -209,13 +222,15 @@ class Neo4jService {
      * Execute a cypher query and return an array of object.
      * /!\ for large integer ...
      *
-     * @param query
+     * @param query {string} the query string
+     * @param params {array} array of params
      * @returns {Promise}
      */
-    cypher(query) {
-        log.info("Running cypher query " + query);
+    cypher(query, params = {}) {
+        var parameters = this._convertParams(params);
+        log.info("Running cypher query " + query + " with params " + JSON.stringify(parameters));
         return new Promise((resolve, reject) => {
-            this.session.run(query)
+            this.session.run(query, parameters)
                 .then(
                     result => {
                         log.debug("Cypher query result is " + JSON.stringify(result));
@@ -225,20 +240,20 @@ class Neo4jService {
                             record.forEach((value, key) => {
                                 item[key] = value;
 
-                                if (value.constructor.name === 'Integer') {
+                                if (value && value.constructor.name === 'Integer') {
                                     item[key] = value.toNumber();
                                 }
 
                                 // TODO: Change Driver node to custom node
-                                if (value.constructor.name === 'Node') {
+                                if (value && value.constructor.name === 'Node') {
                                 }
 
                                 // TODO: Change Driver edge to custom node
-                                if (value.constructor.name === 'Relationship') {
+                                if (value && value.constructor.name === 'Relationship') {
                                 }
 
                                 // TODO: Change Driver Path to custom node
-                                if (value.constructor.name === 'Path') {
+                                if (value && value.constructor.name === 'Path') {
                                 }
 
                             });
@@ -259,11 +274,13 @@ class Neo4jService {
      * Execute a cypher query and return a graph/table representation.
      *
      * @param query
+     * TODO ; Add autocomplete feature
      */
-    graph(query) {
-        log.info("Running graph query " + query);
+    graph(query, params = {}) {
+        var parameters = this._convertParams(params);
+        log.info("Running cypher graph query " + query + " with params " + JSON.stringify(parameters));
         return new Promise((resolve, reject) => {
-            this.session.run(query)
+            this.session.run(query, parameters)
                 .then(
                     result => {
                         log.debug("Graph query result is " + result.records.length + JSON.stringify(result));
@@ -277,13 +294,13 @@ class Neo4jService {
                             record.forEach((value, key) => {
 
                                 // if it's a node
-                                if (value.constructor.name === 'Node') {
+                                if (value && value.constructor.name === 'Node') {
                                     if (nodeIds.indexOf(value.identity.toNumber()) === -1)
                                         nodeIds.push(value.identity.toNumber())
                                 }
 
                                 // if it's a path
-                                if (value.constructor.name === 'Path') {
+                                if (value && value.constructor.name === 'Path') {
                                     if (nodeIds.indexOf(value.start.identity.toNumber()) === -1)
                                         nodeIds.push(value.start.identity.toNumber());
 
@@ -291,10 +308,10 @@ class Neo4jService {
                                         nodeIds.push(value.end.identity.toNumber());
 
                                     value.segments.forEach((seg) => {
-                                        if (nodeIds.indexOf(seg.start.toNumber()) === -1)
-                                            nodeIds.push(seg.start.toNumber());
-                                        if (nodeIds.indexOf(seg.end.toNumber()) === -1)
-                                            nodeIds.push(seg.end.toNumber());
+                                        if (nodeIds.indexOf(seg.start.identity.toNumber()) === -1)
+                                            nodeIds.push(seg.start.identity.toNumber());
+                                        if (nodeIds.indexOf(seg.end.identity.toNumber()) === -1)
+                                            nodeIds.push(seg.end.identity.toNumber());
                                     })
                                 }
                             });
@@ -348,7 +365,8 @@ class Neo4jService {
                                                     id: r.identity.toNumber(),
                                                     source: r.start.toNumber(),
                                                     target: r.end.toNumber(),
-                                                    type: r.type
+                                                    type: r.type,
+                                                    properties: r.properties
                                                 }
                                             );
                                         }

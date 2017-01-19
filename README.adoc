@@ -6,12 +6,10 @@ Search, Transform, Explore, Fetch and Interact your graph database
 
 * Adding right click on node
 * Adding discover the graph (metagraph, jsonschema, composition or aggregation links)
-* Adding row result
-* Modify node / edge value
-* Modify style
+* Adding row result ...
+* refacto edge & node style
+* make assistant to connect & compute graph
 * parameter query (don't forget widget on this !)
-*
-
 
 == React reminder
 

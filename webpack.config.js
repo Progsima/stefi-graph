@@ -59,10 +59,9 @@ var wConfig = {
                     'less'
                 ]
             },
-            {
-                test: /\.json$/,
-                loader: 'json-loader'
-            }
+            { test: /\.json$/,  loader: 'json-loader' },
+            { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,    loader: "url-loader?limit=10000&minetype=application/font-woff" },
+            { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,   loader: "file-loader" }
         ]
     },
     // see https://github.com/request/request/issues/1529

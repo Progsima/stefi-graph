@@ -1,6 +1,6 @@
 import Router from "baobab-router";
 import tree from "~/store";
-import config from "~/config";
+import configSitemap from "~/config/sitemap";
 import Log from "~/services/log";
 
 /**
@@ -33,14 +33,14 @@ function sitemapToRoutes(sitemap) {
             result.push(routerItem);
         }
     });
-
+    
     return result;
 }
 
 // Adding the default route
 var routerConfig = {
-    defaultRoute : config.defaultRoute,
-    routes: sitemapToRoutes(config.sitemap)
+    defaultRoute : configSitemap.defaultRoute,
+    routes: sitemapToRoutes(configSitemap.pages)
 };
 
 log.debug("Config is " + JSON.stringify(routerConfig));

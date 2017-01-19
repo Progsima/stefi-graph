@@ -22,16 +22,15 @@
     "baobab-react": "2.1.1",
     "baobab-router": "2.2.3",
     "bootstrap": "^3.3.6",
-    "chart.js": "^1.1.1",
-    "deep-equal": "^1.0.1",
-    "linkurious": "^2.14.0",
+    "font-awesome": "^4.7.0",
+    "font-awesome-webpack": "0.0.4",
+    "immutable": "^3.8.1",
     "neo4j-driver": "^1.0.4",
     "react": "^15.2.1",
-    "react-chartjs": "^0.8.0",
     "react-codemirror": "^0.2.6",
     "react-dom": "^15.2.1",
     "react-jsonschema-form": "^0.38.0",
-    "sigma": "^1.1.0"
+    "sigma": "^1.2.0"
   },
   "devDependencies": {
     "babel": "^6.5.2",
