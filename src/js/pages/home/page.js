@@ -3,6 +3,7 @@ import {PageEnhancer} from "~/enhancer/page";
 import {branch} from "baobab-react/higher-order";
 import QueryContainer from "~/components/query/container/component";
 import GraphFacetLabel from "~/components/graph/facet-label/component";
+import ContextMenu from "~/components/graph/context-menu/component";
 import GraphFacetEdge from "~/components/graph/facet-edge/component";
 import ReactSigma from "~/components/graph/sigma/component";
 import GraphDisplayObject from "~/components/graph/display-object/component";
@@ -30,6 +31,7 @@ class Home extends Component {
           <GraphDisplayObject />
         </aside>
         <section className="col-md-9 main">
+          <ContextMenu />
           <ReactSigma options={this.props.sigmaOptions}
             graph={this.props.graph}
             selected={this.props.selected}

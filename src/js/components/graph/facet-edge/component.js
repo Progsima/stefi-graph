@@ -59,7 +59,7 @@ class GraphFacetEdge extends Component {
                 <div style={style}>
                   <div style={styleStat}></div>
                 </div>
-                <div className={edge.name != this.state.displayEdgeStyleFor ? 'hidden edge-style' : 'edge-style'}>
+                <div className={edge.name != this.state.displayEdgeStyleFor ? 'hide edge-style-wrapper' : 'edge-style-wrapper'}>
                   <EdgeStyle edge={edge.name} style={this.props.style[edge.name]} />
                 </div>
             </li>

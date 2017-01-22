@@ -112,7 +112,8 @@ tree.set(
                 nodes: ['data', 'graph', 'nodes']
             },
             get: function (data) {
-                var labels = data.nodes
+                var nodeArray = Object.keys(data.nodes).map(e => {return data.nodes[e]});
+                var labels = nodeArray
                     // transform array of nodes to array of array of labels
                     .map((node) => {
                         return node.labels;
@@ -148,7 +149,8 @@ tree.set(
                 edges: ['data', 'graph', 'edges']
             },
             get: function (data) {
-                var edges = data.edges
+              var edgeArray = Object.keys(data.edges).map(e => {return data.edges[e]});
+                var edges = edgeArray
                     .map((edge) => {
                         return edge.type;
                     })

@@ -21,7 +21,7 @@ class FontawesomeInput extends Component {
       value: null,
       selectedIcon: selectedIcon
     };
-    this.documentClickHandler = this.documentClickHandler.bind(this)
+    this.documentClickHandler = this.documentClickHandler.bind(this);
   }
 
   componentDidMount() {

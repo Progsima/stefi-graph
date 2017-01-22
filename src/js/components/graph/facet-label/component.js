@@ -60,7 +60,7 @@ class GraphFacetLabel extends Component {
                 <div style={style}>
                   <div style={styleStat}></div>
                 </div>
-                <div className={label.name != this.state.displayLabelStyleFor ? 'hidden label-style' : 'label-style'}>
+                <div className={label.name != this.state.displayLabelStyleFor ? 'hide label-style-wrapper' : 'label-style-wrapper'}>
                   <LabelStyle label={label.name} style={this.props.style[label.name]} />
                 </div>
             </li>

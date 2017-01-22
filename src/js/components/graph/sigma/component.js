@@ -169,6 +169,10 @@ class ReactSigma extends Component {
       },
       settings: this.props.options
     });
+    //prevent default event for context menu & double click
+    container.addEventListener('contextmenu', event => { event.preventDefault() });
+    container.addEventListener('dblclick', event => { event.preventDefault() });
+    container.addEventListener('click', event => { event.preventDefault() });
   }
 
   /**
@@ -180,13 +184,13 @@ class ReactSigma extends Component {
     var newSigmaGraph = {nodes: [], edges: []};
 
     // Transform all node to sigma nodes
-    newSigmaGraph.nodes = this.props.graph.nodes.map((node) => {
-      var tNode = Immutable.Map(node)
+    newSigmaGraph.nodes = Object.keys(this.props.graph.nodes).map((nodeId) => {
+      var tNode = Immutable.Map(this.props.graph.nodes[nodeId])
       .set('x', Math.random())
       .set('y', Math.random());
 
       // If it already exist, we just take its coordinate
-      var previousNode = this.sigma.graph.nodes(node.id);
+      var previousNode = this.sigma.graph.nodes(nodeId);
       if (previousNode) {
         tNode = tNode
         .set('x', previousNode.x)
@@ -194,7 +198,7 @@ class ReactSigma extends Component {
       }
 
       // If node is selected
-      if (this.props.selected.some((e) => { return (e.id == node.id)})) {
+      if (this.props.selected.some((e) => { return (e.id == nodeId)})) {
         tNode = tNode.set('selected', true);
       }else {
         tNode = tNode.set('selected', false);
@@ -204,8 +208,8 @@ class ReactSigma extends Component {
     });
 
     // Transform all edged to sigma edges
-    newSigmaGraph.edges = this.props.graph.edges.map((edge) => {
-      var tEdge = Immutable.Map(edge);
+    newSigmaGraph.edges = Object.keys(this.props.graph.edges).map((edgeId) => {
+      var tEdge = Immutable.Map(this.props.graph.edges[edgeId]);
       return this._applyEdgeStyle(tEdge).toObject();
     });
 
@@ -290,6 +294,9 @@ class ReactSigma extends Component {
 
   _registerSigmaEvent() {
     this.sigma.unbind();
+    this.sigma.bind("click", (e) => {
+      this.props.dispatch(action.setRightClick, null, null, null);
+    });
     this.sigma.bind("overNode", (e) => {
       this.props.dispatch(action.setOverObject, JSON.parse(JSON.stringify(e.data.node)));
     });
@@ -300,8 +307,11 @@ class ReactSigma extends Component {
       if(!e.data.captor.isDragging)
         this.props.dispatch(action.setClickNode, JSON.parse(JSON.stringify(e.data.node)));
     });
+    this.sigma.bind("doubleClickNode", (e) => {
+        this.props.dispatch(action.setClickNode, JSON.parse(JSON.stringify(e.data.node)));
+    });
     this.sigma.bind("rightClickNode", (e) => {
-      this.props.dispatch(action.setRightClickObject, e.data.node, e.data.captor);
+      this.props.dispatch(action.setRightClick, 'node',  JSON.parse(JSON.stringify(e.data.node)), e.data.captor);
     });
     this.sigma.bind("overEdge", (e) => {
       this.props.dispatch(action.setOverObject, JSON.parse(JSON.stringify(e.data.edge)));

@@ -152,10 +152,12 @@ class LabelStyle extends Component {
             uiSchema={ui}
             autocomplete="on"
             liveValidate={true}
-            onSubmit={ data => this._save(data.formData) }
+            onChange={ data => this._save(data.formData) }
             formData={this.props.style}
             className={"horizontal" }
-            widgets={widgets}/>
+            widgets={widgets}>
+            <div></div>
+          </Form>
         </div>
       </div>
     )

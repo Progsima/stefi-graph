@@ -31,7 +31,7 @@ const configSigma = {
     labelSizeRatio: 1,
     // {number} The minimum size a node must have to see its label displayed.
     labelThreshold: 10,
-    edgeLabelThreshold: 2,
+    edgeLabelThreshold:0.7,
     // {number} The oversampling factor used in WebGL renderer.
     webglOversamplingRatio: 2,
     // {number} The size of the border of hovered nodes.
@@ -123,14 +123,11 @@ const configSigma = {
     mouseWheelEnabled: true,
     // {boolean}
     doubleClickEnabled: true,
-    // {boolean} Defines whether the custom events such as 'clickNode' can be
-    //           used.
+    // {boolean} Defines whether the custom events such as 'clickNode' can be used.
     eventsEnabled: true,
-    // {number} Defines by how much multiplicating the zooming level when the
-    //          user zooms with the mouse-wheel.
+    // {number} Defines by how much multiplicating the zooming level when the user zooms with the mouse-wheel.
     zoomingRatio: 2.0,
-    // {number} Defines by how much multiplicating the zooming level when the
-    //          user zooms by double clicking.
+    // {number} Defines by how much multiplicating the zooming level when the user zooms by double clicking.
     doubleClickZoomingRatio: 2.0,
     // {number} The minimum zooming level.
     zoomMin: 0.0625,

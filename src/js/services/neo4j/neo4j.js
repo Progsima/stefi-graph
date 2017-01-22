@@ -274,7 +274,7 @@ class Neo4jService {
      * Execute a cypher query and return a graph/table representation.
      *
      * @param query
-     * TODO ; Add autocomplete feature
+     * TODO: On/Off autocomplete feature
      */
     graph(query, params = {}) {
         var parameters = this._convertParams(params);
@@ -317,58 +317,42 @@ class Neo4jService {
                             });
                         });
 
-                        var graph = {nodes: [], edges: []};
+                        var graph = {nodes: {}, edges: {}};
                         var query = "MATCH (from) WHERE id(from) IN " + JSON.stringify(nodeIds) + " OPTIONAL MATCH (from)-[r]->(to) WHERE id(to) IN " + JSON.stringify(nodeIds) + " RETURN from,r,to";
                         log.info("Sub-graph query is " + query);
                         this.session
                             .run(query)
                             .then(result => {
-                                    var nodesIndex = [];
-
                                     // for each rows
                                     result.records.forEach(record => {
 
                                         var from = record.get('from');
-                                        if (from) {
-                                            if (nodesIndex.indexOf(from.identity.toNumber()) === -1) {
-                                                nodesIndex.push(from.identity.toNumber());
-                                                graph.nodes.push(
-                                                    {
-                                                        id: from.identity.toNumber(),
-                                                        labels: from.labels,
-                                                        properties: from.properties
-                                                    }
-                                                );
-                                            }
+                                        if (from && !graph.nodes[from.identity.toNumber()]) {
+                                          graph.nodes[from.identity.toNumber()] = {
+                                              id: from.identity.toNumber(),
+                                              labels: from.labels,
+                                              properties: from.properties
+                                          }
                                         }
 
                                         var to = record.get('to');
-                                        if (to) {
-                                            if (nodesIndex.indexOf(to.identity.toNumber()) === -1) {
-                                                nodesIndex.push(to.identity.toNumber());
-
-                                                //wrap node
-                                                graph.nodes.push(
-                                                    {
-                                                        id: to.identity.toNumber(),
-                                                        labels: to.labels,
-                                                        properties: to.properties
-                                                    }
-                                                );
-                                            }
+                                        if (to && !graph.nodes[to.identity.toNumber()]) {
+                                          graph.nodes[to.identity.toNumber()] = {
+                                              id: to.identity.toNumber(),
+                                              labels: to.labels,
+                                              properties: to.properties
+                                          };
                                         }
 
                                         var r = record.get('r');
-                                        if (r) {
-                                            graph.edges.push(
-                                                {
+                                        if (r && !graph.edges[r.identity.toNumber()]) {
+                                            graph.edges[r.identity.toNumber()] = {
                                                     id: r.identity.toNumber(),
                                                     source: r.start.toNumber(),
                                                     target: r.end.toNumber(),
                                                     type: r.type,
                                                     properties: r.properties
-                                                }
-                                            );
+                                            };
                                         }
 
                                     });

@@ -1,4 +1,6 @@
 import Log from "~/services/log";
+import Neo4jService from "~/services/neo4j/neo4j";
+import {pushNotification}from "~/components/notifications/actions";
 
 /**
 * Module logger.
@@ -16,9 +18,14 @@ export function setOverObject(tree, object) {
 /**
 * Save the current right click node into state.
 */
-export function setRightClickObject(tree, object) {
+export function setRightClick(tree, type, object, captor) {
   runLayout(tree, false);
-  tree.select('data', 'rightClick').set(object);
+  tree.select('data', 'rightClick').set({
+      type:type,
+      object: object,
+      x:(captor?captor.clientX:null),
+      y:(captor?captor.clientY:null)
+    });
 }
 
 /**
@@ -76,6 +83,89 @@ export function saveEdgeStyle(tree, edge, style) {
   tree.select('settings','style', 'edges', edge).set(style);
 }
 
+/**
+ * Enable the graph layout
+ */
 export function runLayout(tree, run){
   tree.select('data', 'runLayout').set(run);
+}
+
+/**
+ * Node : edit
+ */
+export function nodeEdit(tree, nodeId){
+}
+
+/**
+ * Node : remove
+ */
+export function nodeRemove(tree, nodeId){
+  setRightClick(tree, null, null, null) ;
+  // remove node from graph
+  tree.select('data', 'graph', 'nodes').unset(nodeId);
+  // remove node's edges from graph
+  var newEdges ={};
+  let edges = tree.get('data', 'graph', 'edges');
+  Object.keys(edges).forEach(
+    item =>  {
+      if(edges[item].source !== nodeId && edges[item].target !== nodeId ) {
+        newEdges[item] = edges[item];
+      }
+    }
+  )
+  tree.select('data', 'graph', 'edges').set(newEdges);
+}
+
+/**
+ * Node : delete
+ */
+export function nodeDelete(tree, nodeId){
+  setRightClick(tree, null, null, null) ;
+
+  const configNeo4j = tree.select('settings', 'neo4j').get();
+  const neo4j = new Neo4jService(configNeo4j.url, configNeo4j.login, configNeo4j.password);
+
+  neo4j.cypher('MATCH (n) WHERE id(n)={id} WITH n DETACH DELETE n', {id:nodeId}).then(
+    result => {
+      pushNotification(tree, {
+        title: "Success: ",
+        message: "Deleting node \"" + nodeId + "\"",
+        type: "success"
+      });
+      nodeRemove(tree, nodeId);
+    },
+    reason => {
+      pushNotification(tree, {
+        title: "Error: ",
+        message: JSON.stringify(reason),
+        type : "danger"
+      });
+    }
+  )
+}
+
+/**
+ * Node : expand.
+ */
+export function nodeExpand(tree, nodeId){
+  setRightClick(tree, null, null, null) ;
+
+  const configNeo4j = tree.select('settings', 'neo4j').get();
+  const neo4j = new Neo4jService(configNeo4j.url, configNeo4j.login, configNeo4j.password);
+
+  // on success we merge the result with graph state
+  neo4j.graph('MATCH (n)-[r]-(m) WHERE id(n)={id} RETURN n,m LIMIT 100', {id:nodeId}).then(
+    result => {
+      let graph = tree.get('data', 'graph');
+      runLayout(tree, true);
+      tree.select('data', 'graph', 'nodes').set(Object.assign({}, graph.nodes, result.nodes));
+      tree.select('data', 'graph', 'edges').set(Object.assign({}, graph.edges, result.edges));
+    },
+    reason => {
+      pushNotification(tree, {
+        title: "Error: ",
+        message: JSON.stringify(reason),
+        type : "danger"
+      });
+    });
 }

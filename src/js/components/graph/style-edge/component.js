@@ -21,7 +21,7 @@ const schema = {
     label: {
       type: "string",
       title: "Label field",
-      default: '<id>'
+      default: '<type>'
     },
     size: {
       type: 'number',
@@ -91,10 +91,12 @@ class EdgeStyle extends Component {
             uiSchema={ui}
             autocomplete="on"
             liveValidate={true}
-            onSubmit={ data => this._save(data.formData) }
+            onChange={ data => this._save(data.formData) }
             formData={this.props.style}
             className={"horizontal" }
-            widgets={widgets}/>
+            widgets={widgets}>
+            <div></div>
+          </Form>
         </div>
       </div>
     )
