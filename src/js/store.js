@@ -59,6 +59,7 @@ historyCursor.on('update', (e) => {
 // when the state is update, we update local storage
 tree.root.on('update', (e) => {
     var state = mergeDeep({}, e.data.currentData);
+    //TODO: remove notifications
 
     if(tree.select('settings', 'application', 'persistance').get() === 'LocalStorage') {
         log.info('Saving baobab tree into localstorage');

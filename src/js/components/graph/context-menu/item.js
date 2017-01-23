@@ -23,19 +23,31 @@ class ContextMenuItem extends Component {
   }
 
   _executeAction(){
-    this.props.dispatch(this.props.item.action, this.props.object.id);
+    if(this.props.item.action)
+      this.props.dispatch(this.props.item.action, this.props.object.id);
+  }
+
+  _renderComponent(){
+    var Component = this.props.item.component;
+    if (Component)
+      return (<Component node={this.props.object}/>)
+    else
+      return null;
   }
 
   /**
   * Render phase.
   */
   render() {
+
     return(
       <li key={this.props.key} onClick={e => this._executeAction()}>
-        {this.props.item.label} <i className={"pull-right fa " + this.props.item.icon}></i>
+        <div>{this.props.item.label} <i className={"pull-right fa " + this.props.item.icon}></i></div>
+        {this._renderComponent()}
       </li>
     )
   }
+
 }
 
 export default branch({}, ContextMenuItem);

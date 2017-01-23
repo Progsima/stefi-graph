@@ -147,14 +147,30 @@ export function nodeDelete(tree, nodeId){
 /**
  * Node : expand.
  */
-export function nodeExpand(tree, nodeId){
+export function nodeExpand(tree, nodeId, type, direction){
   setRightClick(tree, null, null, null) ;
 
   const configNeo4j = tree.select('settings', 'neo4j').get();
   const neo4j = new Neo4jService(configNeo4j.url, configNeo4j.login, configNeo4j.password);
 
+  var query = "";
+  switch (direction) {
+    case 'incoming':
+      query = "MATCH (n)<-[r]-(m) "
+      break;
+    case 'outgoing':
+      query = "MATCH (n)-[r]->(m) "
+      break;
+    default:
+      query = "MATCH (n)-[r]-(m) "
+      break;
+  }
+  query += 'WHERE id(n)={id} ';
+  if(type)
+    query += ' AND type(r) ={type} ';
+query += 'RETURN n,m';
   // on success we merge the result with graph state
-  neo4j.graph('MATCH (n)-[r]-(m) WHERE id(n)={id} RETURN n,m LIMIT 100', {id:nodeId}).then(
+  neo4j.graph(query, {id:nodeId, type:type}).then(
     result => {
       let graph = tree.get('data', 'graph');
       runLayout(tree, true);
