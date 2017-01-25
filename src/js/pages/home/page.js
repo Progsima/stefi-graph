@@ -7,6 +7,7 @@ import ContextMenu from "~/components/graph/context-menu/component";
 import GraphFacetEdge from "~/components/graph/facet-edge/component";
 import ReactSigma from "~/components/graph/sigma/component";
 import GraphDisplayObject from "~/components/graph/display-object/component";
+import Wizard from "~/components/wizard/component";
 
 class Home extends Component {
 
@@ -25,11 +26,13 @@ class Home extends Component {
 
     return (
       <main className="container-fluid">
+
         <aside className="col-md-3 sidebar">
           <GraphFacetLabel />
           <GraphFacetEdge />
           <GraphDisplayObject />
         </aside>
+
         <section className="col-md-9 main">
           <ContextMenu />
           <ReactSigma options={this.props.sigmaOptions}
@@ -42,6 +45,8 @@ class Home extends Component {
           <QueryContainer />
         </section>
 
+        <Wizard />
+        
       </main>
     )
   }

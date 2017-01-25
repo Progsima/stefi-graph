@@ -47,7 +47,7 @@ const ui = {
 class SettingsNeo4j extends Component {
 
     static propTypes = {
-        page: React.PropTypes.object.isRequired,
+        page: React.PropTypes.object,
         data: React.PropTypes.object
     };
 

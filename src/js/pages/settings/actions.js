@@ -64,3 +64,10 @@ export function saveSettingsStyle(tree, conf) {
         type : "success"
     });
 }
+
+/**
+ * Saving all setting
+ */
+export function saveSettings(tree, settings) {
+    tree.select('settings').set(settings);
+}

@@ -1,0 +1,18 @@
+@import "../../../less/variables";
+
+.popin {
+  background-color: fadeout(@color-fourth, 20%);
+  position: fixed;
+  color: @white-base;
+  top:0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+
+  & > div.popin-wrapper {
+    width: 50%;
+    margin: 100px auto;
+  }
+
+}

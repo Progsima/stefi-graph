@@ -19,7 +19,7 @@ const widgets = {
 class Settings extends Component {
 
   static propTypes = {
-    page: React.PropTypes.object.isRequired,
+    page: React.PropTypes.object,
     schema: React.PropTypes.object.isRequired,
     ui: React.PropTypes.object.isRequired,
     data: React.PropTypes.object,
@@ -31,24 +31,24 @@ class Settings extends Component {
   }
 
   _renderSettingMenu() {
-    // Retrieve the setting page object
-    log.debug("Current page is " + JSON.stringify(this.props.page));
-    var settingPageView = this.props.page.state.view.split(".");
-    settingPageView.pop();
-    var settingPage = sitemap.getPageFromView(settingPageView.join('.'));
-    log.debug("Settings page is " + JSON.stringify(settingPage));
+      // Retrieve the setting page object
+      log.debug("Current page is " + JSON.stringify(this.props.page));
+      var settingPageView = this.props.page.state.view.split(".");
+      settingPageView.pop();
+      var settingPage = sitemap.getPageFromView(settingPageView.join('.'));
+      log.debug("Settings page is " + JSON.stringify(settingPage));
 
-    return (
-      <aside className="col-md-2 sidebar">
-        <Menu pages={ settingPage.pages } styleClass="nav navbar-nav"/>
-      </aside>
-    )
+      return (
+        <aside className="col-md-2 sidebar">
+          <Menu pages={ settingPage.pages } styleClass="nav navbar-nav"/>
+        </aside>
+      )
   }
 
   _renderForm() {
     return (
       <section className="col-md-10 main">
-        <h1 className="page-header">{this.props.page.title}</h1>
+        <h1 className="page-header">{this.props.page?this.props.page.title:''}</h1>
         <Form schema={this.props.schema}
           uiSchema={this.props.ui}
           liveValidate={true}

@@ -13,7 +13,7 @@ export var PageEnhancer = ComposedComponent => class extends React.Component {
     }
 
     componentDidMount() {
-        document.title = this.props.page.title;
+        document.title = this.props.page?this.props.page.title:'';
     }
 
     render() {

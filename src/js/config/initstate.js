@@ -27,6 +27,7 @@ const configInitState = {
     },
 	notifications: [],
 	settings: {
+		wizard:true,
 		application: configApplication,
 		neo4j: configNeo4j,
 		sigma: configSigma,
