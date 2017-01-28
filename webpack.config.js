@@ -6,7 +6,7 @@ var glob = require('glob');
 // Host port, and base URL
 var host = 'localhost';
 var port = 8080;
-var baseUrl = '/';
+var baseUrl = './';
 // Paths
 var basePath = path.resolve(__dirname);
 var paths = {
@@ -14,7 +14,7 @@ var paths = {
     nodeModules: path.join(basePath, 'node_modules'),
     app: path.join(basePath, 'src'),
     index: path.join(basePath, 'src/index.html'),
-    build: path.join(basePath, 'dist')
+    build: path.join(basePath, 'docs')
 };
 
 // Internal flags - Don't edit these!!!!1
@@ -39,7 +39,7 @@ var wConfig = {
                 }())
             },
             {
-                test: /.*\/sigma.*\.js?$/,
+                test: /.*\/sigma.*\.js$/,
                 exclude: [paths.app],
                 loaders: ['script']
             },
@@ -92,7 +92,7 @@ if (DEBUG) {
 // Output definition - We'll build into a single app.js file by default
 wConfig.output = {
     filename: '[name].bundle.js',
-    publicPath: baseUrl,
+    //publicPath: baseUrl,
     path: paths.build
 };
 
@@ -117,7 +117,12 @@ else {
     wConfig.plugins = wConfig.plugins.concat([
         new webpack.optimize.DedupePlugin(),
         new webpack.optimize.UglifyJsPlugin(),
-        new webpack.optimize.AggressiveMergingPlugin()
+        new webpack.optimize.AggressiveMergingPlugin(),
+        new webpack.DefinePlugin({
+          'process.env': {
+            NODE_ENV: JSON.stringify('production')
+          }
+        })
     ]);
 }
 
@@ -138,6 +143,3 @@ wConfig.eslint = {
 
 
 module.exports = wConfig;
-
-
-

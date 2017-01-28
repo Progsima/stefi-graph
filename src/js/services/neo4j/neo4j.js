@@ -40,7 +40,7 @@ class Neo4jService {
         var cast = {};
         Object.keys(params).map((key) => {
             var value = params[key];
-            if (params[key] != null && (params[key].constructor.name === 'Integer' || params[key].constructor.name === 'Number')) {
+            if (params[key] != null && Number.isFinite(params[key])) {
                 value = neo4j.v1.int(params[key]);
             }
             cast[key] = value
@@ -294,13 +294,13 @@ class Neo4jService {
                             record.forEach((value, key) => {
 
                                 // if it's a node
-                                if (value && value.constructor.name === 'Node') {
+                                if (value && value.hasOwnProperty('labels')) {
                                     if (nodeIds.indexOf(value.identity.toNumber()) === -1)
                                         nodeIds.push(value.identity.toNumber())
                                 }
 
                                 // if it's a path
-                                if (value && value.constructor.name === 'Path') {
+                                if (value && value.hasOwnProperty('segments')) {
                                     if (nodeIds.indexOf(value.start.identity.toNumber()) === -1)
                                         nodeIds.push(value.start.identity.toNumber());
 
