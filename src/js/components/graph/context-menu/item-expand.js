@@ -57,7 +57,7 @@ class ContextMenuItemExpand extends Component {
       <ul className="list-unstyled">
         <li onClick={e => this._expand({type:null, direction:null})}>
           <div>
-            All ({this.state.edges.reduce( (prev, current) => { return prev + current.count }, 0)})
+            All ({this.state.edges.reduce( (prev, current) => { return prev + parseInt(current.count) }, 0)})
             <i className={'pull-right fa fa-arrows'}></i>
           </div>
         </li>

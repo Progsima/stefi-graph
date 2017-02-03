@@ -35,7 +35,8 @@ class Home extends Component {
 
         <section className="col-md-9 main">
           <ContextMenu />
-          <ReactSigma options={this.props.sigmaOptions}
+          <ReactSigma
+          options={this.props.sigmaOptions}
             graph={this.props.graph}
             selected={this.props.selected}
             layout={this.props.layoutOptions}
@@ -46,7 +47,7 @@ class Home extends Component {
         </section>
 
         <Wizard />
-        
+
       </main>
     )
   }

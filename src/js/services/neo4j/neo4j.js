@@ -31,7 +31,7 @@ class Neo4jService {
     initialize(url, user, password) {
         if (this.session)
             this.session.close();
-        this.driver = neo4j.v1.driver(url, neo4j.v1.auth.basic(user, password));
+        this.driver = neo4j.driver(url, neo4j.auth.basic(user, password));
         this.session = this.driver.session();
     }
 
@@ -41,7 +41,7 @@ class Neo4jService {
         Object.keys(params).map((key) => {
             var value = params[key];
             if (params[key] != null && Number.isFinite(params[key])) {
-                value = neo4j.v1.int(params[key]);
+                value = neo4j.int(params[key]);
             }
             cast[key] = value
         })
@@ -240,20 +240,20 @@ class Neo4jService {
                             record.forEach((value, key) => {
                                 item[key] = value;
 
-                                if (value && value.constructor.name === 'Integer') {
+                                if (value && value.hasOwnProperty('low') && value.hasOwnProperty('high')) {
                                     item[key] = value.toNumber();
                                 }
 
                                 // TODO: Change Driver node to custom node
-                                if (value && value.constructor.name === 'Node') {
+                                if (value && value.hasOwnProperty('labels')) {
                                 }
 
                                 // TODO: Change Driver edge to custom node
-                                if (value && value.constructor.name === 'Relationship') {
+                                if (value && value.hasOwnProperty('start') && value.hasOwnProperty('end') ) {
                                 }
 
                                 // TODO: Change Driver Path to custom node
-                                if (value && value.constructor.name === 'Path') {
+                                if (value && value.hasOwnProperty('segments')) {
                                 }
 
                             });

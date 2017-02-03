@@ -52,8 +52,8 @@ class GraphFacetEdge extends Component {
                     {edge.name} ({edge.count})
 
                     <ul className="list-inline actions">
-                        <li><a href="#"><i onClick={ e => this._toggleEdgeStyle(edge.name) }className="fa fa-pencil"></i></a></li>
-                        <li><a href="#"><i onClick={ e => this._toggleEdgeVisibility(edge.name) } className={'fa ' + hideIcon}></i></a></li>
+                        <li><i onClick={ e => this._toggleEdgeStyle(edge.name) }className="fa fa-pencil"></i></li>
+                        <li><i onClick={ e => this._toggleEdgeVisibility(edge.name) } className={'fa ' + hideIcon}></i></li>
                     </ul>
                 </div>
                 <div style={style}>
@@ -71,7 +71,7 @@ class GraphFacetEdge extends Component {
      */
     render() {
       var edgeCount = this.props.edges.reduce((previousValue, currentValue) => { return previousValue + currentValue.count },0);
-        if(this.props.edges) {
+        if(this.props.edges && this.props.edges.length > 0) {
             return (
                 <div className="facet-edge">
                     <h3>Realtionships</h3>

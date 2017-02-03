@@ -53,8 +53,8 @@ class GraphFacetLabel extends Component {
                     {label.name} ({label.count})
 
                     <ul className="list-inline actions">
-                        <li><a href="#"><i onClick={ e => this._toggleLabelStyle(label.name) }className="fa fa-pencil"></i></a></li>
-                        <li><a href="#"><i onClick={ e => this._toggleLabelVisibility(label.name) } className={'fa ' + hideIcon}></i></a></li>
+                        <li><i onClick={ e => this._toggleLabelStyle(label.name) }className="fa fa-pencil"></i></li>
+                        <li><i onClick={ e => this._toggleLabelVisibility(label.name) } className={'fa ' + hideIcon}></i></li>
                     </ul>
                 </div>
                 <div style={style}>
@@ -72,7 +72,7 @@ class GraphFacetLabel extends Component {
      */
     render() {
         var labelCount = this.props.labels.reduce((previousValue, currentValue) => { return previousValue + currentValue.count },0);
-        if(this.props.labels) {
+        if(this.props.labels && this.props.labels.length > 0) {
             return (
                 <div className="facet-label">
                     <h3>Labels</h3>

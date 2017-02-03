@@ -18,7 +18,7 @@ const menus = {
         action: action.nodeEdit
       },
       {
-        label: "Remove",
+        label: "Hide",
         icon: "fa-eye-slash",
         action: action.nodeRemove
       },
