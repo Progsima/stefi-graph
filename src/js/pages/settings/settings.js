@@ -54,7 +54,7 @@ class Settings extends Component {
           liveValidate={true}
           onSubmit={ data => this.props.save(data.formData) }
           formData={this.props.data}
-          className={"horizontal" }
+          className={"form-horizontal" }
           widgets={widgets}/>
       </section>
     )

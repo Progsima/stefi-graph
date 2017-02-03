@@ -180,7 +180,7 @@ class Neo4jService {
                                 item = {
                                     on: 'Node',
                                     name: values[2],
-                                    property: values[2],
+                                    property: values[4],
                                     type: 'exist'
                                 }
                             }
@@ -190,7 +190,7 @@ class Neo4jService {
                                 item = {
                                     on: 'Node',
                                     name: values[2],
-                                    property: values[2],
+                                    property: values[4],
                                     type: 'unique'
                                 }
                             }
@@ -200,7 +200,7 @@ class Neo4jService {
                                 item = {
                                     on: 'Relationship',
                                     name: values[2],
-                                    property: values[2],
+                                    property: values[4],
                                     type: 'exist'
                                 }
                             }
@@ -378,6 +378,100 @@ class Neo4jService {
                     reject(error);
                 });
         })
+    }
+
+    computeGraphSchema(){
+
+      return new Promise((resolve, reject) => {
+
+        this.constraints().then( constraints => {
+
+          // Labels schema
+          var labelsPromises = this.labels().then( labels => {
+            return new Promise((resolve, reject) => {
+              let schema = {};
+              let promises = [];
+              labels.map( (label) => {
+                promises.push(this._computeLabelSchema(label, constraints));
+              });
+              Promise.all(promises).then(results => {
+                results.map(result => {
+                  schema[result.title] = result;
+                })
+                return resolve(schema);
+              });
+            });
+          });
+
+          // edge schema
+          var edgesPromises = this.relationshipTypes().then( edges => {
+            return new Promise((resolve, reject) => {
+                let schema = {};
+                let promises = [];
+                edges.map( (edge) => {
+                  promises.push(this._computeEdgeSchema(edge, constraints));
+                });
+                Promise.all(promises).then(results => {
+                  results.map(result => {
+                    schema[result.title] = result;
+                  })
+                  return resolve(schema);
+                });
+            });
+          });
+
+          Promise.all([labelsPromises, edgesPromises]).then(([labels, edges]) => {
+            return resolve({labels:labels, edges:edges});
+          });
+
+        })
+      })
+    }
+
+    _computeLabelSchema(label, constraints) {
+      let schema = { type: 'object', title:label, properties: {} };
+      return new Promise((resolve, reject) => {
+        this.cypher("MATCH (n:" + label + ") WHERE rand() < 0.1  UNWIND keys(n) AS key RETURN DISTINCT key").then( result => {
+          result.map( (row) => {
+            schema.properties[row.key] = {
+              type: 'string',
+              required: constraints.reduce((prev, current) => {
+                let result = prev;
+                if(!prev) {
+                  if(current.on ==='Node' && current.name === label && current.property === row.key) {
+                    result = true;
+                  }
+                }
+                return result;
+              }, false)
+            };
+          });
+          resolve(schema);
+        });
+      });
+    }
+
+    _computeEdgeSchema(edge, constraints) {
+      let schema = { type: 'object', title:edge, properties: {} };
+      return new Promise((resolve, reject) => {
+        this.cypher("MATCH ()-[r:" + edge + "]-() WHERE rand() < 0.1  UNWIND keys(r) AS key RETURN DISTINCT key").then( result => {
+          result.map( (row) => {
+            schema.properties[row.key] = {
+              type: 'string',
+              required: constraints.reduce((prev, current) => {
+                let result = prev;
+                if(!prev) {
+                  if(current.on ==='Relationship' && current.name === edge && current.property === row.key) {
+                    result = true;
+                  }
+                }
+                return result;
+              }, false)
+            };
+          });
+          resolve(schema);
+        });
+      });
     }
 
 }

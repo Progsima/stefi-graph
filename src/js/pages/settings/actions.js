@@ -66,6 +66,19 @@ export function saveSettingsStyle(tree, conf) {
 }
 
 /**
+ * Saving setting graph schema
+ */
+export function saveSettingsSchema(tree, schema) {
+    tree.select('settings','schema').set(schema);
+    pushNotification(tree, {
+        title: "Success: ",
+        message: "Graph schema has been successfully updated",
+        type : "success"
+    });
+}
+
+
+/**
  * Saving all setting
  */
 export function saveSettings(tree, settings) {

@@ -67,20 +67,7 @@ class Wizard extends Component {
      */
     constructor(props) {
         super(props);
-        this.state = Object.assign({}, {settings: this.props.settings, step:1, run:this.props.settings.wizard});
-    }
-
-    _testNeo4jConnection(){
-      var neo4j = new Neo4jService(this.state.settings.neo4j.url, this.state.settings.neo4j.login, this.state.settings.neo4j.password);
-      neo4j.cypher("RETURN 1", {}).then(
-        result => {
-          this.setState({step:2, error:null});
-          this._finish();
-        },
-        reason => {
-          this.setState({error:reason.message});
-        }
-      )
+        this.state = Object.assign({}, {settings: this.props.settings, step:1,computing:false, run:this.props.settings.wizard});
     }
 
     _finish(){
@@ -90,8 +77,19 @@ class Wizard extends Component {
       this.setState({step:1, error:null, run:false});
     }
 
+    _next(){
+      this.setState({step:this.state.step+1, error:null});
+    }
+
     _previous(){
       this.setState({step:this.state.step-1, error:null});
+    }
+
+    _saveAndClose(){
+      this.props.dispatch(action.saveSettingsServer, this.state.settings.neo4j);
+      this.props.dispatch(action.saveSettingsSchema, this.state.settings.schema);
+      this.props.dispatch(action.saveSettingsStyle, this.state.settings.style);
+      this._finish();
     }
 
     _renderError() {
@@ -135,7 +133,25 @@ class Wizard extends Component {
           case 2:
             return this._renderStep2();
             break;;
+          case 3:
+            return this._renderStep3();
+            break;;
+          case 4:
+            return this._renderStep4();
+            break;;
       }
+    }
+
+    _testNeo4jConnection(){
+      var neo4j = new Neo4jService(this.state.settings.neo4j.url, this.state.settings.neo4j.login, this.state.settings.neo4j.password);
+      neo4j.cypher("RETURN 1", {}).then(
+        result => {
+          this._next();
+        },
+        reason => {
+          this.setState({error:reason.message});
+        }
+      )
     }
 
     _renderStep1() {
@@ -161,19 +177,105 @@ class Wizard extends Component {
       )
     }
 
+    _computeSchema() {
+      var neo4j = new Neo4jService(this.state.settings.neo4j.url, this.state.settings.neo4j.login, this.state.settings.neo4j.password);
+      this.setState({computing:true})
+      neo4j.computeGraphSchema().then( result => {
+        let settings = Object.assign({}, this.state.settings);
+        settings.schema = result;
+        this.setState({settings:settings, step:(this.state.step+1), error:null, computing:false});
+      });
+    }
     _renderStep2() {
       return (
         <div>
           <h1>Step 2 : Compute graph schema</h1>
+          <hr/>
+
+          <div className={this.state.computing?'hidden':''}>
+            <p>On this step we will compute the schema of your graph. This can take some times (depends of your database).</p>
+            <p>Click on the <strong>Start</strong> button above to begin this task.</p>
+          </div>
+          <div className={this.state.computing?'progress':'hidden'}>
+            <div className="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={{width: '100%'}}>
+            </div>
+          </div>
+
           <a className="btn btn-primary pull-left" onClick={e => this._previous()}>
             Previous
           </a>
-          <a className="btn btn-primary pull-right" onClick={e => this._testNeo4jConnection()}>
-            Next
+
+          <a className={this.state.computing?'hidden':'btn btn-primary pull-right'} onClick={e => this._computeSchema()}>
+            Start
+          </a>
+
+        </div>
+      )
+    }
+
+    _computeStyle(){
+      let style = {labels:{}, edges:{}};
+      let settings = Object.assign({}, this.state.settings);
+      Object.keys(settings.schema.labels).map((label) =>{
+        style.labels[label] = {
+          label: 'name',
+          color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6),
+          size: 15
+        };
+      });
+      Object.keys(settings.schema.edges).map((edge) =>{
+        style.edges[edge] = {
+          label: '<type>',
+          color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6),
+          size: 2,
+        };
+      });
+      settings.style = style;
+      this.setState({settings:settings, step:(this.state.step+1), error:null, computing:false});
+    }
+
+    _renderStep3() {
+      return (
+        <div>
+          <h1>Step 3 : Creating default style</h1>
+          <hr />
+
+          <div className={this.state.computing?'hidden':''}>
+            <p>On this step we will create some default style for the render of your graph..</p>
+            <p>Click on the <strong>Start</strong> button above to begin this task.</p>
+          </div>
+          <div className={this.state.computing?'progress':'hidden'}>
+            <div className="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={{width: '100%'}}>
+            </div>
+          </div>
+
+          <a className="btn btn-primary pull-left" onClick={e => this._previous()}>
+            Previous
+          </a>
+
+          <a className={this.state.computing?'hidden':'btn btn-primary pull-right'} onClick={e => this._computeStyle()}>
+            Start
           </a>
         </div>
       )
     }
+
+    _renderStep4() {
+      return (
+        <div>
+          <h1>Congrats !</h1>
+          <p>The wizard is finished. Click on the <strong>finish</strong> button to save the configuration.</p>
+          <p>At any moment you can change it, via the <strong>Configuration</strong> menu.</p>
+          <a className="btn btn-primary pull-left" onClick={e => this._previous()}>
+            Previous
+          </a>
+          <a className="btn btn-primary pull-right" onClick={e => this._saveAndClose()}>
+            Finish
+          </a>
+        </div>
+      )
+    }
+
 }
 
 export default branch(
