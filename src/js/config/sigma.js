@@ -83,10 +83,10 @@ const configSigma = {
     drawEdgeLabels: true,
     // {boolean} Indicates if the edges must be drawn in several frames or in
     //           one frame, as the nodes and labels are drawn.
-    batchEdgesDrawing: true,
+    batchEdgesDrawing: false,
     // {boolean} Indicates if the edges must be hidden during dragging and
     //           animations.
-    hideEdgesOnMove: true,
+    hideEdgesOnMove: false,
     // {numbers} The different batch sizes, when elements are displayed in
     //           several frames.
     canvasEdgesBatchSize: 500,

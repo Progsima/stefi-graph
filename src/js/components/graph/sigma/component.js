@@ -369,7 +369,7 @@ class ReactSigma extends Component {
     else {
       config.autoStop = false;
     }
-    this.layoutAlgo = this.sigma.startForceAtlas2();
+    this.layoutAlgo = this.sigma.startForceAtlas2(config);
   }
 
   _eventLayoutStop(){

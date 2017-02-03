@@ -4,11 +4,11 @@
 const configSigmaLayout = {
 	linLogMode: false,  // alternative energy model with linear repulsion force and logarithmic attraction force.
   outboundAttractionDistribution: false,
-  adjustSizes: true,
+  adjustSizes: false,
   edgeWeightInfluence: 0,
-  scalingRatio: 5,
-  strongGravityMode: true,
-  gravity: 2,
+  scalingRatio: 1,
+  strongGravityMode: false,
+  gravity: 1,
   barnesHutOptimize: false, // should we use the algorithm's Barnes-Hut to improve repulsion's scalability (`O(n²)` to `O(nlog(n))`)? This is useful for large graph but harmful to small ones.
   barnesHutTheta: 0.5,
   slowDown: 1,
