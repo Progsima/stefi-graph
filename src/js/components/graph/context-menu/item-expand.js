@@ -20,6 +20,10 @@ class ContextMenuItemExpand extends Component {
     this.neo4j = new Neo4jService(this.props.neo4j.url, this.props.neo4j.login, this.props.neo4j.password);
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.neo4j = new Neo4jService(nextProps.neo4j.url, nextProps.neo4j.login, nextProps.neo4j.password);
+  }
+
   componentDidMount() {
     this._getEdgesType();
   }

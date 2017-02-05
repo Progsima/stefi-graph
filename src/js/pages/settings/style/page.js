@@ -136,6 +136,7 @@ class SettingsGraphStyle extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    this.neo4j = new Neo4jService(nextProps.neo4j.url, nextProps.neo4j.login, nextProps.neo4j.password);
     this.propsToState(nextProps);
   }
 

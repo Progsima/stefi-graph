@@ -16,6 +16,10 @@ class TextCypherComplete extends Component {
       this.state = {suggest:[]};
     }
 
+    componentWillReceiveProps(nextProps) {
+      this.neo4j = new Neo4jService(nextProps.neo4j.url, nextProps.neo4j.login, nextProps.neo4j.password);
+    }
+
     _eventOnChange(value) {
       this.neo4j.cypher( this.props.options.query, { 'value':value}).then(result => {
         log.debug("Query result is :" + JSON.stringify(result));
