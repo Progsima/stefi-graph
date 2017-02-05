@@ -246,6 +246,15 @@ class Neo4jService {
 
                                 // TODO: Change Driver node to custom node
                                 if (value && value.hasOwnProperty('labels')) {
+                                  let node = { id: value.identity.toNumber(), labels:value.labels, properties:{}};
+                                  Object.keys(value.properties).forEach( name => {
+                                    if (value.properties[name].hasOwnProperty('low') && value.properties[name].hasOwnProperty('high')) {
+                                        node.properties[name] = value.properties[name].toNumber();
+                                    } else {
+                                      node[name] = value.properties[name];
+                                    }
+                                  });
+                                  item[key] = node;
                                 }
 
                                 // TODO: Change Driver edge to custom node

@@ -71,7 +71,7 @@ class Wizard extends Component {
     }
 
     _finish(){
-      var nextSettings =  Object.assign({},this.state.settings);
+      var nextSettings =  Object.assign({}, this.props.settings, this.state.settings);
       nextSettings.wizard = false;
       this.props.dispatch(action.saveSettings, nextSettings);
       this.setState({step:1, error:null, run:false});

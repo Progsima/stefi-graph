@@ -3,7 +3,7 @@ import {branch} from "baobab-react/higher-order";
 import Log from "~/services/log";
 import "./style.less";
 
-const log = new Log("Component.smart.DisplayObject");
+const log = new Log("Component.smart.graphDisplayObject");
 
 class GraphDisplayObject extends Component {
 
@@ -25,7 +25,7 @@ class GraphDisplayObject extends Component {
                 break;
         }
 
-        
+
     }
 
     _renderObject(object) {
@@ -46,7 +46,7 @@ class GraphDisplayObject extends Component {
      */
     render() {
         if(this.props.object) {
-            
+
             var title = "";
             var objectTitle = "";
             if(this.props.object.labels) {

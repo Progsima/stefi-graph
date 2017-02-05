@@ -94,6 +94,7 @@ export function runLayout(tree, run){
  * Node : edit
  */
 export function nodeEdit(tree, nodeId){
+  tree.select('data', 'edit').set({type:'node', id:nodeId});
 }
 
 /**
@@ -142,6 +143,14 @@ export function nodeDelete(tree, nodeId){
       });
     }
   )
+}
+
+export function nodeSave(tree, id, props){
+  const configNeo4j = tree.select('settings', 'neo4j').get();
+  const neo4j = new Neo4jService(configNeo4j.url, configNeo4j.login, configNeo4j.password);
+  neo4j.cypher("MATCH (o) WHERE id(o)={id} WITH o SET o={props} RETURN o", {id:id, props:props}).then( result => {
+
+  });
 }
 
 /**

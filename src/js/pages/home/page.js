@@ -3,6 +3,7 @@ import {PageEnhancer} from "~/enhancer/page";
 import {branch} from "baobab-react/higher-order";
 import QueryContainer from "~/components/query/container/component";
 import GraphFacetLabel from "~/components/graph/facet-label/component";
+import GraphEditObject from "~/components/graph/edit-object/component";
 import ContextMenu from "~/components/graph/context-menu/component";
 import GraphFacetEdge from "~/components/graph/facet-edge/component";
 import ReactSigma from "~/components/graph/sigma/component";
@@ -47,6 +48,7 @@ class Home extends Component {
         </section>
 
         <Wizard />
+        <GraphEditObject/>
 
       </main>
     )

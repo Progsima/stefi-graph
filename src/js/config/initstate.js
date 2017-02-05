@@ -15,6 +15,7 @@ const configInitState = {
             edges: []
         },
         row:{},
+				edit:{},
         over: null,
         selected: [],
         hidden: [],
