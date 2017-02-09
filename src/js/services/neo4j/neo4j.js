@@ -241,7 +241,7 @@ class Neo4jService {
                                 item[key] = value;
 
                                 if (value && value.hasOwnProperty('low') && value.hasOwnProperty('high')) {
-                                    item[key] = value.toNumber();
+                                    item[key] = value.toInt();
                                 }
 
                                 // TODO: Change Driver node to custom node
@@ -249,9 +249,9 @@ class Neo4jService {
                                   let node = { id: value.identity.toNumber(), labels:value.labels, properties:{}};
                                   Object.keys(value.properties).forEach( name => {
                                     if (value.properties[name].hasOwnProperty('low') && value.properties[name].hasOwnProperty('high')) {
-                                        node.properties[name] = value.properties[name].toNumber();
+                                        node.properties[name] = value.properties[name].toInt();
                                     } else {
-                                      node[name] = value.properties[name];
+                                      node.properties[name] = value.properties[name];
                                     }
                                   });
                                   item[key] = node;
@@ -441,19 +441,23 @@ class Neo4jService {
       let schema = { type: 'object', title:label, properties: {} };
       return new Promise((resolve, reject) => {
         this.cypher("MATCH (n:" + label + ") WHERE rand() < 0.1  UNWIND keys(n) AS key RETURN DISTINCT key").then( result => {
+          var propsPromises = [];
           result.map( (row) => {
-            schema.properties[row.key] = {
-              type: 'string',
-              required: constraints.reduce((prev, current) => {
-                let result = prev;
-                if(!prev) {
-                  if(current.on ==='Node' && current.name === label && current.property === row.key) {
-                    result = true;
-                  }
-                }
-                return result;
-              }, false)
-            };
+              var p = this._computeNodePropertyType(label, row.key).then(type => {
+                schema.properties[row.key] = {
+                  type: type,
+                  required: constraints.reduce((prev, current) => {
+                    let result = prev;
+                    if(!prev) {
+                      if(current.on ==='Node' && current.name === label && current.property === row.key) {
+                        result = true;
+                      }
+                    }
+                    return result;
+                  }, false)
+                };
+              });
+              propsPromises.push(p);
           });
           resolve(schema);
         });
@@ -482,6 +486,68 @@ class Neo4jService {
         });
       });
     }
+
+    _computeNodePropertyType(label, property) {
+      return new Promise((resolve, reject) => {
+        this.cypher("MATCH (n:" + label + ") WHERE n." + property + " IS NOT NULL RETURN DISTINCT n." + property + " AS value LIMIT 10").then( result => {
+          var sample = [];
+          result.map( (row) => {
+            var type = typeof row.value;
+            if(type === 'number') {
+              if(Number.isInteger(row.value)) {
+                  type = 'integer';
+              }
+            }
+            sample.push(type);
+          });
+          var sampleCount = sample.reduce((prev, current) => {
+            if (prev[current]){
+              prev[current] += 1;
+            } else{
+              prev[current] = 1;
+            }
+            return prev;
+          }, {});
+          var finalType = null;
+          Object.keys(sampleCount).forEach( (key) => {
+            if(sampleCount[key] >  (sampleCount[finalType] | 0)) {
+              finalType = key;
+            }
+          });
+
+          resolve(finalType);
+      });
+    })
+  }
+
+  _computeEdgePropertyType(label, property) {
+    return new Promise((resolve, reject) => {
+      var sample = [];
+      this.cypher("MATCH ()-[r:" + edge + "]-() WHERE r." + property + " RETURN DISTINCT r." + property + " AS value LIMIT 10").then( result => {
+        result.map( (row) => {
+          if (row.value && row.value.hasOwnProperty('low') && row.value.hasOwnProperty('high')) {
+            sample.push('number');
+          }
+          else {
+            sample.push(row.value.constructor.name);
+          }
+        });
+        var sampleCount = sample.reduce((prev, current) => {
+          if (prev[current])
+            prev[current] +=1
+          else
+            prev[current] = 0;
+        }, {});
+        var finalType = null;
+        Object.keys(sampleCount).forEach( (key) => {
+          if(sampleCount[key] >  (sampleCount[finalType] | 0)) {
+            finalType = key;
+          }
+        })
+        resolve(finalType);
+    });
+  });
+  }
 
 }
 
