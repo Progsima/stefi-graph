@@ -22,7 +22,7 @@ class GraphEditObject extends Component {
 
     componentWillReceiveProps(nextProps) {
       this.neo4j = new Neo4jService(nextProps.neo4j.url, nextProps.neo4j.login, nextProps.neo4j.password);
-      if(nextProps.id) {
+      if(nextProps.id !== null) {
         if(nextProps.type === 'edge') {
           // "MATCH (n)-[o]->(m) WHERE id(o)={id} RETURN o";
         }
@@ -38,12 +38,8 @@ class GraphEditObject extends Component {
     }
 
     _save(data){
-      this.props.dispatch(action.saveNode, this.props.id, data);
-      this.neo4j.cypher("MATCH (o) WHERE id(o)={id} WITH o SET o={props} RETURN o", {id:this.props.id, props:data}).then( result => {
-        //TODO update tree graph
-        // close the modal
-        this._close();
-      })
+      this.props.dispatch(action.nodeSave, this.props.id, data);
+      this._close();
     }
 
     _close(){
@@ -54,7 +50,7 @@ class GraphEditObject extends Component {
      * Render phase.
      */
     render() {
-      if(this.props.id && this.state.schema && this.state.data){
+      if(this.props.id !== null && this.state.schema !== null && this.state.data !== null){
         return (
           <div className="popin">
             <div className="popin-wrapper">

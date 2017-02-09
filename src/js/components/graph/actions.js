@@ -145,12 +145,26 @@ export function nodeDelete(tree, nodeId){
   )
 }
 
+// TODO: update node in state if already here
 export function nodeSave(tree, id, props){
   const configNeo4j = tree.select('settings', 'neo4j').get();
   const neo4j = new Neo4jService(configNeo4j.url, configNeo4j.login, configNeo4j.password);
-  neo4j.cypher("MATCH (o) WHERE id(o)={id} WITH o SET o={props} RETURN o", {id:id, props:props}).then( result => {
-
-  });
+  neo4j.cypher("MATCH (o) WHERE id(o)={id} WITH o SET o={props} RETURN o", {id:id, props:props}).then(
+    result => {
+      pushNotification(tree, {
+        title: "Success: ",
+        message: "Node \"" + id + "\" is saved",
+        type: "success"
+      });
+    },
+    reason => {
+      pushNotification(tree, {
+        title: "Error: ",
+        message: JSON.stringify(reason),
+        type : "danger"
+      });
+    }
+  );
 }
 
 /**
