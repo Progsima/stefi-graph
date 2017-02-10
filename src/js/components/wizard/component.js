@@ -67,6 +67,8 @@ class Wizard extends Component {
      */
     constructor(props) {
         super(props);
+        // reverse order of priority
+        this.defaultLabelField = ["value", "id", "title", "name"];
         this.state = Object.assign({}, {settings: this.props.settings, step:1,computing:false, run:this.props.settings.wizard});
     }
 
@@ -217,8 +219,13 @@ class Wizard extends Component {
       let style = {labels:{}, edges:{}};
       let settings = Object.assign({}, this.state.settings);
       Object.keys(settings.schema.labels).map((label) =>{
+        var labelField = '<id>';
+        this.defaultLabelField.forEach( item => {
+          if(settings.schema.labels[label].properties[item])
+            labelField = item;
+        });
         style.labels[label] = {
-          label: 'name',
+          label: labelField,
           color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6),
           size: 15
         };

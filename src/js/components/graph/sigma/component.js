@@ -230,7 +230,7 @@ class ReactSigma extends Component {
     var tNode = node
     .set('size', this.props.defaultNodeStyle.size)
     .set('color', this.props.defaultNodeStyle.color)
-    .set('label', node.get('id'));
+    .set('label', "" + node.get('id'));
 
     // Apply style per labels
     tNode.get('labels').forEach(label => {
