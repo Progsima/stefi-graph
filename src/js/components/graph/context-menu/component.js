@@ -30,12 +30,12 @@ const menus = {
       {
         label: "Expand node",
         icon: "fa-caret-right",
-        component: ContextMenuItemExpand
+        component: ContextMenuItemNodeExpand
       },
       {
         label: "Collapse node",
         icon: "fa-caret-left",
-        component: ContextMenuItemExpand
+        component: ContextMenuItemNodeExpand
       }
     ]
   },

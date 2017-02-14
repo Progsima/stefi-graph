@@ -48,7 +48,7 @@ class GraphDisplayObject extends Component {
         if(this.props.object) {
 
             var title = "";
-            var objectTitle = "";
+            var objectTitle = this.props.object.id;
             if(this.props.object.labels) {
                 title = this.props.object.labels.join(', ');
 

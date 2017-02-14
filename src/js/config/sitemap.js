@@ -5,6 +5,7 @@ import SettingsSigma from '~/pages/settings/sigma/page';
 import SettingsApplication from '~/pages/settings/application/page';
 import SettingsGraphStyle from '~/pages/settings/style/page';
 import QueryFavory from '~/components/query/favory/component';
+import SimpleGraphDisplay from '~/pages/simple-graph-display/page';
 
 /**
  * Configuration object for the sitemap
@@ -36,6 +37,15 @@ const configSitemap = {
       component: Home,
       state: {
         view: 'home'
+      }
+    },
+    {
+      path: '/full-graph',
+      name: 'Graph',
+      title: 'Graph',
+      component: SimpleGraphDisplay,
+      state: {
+        view: 'full-graph'
       }
     },
     {

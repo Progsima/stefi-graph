@@ -1,7 +1,8 @@
 import Baobab from "baobab";
 import configInitState from "~/config/initstate";
 import Log from "~/services/log";
-import {mergeDeep} from "~/services/utils";
+import {mergeDeep, findGetParameter} from "~/services/utils";
+import * as query from "~/components/query/actions";
 
 /**
  * Module logger.
@@ -15,6 +16,8 @@ const log = new Log("Store");
  */
 var initState = configInitState;
 
+var runQuery = false;
+
 // take a look at localstorage
 var lsState = JSON.parse(window.localStorage.getItem('state'));
 if(lsState) {
@@ -22,12 +25,32 @@ if(lsState) {
     initState = mergeDeep(initState, lsState);
 }
 
-// take a look at params ?
-if(window.location.search.indexOf('state') > -1) {
-    var urlState = JSON.parse(decodeURIComponent(window.location.search.split('state=')[1]));
+// take a look at file params ?
+if(findGetParameter('file')) {
+  var fileStateUrl = findGetParameter('file');
+  var request = new XMLHttpRequest();
+  request.open('GET', fileStateUrl, false);  // `false` makes the request synchronous
+  request.send(null);
+  if (request.status === 200) {
+    initState = mergeDeep(initState, JSON.parse(request.responseText));
+  }
+  else {
+    console.log("Error when fetching external file " + fileStateUrl);
+  }
+}
+
+// take a look at state params ?
+if(findGetParameter('state')) {
+    var urlState = JSON.parse(decodeURIComponent(findGetParameter('state')));
     console.info("Found state into Url : "+ JSON.stringify(urlState));
     initState = mergeDeep(initState, urlState);
+
+    if(urlState.queries.current){
+      runQuery = true;
+    }
 }
+
+
 
 // Init the state
 const tree = new Baobab(initState, {shiftReferences: true});
@@ -175,3 +198,8 @@ tree.set(
 );
 
 export default tree;
+
+
+if(runQuery){
+  query.queryRun(tree);
+}
