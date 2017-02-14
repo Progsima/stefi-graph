@@ -4,12 +4,13 @@ Search, Transform, Explore, Fetch and Interact your graph database
 
 == TODO
 
-* Adding right click on node
-* Adding discover the graph (metagraph, jsonschema, composition or aggregation links)
 * Adding row result ...
-* refacto edge & node style
-* make assistant to connect & compute graph
 * parameter query (don't forget widget on this !)
+* refacto on neo4j service
+* refacto on edit object
+* adding label/type autocompletion on cypher
+* loading state for url ?
+* settings : modify schema
 
 == React reminder
 

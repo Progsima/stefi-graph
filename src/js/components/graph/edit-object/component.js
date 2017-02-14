@@ -22,7 +22,7 @@ class GraphEditObject extends Component {
 
     componentWillReceiveProps(nextProps) {
       this.neo4j = new Neo4jService(nextProps.neo4j.url, nextProps.neo4j.login, nextProps.neo4j.password);
-      if(nextProps.id !== null) {
+      if(typeof nextProps.id !== 'undefined') {
         if(nextProps.type === 'edge') {
           // "MATCH (n)-[o]->(m) WHERE id(o)={id} RETURN o";
         }

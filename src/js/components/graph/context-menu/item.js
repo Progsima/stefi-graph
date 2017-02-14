@@ -11,7 +11,7 @@ class ContextMenuItem extends Component {
   static propTypes = {
     key: React.PropTypes.number,
     item: React.PropTypes.object.isRequired,
-    object: React.PropTypes.object.isRequired,
+    object: React.PropTypes.isRequired,
   };
 
   /**
@@ -39,13 +39,21 @@ class ContextMenuItem extends Component {
   * Render phase.
   */
   render() {
-
-    return(
-      <li key={this.props.key} onClick={e => this._executeAction()}>
-        <div>{this.props.item.label} <i className={"pull-right fa " + this.props.item.icon}></i></div>
-        {this._renderComponent()}
-      </li>
-    )
+    if(this.props.item.label == '-') {
+      return (
+        <li key={this.props.key} style={{lineHeight:'2px'}}>
+          <hr/>
+        </li>
+      )
+    }
+    else {
+      return(
+        <li key={this.props.key} onClick={e => this._executeAction()}>
+          <div>{this.props.item.label} <i className={"pull-right fa " + this.props.item.icon}></i></div>
+          {this._renderComponent()}
+        </li>
+      )
+    }
   }
 
 }
