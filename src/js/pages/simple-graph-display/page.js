@@ -27,7 +27,7 @@ class SimpleGraphDisplay extends Component {
   render() {
 
     return (
-      <main className="container-fluid">
+      <main id="full-graph" className="container-fluid">
         <section className="col-md-12 main">
           <GraphDisplayObject />
           <ReactSigma
