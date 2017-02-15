@@ -24,6 +24,8 @@
 
       // Display active border
       if(node.selected) {
+        context.closePath();
+        context.fill();
         context.shadowOffsetX = 0;
         context.shadowOffsetY = 0;
         context.shadowBlur = 8;
@@ -33,7 +35,7 @@
         context.arc(
           node[prefix + 'x'],
           node[prefix + 'y'],
-          node[prefix + 'size']* (1+activeNodeBorderSizeRatio),
+          (node[prefix + 'size']+1)* (1+activeNodeBorderSizeRatio),
           0,
           Math.PI * 2,
           true
@@ -43,6 +45,19 @@
         context.shadowOffsetX = 0;
         context.shadowOffsetY = 0;
         context.shadowBlur = 0;
+
+        context.fillStyle = '#FFF';
+        context.beginPath();
+        context.arc(
+          node[prefix + 'x'],
+          node[prefix + 'y'],
+          node[prefix + 'size'] + 1,
+          0,
+          Math.PI * 2,
+          true
+        );
+        context.closePath();
+        context.fill();
       }
 
       // Display main node
