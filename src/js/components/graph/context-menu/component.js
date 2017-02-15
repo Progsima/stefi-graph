@@ -20,7 +20,7 @@ const menus = {
       {
         label: "Hide node",
         icon: "fa-eye-slash",
-        action: action.nodeRemove
+        action: action.nodeHide
       },
       {
         label: "Delete node",
@@ -34,10 +34,18 @@ const menus = {
       },
       {
         label: "Collapse node",
-        icon: "fa-caret-left",
-        component: ContextMenuItemNodeExpand
+        icon: "fa-compress",
+        action: action.nodeCollapse
       }
     ]
+  },
+  edge: {
+    actions: [
+
+    ]
+  },
+  stage: {
+    actions: []
   },
   selection: {
     actions: [
@@ -59,11 +67,6 @@ const menus = {
         icon: "fa-times",
         action: action.selectionDelete
       }
-    ]
-  },
-  edge: {
-    actions: [
-
     ]
   }
 }

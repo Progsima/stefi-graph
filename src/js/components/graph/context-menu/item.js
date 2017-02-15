@@ -11,7 +11,7 @@ class ContextMenuItem extends Component {
   static propTypes = {
     key: React.PropTypes.number,
     item: React.PropTypes.object.isRequired,
-    object: React.PropTypes.isRequired,
+    object: React.PropTypes.any.isRequired,
   };
 
   /**
@@ -24,7 +24,10 @@ class ContextMenuItem extends Component {
 
   _executeAction(){
     if(this.props.item.action)
-      this.props.dispatch(this.props.item.action, this.props.object.id);
+      if(this.props.object.hasOwnProperty('id'))
+        this.props.dispatch(this.props.item.action, this.props.object.id);
+      else
+        this.props.dispatch(this.props.item.action, this.props.object);
   }
 
   _renderComponent(){

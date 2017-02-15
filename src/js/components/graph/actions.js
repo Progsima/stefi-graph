@@ -13,6 +13,7 @@ const log = new Log('Actions.graph');
 export function setOverObject(tree, object) {
   runLayout(tree, false);
   tree.select('data', 'over').set(object);
+  tree.commit();
 }
 
 /**
@@ -42,6 +43,7 @@ export function setClickNode(tree, node) {
   } else {
     cursor.push(node);
   }
+  tree.commit();
 }
 
 /**
@@ -98,9 +100,9 @@ export function nodeEdit(tree, nodeId){
 }
 
 /**
- * Node : remove
+ * Node : hide
  */
-export function nodeRemove(tree, nodeId){
+export function nodeHide(tree, nodeId){
   setRightClick(tree, null, null, null) ;
   // remove node from graph
   tree.select('data', 'graph', 'nodes').unset(nodeId);
@@ -110,6 +112,24 @@ export function nodeRemove(tree, nodeId){
   Object.keys(edges).forEach(
     item =>  {
       if(edges[item].source !== nodeId && edges[item].target !== nodeId ) {
+        newEdges[item] = edges[item];
+      }
+    }
+  )
+  tree.select('data', 'graph', 'edges').set(newEdges);
+}
+
+/**
+ * Edge : hide
+ */
+export function edgeHide(tree, edgeId){
+  setRightClick(tree, null, null, null) ;
+  // remove edges from graph
+  var newEdges ={};
+  let edges = tree.get('data', 'graph', 'edges');
+  Object.keys(edges).forEach(
+    item =>  {
+      if(edges[item].id !== edgeId) {
         newEdges[item] = edges[item];
       }
     }
@@ -133,7 +153,35 @@ export function nodeDelete(tree, nodeId){
         message: "Deleting node \"" + nodeId + "\"",
         type: "success"
       });
-      nodeRemove(tree, nodeId);
+      nodeHide(tree, nodeId);
+    },
+    reason => {
+      pushNotification(tree, {
+        title: "Error: ",
+        message: JSON.stringify(reason),
+        type : "danger"
+      });
+    }
+  )
+}
+
+/**
+ * Edge : delete
+ */
+export function edgeDelete(tree, edgeId){
+  setRightClick(tree, null, null, null) ;
+
+  const configNeo4j = tree.select('settings', 'neo4j').get();
+  const neo4j = new Neo4jService(configNeo4j.url, configNeo4j.login, configNeo4j.password);
+
+  neo4j.cypher('MATCH ()-[r]->() WHERE id(r)={id} DELETE r', {id:edgeId}).then(
+    result => {
+      pushNotification(tree, {
+        title: "Success: ",
+        message: "Deleting edge \"" + edgeId + "\"",
+        type: "success"
+      });
+      edgeHide(tree, nodeId);
     },
     reason => {
       pushNotification(tree, {
@@ -207,4 +255,80 @@ query += 'RETURN n,m';
         type : "danger"
       });
     });
+}
+
+export function nodeCollapse(tree, selection){
+  //TODO : remove all child node that doesn't have a relationship
+}
+
+export function selectionReset(tree){
+  tree.set(['data', 'selected'], []);
+}
+
+export function selectionKeep(tree, selection){
+  selectionReset(tree);
+  let newGraph = {nodes:{}, edges:[]};
+  let graph = tree.get('data', 'graph');
+
+  var selectedNodeId = selection
+    .filter(item => { return item.hasOwnProperty('labels') })
+    .map( item => { return item.id });
+
+  var selectedEdgeId = selection
+    .filter(item => { return !item.hasOwnProperty('labels') })
+    .map( item => { return item.id });
+
+  // keep only selected node
+  selectedNodeId.forEach( item => {
+    newGraph.nodes[item] = graph.nodes[item];
+  })
+
+  // if there is some selected edges : => keep only those
+  if(selectedEdgeId.length > 0){
+    selectedEdgeId.forEach( item => {
+      newGraph.edges[item] = graph.edges[item];
+    })
+  }
+  // otherwise we keep all edges that relate selected node
+  else {
+    Object.keys(graph.edges).forEach( item => {
+      var edge = graph.edges[item];
+      if ( (selectedNodeId.indexOf(edge.source) > -1) && (selectedNodeId.indexOf(edge.target) > -1)) {
+        newGraph.edges[edge.id] = edge;
+      }
+    });
+  }
+  tree.select('data', 'graph').set(newGraph);
+}
+
+export function selectionHide(tree, selection){
+  // hide nodes
+  selection
+    .filter(item => { return item.hasOwnProperty('labels') })
+    .forEach( item => {
+      nodeHide(tree, item.id);
+    });
+  // hide edges
+  selection
+    .filter(item => { return !item.hasOwnProperty('labels') })
+    .forEach( item => {
+      edgeHide(tree, item.id);
+    });
+  selectionReset(tree);
+}
+
+export function selectionDelete(tree, selection){
+  // hide nodes
+  selection
+    .filter(item => { return item.hasOwnProperty('labels') })
+    .forEach( item => {
+      nodeDelete(tree, item.id);
+    });
+  // hide edges
+  selection
+    .filter(item => { return !item.hasOwnProperty('labels') })
+    .forEach( item => {
+      edgeDelete(tree, item.id);
+    });
+  selectionReset(tree);
 }

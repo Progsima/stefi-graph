@@ -313,6 +313,12 @@ class ReactSigma extends Component {
     this.sigma.bind("rightClickNode", (e) => {
       this.props.dispatch(action.setRightClick, 'node',  JSON.parse(JSON.stringify(e.data.node)), e.data.captor);
     });
+    this.sigma.bind("rightClickEdge", (e) => {
+      this.props.dispatch(action.setRightClick, 'edge',  JSON.parse(JSON.stringify(e.data.edge)), e.data.captor);
+    });
+    this.sigma.bind("rightClickStage", (e) => {
+      this.props.dispatch(action.setRightClick, 'stage',  {}, e.data.captor);
+    });
     this.sigma.bind("overEdge", (e) => {
       this.props.dispatch(action.setOverObject, JSON.parse(JSON.stringify(e.data.edge)));
     });

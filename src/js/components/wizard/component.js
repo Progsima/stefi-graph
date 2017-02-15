@@ -271,6 +271,7 @@ class Wizard extends Component {
       return (
         <div>
           <h1>Congrats !</h1>
+          <hr />
           <p>The wizard is finished. Click on the <strong>finish</strong> button to save the configuration.</p>
           <p>At any moment you can change it, via the <strong>Configuration</strong> menu.</p>
           <a className="btn btn-primary pull-left" onClick={e => this._previous()}>
