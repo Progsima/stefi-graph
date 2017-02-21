@@ -15,13 +15,44 @@
   sigma.canvas.edges.def = function(edge, source, target, context, settings) {
     var color = edge.color,
         prefix = settings('prefix') || '',
-        size = edge[prefix + 'size'] || 1,
         edgeColor = settings('edgeColor'),
         defaultNodeColor = settings('defaultNodeColor'),
         defaultEdgeColor = settings('defaultEdgeColor'),
-        hidden = edge.hidden || false;
+        cp = {},
+        size = edge[prefix + 'size'] || 1,
+        count = edge.order || 0,
+        tSize = target[prefix + 'size'],
+        sX = source[prefix + 'x'],
+        sY = source[prefix + 'y'],
+        tX = target[prefix + 'x'],
+        tY = target[prefix + 'y'],
+        aSize = Math.max(size * 2.5, settings('minArrowSize')),
+        d,
+        aX,
+        aY,
+        vX,
+        vY;
 
-    if (!color) {
+    cp = (source.id === target.id) ?
+      sigma.canvas.utils.getSelfLoopControlPoints(sX, sY, tSize, count) :
+      sigma.canvas.utils.getQuadraticControlPoint(sX, sY, tX, tY, count);
+
+    if (source.id === target.id) {
+      d = Math.sqrt(Math.pow(tX - cp.x1, 2) + Math.pow(tY - cp.y1, 2));
+      aX = cp.x1 + (tX - cp.x1) * (d - aSize - tSize) / d;
+      aY = cp.y1 + (tY - cp.y1) * (d - aSize - tSize) / d;
+      vX = (tX - cp.x1) * aSize / d;
+      vY = (tY - cp.y1) * aSize / d;
+    }
+    else {
+      d = Math.sqrt(Math.pow(tX - cp.x, 2) + Math.pow(tY - cp.y, 2));
+      aX = cp.x + (tX - cp.x) * (d - aSize - tSize) / d;
+      aY = cp.y + (tY - cp.y) * (d - aSize - tSize) / d;
+      vX = (tX - cp.x) * aSize / d;
+      vY = (tY - cp.y) * aSize / d;
+    }
+
+    if (!color)
       switch (edgeColor) {
         case 'source':
           color = source.color || defaultNodeColor;
@@ -33,22 +64,26 @@
           color = defaultEdgeColor;
           break;
       }
-    }
 
-    if(!hidden) {
-      context.strokeStyle = color;
-      context.lineWidth = size;
-      context.beginPath();
-      context.moveTo(
-        source[prefix + 'x'],
-        source[prefix + 'y']
-      );
-      context.lineTo(
-        target[prefix + 'x'],
-        target[prefix + 'y']
-      );
-      context.stroke();
+    context.strokeStyle = color;
+    context.lineWidth = size;
+    context.beginPath();
+    context.moveTo(sX, sY);
+    if (source.id === target.id) {
+      context.bezierCurveTo(cp.x2, cp.y2, cp.x1, cp.y1, aX, aY);
+    } else {
+      context.quadraticCurveTo(cp.x, cp.y, aX, aY);
     }
+    context.stroke();
+
+    context.fillStyle = color;
+    context.beginPath();
+    context.moveTo(aX + vX, aY + vY);
+    context.lineTo(aX + vY * 0.6, aY - vX * 0.6);
+    context.lineTo(aX - vY * 0.6, aY + vX * 0.6);
+    context.lineTo(aX + vX, aY + vY);
+    context.closePath();
+    context.fill();
 
   };
 })();

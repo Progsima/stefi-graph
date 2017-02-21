@@ -47,7 +47,7 @@ const configSigma = {
     hoverFontStyle: '',
     // {string} Indicates how to choose the hovered nodes shadow color.
     //          Available values: 'node', 'default'
-    labelHoverShadow: 'default',
+    labelHoverShadow: 'node',
     // {string}
     labelHoverShadowColor: '#000',
     // {string} Indicates how to choose the hovered nodes color.
@@ -66,11 +66,11 @@ const configSigma = {
     defaultLabelHoverColor: '#000',
     // {string} Indicates how to choose the edges hover color. Available values:
     //          'edge', 'default'
-    edgeHoverColor: 'default',
+    edgeHoverColor: 'edge',
     // {number} The size multiplicator of hovered edges.
-    edgeHoverSizeRatio: 1,
+    edgeHoverSizeRatio: 1.1,
     // {string}
-    defaultEdgeHoverColor: '#fff',
+    defaultEdgeHoverColor: '#000',
     // {boolean} Indicates if the edge extremities must be hovered when the
     //           edge is hovered.
     edgeHoverExtremities: true,

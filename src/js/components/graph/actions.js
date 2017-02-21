@@ -30,18 +30,18 @@ export function setRightClick(tree, type, object, captor) {
 }
 
 /**
-* Save the current right click node into state.
+* Save the current click object into state.
 */
-export function setClickNode(tree, node) {
+export function setClickObject(tree, object) {
   runLayout(tree, false);
   var cursor = tree.select('data', 'selected');
   var selected = cursor.get();
   // If selected already contains node => remove it
   // Otherwise adding it
-  if(selected.some((e) => { return (e.id == node.id)})) {
-    tree.select('data', 'selected').set(selected.filter((e) => { return (e.id != node.id)}));
+  if(selected.some((e) => { return (e.id == object.id)})) {
+    tree.select('data', 'selected').set(selected.filter((e) => { return (e.id != object.id)}));
   } else {
-    cursor.push(node);
+    cursor.push(object);
   }
   tree.commit();
 }

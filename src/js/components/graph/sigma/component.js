@@ -22,10 +22,12 @@ import "sigma/src/renderers/sigma.renderers.svg.js";
 import "sigma/src/renderers/sigma.renderers.webgl.js";
 import "sigma/src/renderers/sigma.renderers.def.js";
 import "sigma/src/renderers/canvas/sigma.canvas.labels.def.js";
-import "sigma/src/renderers/canvas/sigma.canvas.hovers.def.js";
+import "./sigma.extend.graph.js";
+import "./sigma.canvas.utils.js";
+import "./sigma.canvas.hovers.def.js";
 import "./sigma.canvas.nodes.def.js";
 import "./sigma.canvas.edges.def.js";
-import "sigma/src/renderers/canvas/sigma.canvas.edgehovers.def.js";
+import "./sigma.canvas.edgehovers.def.js";
 import "sigma/src/renderers/canvas/sigma.canvas.extremities.def.js";
 import "sigma/src/middlewares/sigma.middlewares.rescale.js";
 import "sigma/src/middlewares/sigma.middlewares.copy.js";
@@ -210,6 +212,13 @@ class ReactSigma extends Component {
     // Transform all edged to sigma edges
     newSigmaGraph.edges = Object.keys(this.props.graph.edges).map((edgeId) => {
       var tEdge = Immutable.Map(this.props.graph.edges[edgeId]);
+
+      // If edge is selected
+      if (this.props.selected.some((e) => { return (e.id == edgeId)})) {
+        tEdge = tEdge.set('selected', true);
+      }else {
+        tEdge = tEdge.set('selected', false);
+      }
       return this._applyEdgeStyle(tEdge).toObject();
     });
 
@@ -305,10 +314,14 @@ class ReactSigma extends Component {
     });
     this.sigma.bind("clickNode", (e) => {
       if(!e.data.captor.isDragging)
-        this.props.dispatch(action.setClickNode, JSON.parse(JSON.stringify(e.data.node)));
+        this.props.dispatch(action.setClickObject, JSON.parse(JSON.stringify(e.data.node)));
+    });
+    this.sigma.bind("clickEdge", (e) => {
+      if(!e.data.captor.isDragging)
+        this.props.dispatch(action.setClickObject, JSON.parse(JSON.stringify(e.data.edge)));
     });
     this.sigma.bind("doubleClickNode", (e) => {
-        this.props.dispatch(action.setClickNode, JSON.parse(JSON.stringify(e.data.node)));
+        //this.props.dispatch(action.setClickNode, JSON.parse(JSON.stringify(e.data.node)));
     });
     this.sigma.bind("rightClickNode", (e) => {
       this.props.dispatch(action.setRightClick, 'node',  JSON.parse(JSON.stringify(e.data.node)), e.data.captor);

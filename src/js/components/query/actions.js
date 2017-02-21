@@ -21,6 +21,7 @@ export function querySave(tree, query) {
 * Run the query and put the result to the graph state.
 */
 export function queryRun(tree) {
+  graph.selectionReset(tree);
   queryAddToHistory(tree);
   // get the current query
   var query = tree.select('queries').get('current');

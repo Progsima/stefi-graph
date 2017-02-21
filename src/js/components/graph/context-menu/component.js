@@ -31,11 +31,6 @@ const menus = {
         label: "Expand node",
         icon: "fa-caret-right",
         component: ContextMenuItemNodeExpand
-      },
-      {
-        label: "Collapse node",
-        icon: "fa-compress",
-        action: action.nodeCollapse
       }
     ]
   },

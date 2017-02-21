@@ -7,7 +7,7 @@ const configSigmaLayout = {
   adjustSizes: false,
   edgeWeightInfluence: 0,
   scalingRatio: 1,
-  strongGravityMode: true,
+  strongGravityMode: false,
   gravity: 1,
   barnesHutOptimize: false, // should we use the algorithm's Barnes-Hut to improve repulsion's scalability (`O(n²)` to `O(nlog(n))`)? This is useful for large graph but harmful to small ones.
   barnesHutTheta: 0.5,

@@ -8,8 +8,8 @@ Search, Transform, Explore, Fetch and Interact your graph database
 * parameter query (don't forget widget on this !)
 * refacto on neo4j service
 * refacto on edit object
+* refacto on action : make unitaries action
 * adding label/type autocompletion on cypher
-* loading state for url ?
 * settings : modify schema
 
 == React reminder
