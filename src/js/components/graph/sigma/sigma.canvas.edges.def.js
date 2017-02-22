@@ -31,20 +31,16 @@
     if(!hidden) {
 
       if(active){
-        if(source.id === target.id) {
+        if(source.id === target.id)
           sigma.canvas.utils.drawSelfEdgeArrow(context, sourceX, sourceY, source[prefix + 'size'], activeBorderColor, edgeSize * activeBorderSizeRatio, edgeOrder);
-        }
-        else {
-          sigma.canvas.utils.drawEdgeArrow(context, sourceX, sourceY, targetX, targetY, activeBorderColor, edgeSize * activeBorderSizeRatio, edgeOrder);
-        }
+        else
+          sigma.canvas.utils.drawEdgeArrow(context, sourceX, sourceY, targetX, targetY, target[prefix + 'size'], activeBorderColor, edgeSize * activeBorderSizeRatio, edgeOrder);
       }
 
-      if(source.id === target.id) {
+      if(source.id === target.id)
         sigma.canvas.utils.drawSelfEdgeArrow(context, sourceX, sourceY, source[prefix + 'size'], edgeColor, edgeSize, edgeOrder);
-      }
-      else {
-        sigma.canvas.utils.drawEdgeArrow(context, sourceX, sourceY, targetX, targetY, edgeColor, edgeSize, edgeOrder);
-      }
+      else
+        sigma.canvas.utils.drawEdgeArrow(context, sourceX, sourceY, targetX, targetY, target[prefix + 'size'], edgeColor, edgeSize, edgeOrder);
     }
   };
 

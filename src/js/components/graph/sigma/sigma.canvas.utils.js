@@ -54,9 +54,16 @@
     context.moveTo(nodeX, nodeY);
     context.bezierCurveTo(controlPoint.x2, controlPoint.y2, controlPoint.x1, controlPoint.y1, nodeX, nodeY);
     context.stroke();
+
+    var d = Math.sqrt(Math.pow(nodeX - controlPoint.x1, 2) + Math.pow(nodeY - controlPoint.y1, 2));
+    var aX = controlPoint.x1 + (nodeX - controlPoint.x1) * (d - size * 2 - nodeSize) / d;
+    var aY = controlPoint.y1 + (nodeY - controlPoint.y1) * (d - size * 2 - nodeSize) / d;
+    var vX = (nodeX - controlPoint.x1) * nodeSize / d;
+    var vY = (nodeY - controlPoint.y1) * nodeSize / d;
+    sigma.canvas.utils.drawArrow(context, (aX + vX), (aY + vY), (aX + vY * 0.6), (aY - vX * 0.6), (aX - vY * 0.6), (aY + vX * 0.6), color);
   }
 
-  sigma.canvas.utils.drawEdgeArrow = function(context, sourceX, sourceY, targetX, targetY, color, size, order) {
+  sigma.canvas.utils.drawEdgeArrow = function(context, sourceX, sourceY, targetX, targetY, targetSize, color, size, order) {
     var controlPoint = sigma.canvas.utils.getQuadraticControlPoint(sourceX, sourceY, targetX, targetY, size, order);
 
     context.strokeStyle = color;
@@ -65,6 +72,13 @@
     context.moveTo(sourceX, sourceY);
     context.quadraticCurveTo(controlPoint.x, controlPoint.y, targetX, targetY);
     context.stroke();
+
+    var d = Math.sqrt(Math.pow(targetX - controlPoint.x, 2) + Math.pow(targetY - controlPoint.y, 2));
+    var aX = controlPoint.x + (targetX - controlPoint.x) * (d - size * 7 - targetSize) / d;
+    var aY = controlPoint.y + (targetY - controlPoint.y) * (d - size * 7 - targetSize) / d;
+    var vX = (targetX - controlPoint.x) * targetSize / d;
+    var vY = (targetY - controlPoint.y) * targetSize / d;
+    sigma.canvas.utils.drawArrow(context, (aX + vX), (aY + vY), (aX + vY * 0.6), (aY - vX * 0.6), (aX - vY * 0.6), (aY + vX * 0.6), color);
   }
 
 
