@@ -28,15 +28,18 @@ import "./sigma.canvas.hovers.def.js";
 import "./sigma.canvas.nodes.def.js";
 import "./sigma.canvas.edges.def.js";
 import "./sigma.canvas.edgehovers.def.js";
+import "./sigma.canvas.edgehovers.paracurve.js";
+import "./sigma.canvas.edges.labels.def.js";
+import "./sigma.canvas.edges.labels.paracurve.js";
+import "./sigma.canvas.edges.paracurve.js";
 import "sigma/src/renderers/canvas/sigma.canvas.extremities.def.js";
 import "sigma/src/middlewares/sigma.middlewares.rescale.js";
 import "sigma/src/middlewares/sigma.middlewares.copy.js";
 import "sigma/src/misc/sigma.misc.animation.js";
-import "sigma/src/misc/sigma.misc.bindEvents.js";
+import "./sigma.misc.bindEvents.js";
 import "sigma/src/misc/sigma.misc.bindDOMEvents.js";
 import "sigma/src/misc/sigma.misc.drawHovers.js";
 import "sigma/plugins/sigma.plugins.dragNodes/sigma.plugins.dragNodes.js";
-import "sigma/plugins/sigma.renderers.edgeLabels/sigma.canvas.edges.labels.def.js";
 import "sigma/plugins/sigma.plugins.animate/sigma.plugins.animate.js";
 import "sigma/plugins/sigma.layout.forceAtlas2/worker.js";
 import "sigma/plugins/sigma.layout.forceAtlas2/supervisor.js";
@@ -281,7 +284,9 @@ class ReactSigma extends Component {
     var tEdge = edge
     .set('size', this.props.defaultEdgeStyle.size)
     .set('color', this.props.defaultEdgeStyle.color)
-    .set('label', edge.get('type'));
+    .set('label', edge.get('type'))
+    .set('_type', edge.get('type'))
+    .set('type', "paracurve");
 
     // Look if there is a defined style for the edge type
     let style = this.props.style.edges[edge.get('type')];

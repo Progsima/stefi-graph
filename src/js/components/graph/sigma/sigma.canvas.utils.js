@@ -29,11 +29,6 @@
     context.restore();
   };
 
-
-  sigma.canvas.utils.drawNodeImage = function(context, node, prefix) {
-
-  }
-
   sigma.canvas.utils.drawArrow = function(context, aX, aY, bX, bY, cX, cY, color) {
     context.fillStyle = color;
     context.beginPath();
